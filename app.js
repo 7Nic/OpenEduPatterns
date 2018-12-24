@@ -141,7 +141,7 @@ app.post('/editarLinguagens/deletarLinguagem/:id', (req, res) => {
     });
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`Servidor rodando em http://localhost:${port} ou na porta setada pelo Heroku`);
 });
