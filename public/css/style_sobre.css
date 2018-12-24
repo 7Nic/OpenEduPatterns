@@ -1,0 +1,139 @@
+/************
+-miscelânea
+************/		
+a {
+	text-decoration: none;
+	color: black;
+}
+
+p, a {
+	font-family: 'Work Sans', serif;	
+}
+
+/************
+-navbar
+************/		
+.navbar-inverse {
+	background-color: #2B263D;
+	margin-bottom: 0;
+	border-radius: 0;
+	border: 0;
+	padding: 0.3%;
+	color: #fff;
+	font-size: 1.2em;
+}
+
+.navbar ul span {
+	font-size: 14px;
+}
+
+.navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
+	background-color: #2B263D;
+}
+
+.logo {
+	float left;
+}
+
+.navbar .navbar-header button:focus {
+	background-color: #2B263D;
+}
+
+.navbar .navbar-header button:hover {
+	background-color: #171421;
+}
+
+
+/************
+-modal-login
+************/	
+#modal-login p {
+	color: black;
+	font-size: 16px;
+	text-align: center;
+	margin-top: 10px;
+	color: #545454;
+}
+
+#modal-login label {
+	color: black;
+	color: #545454;
+}
+
+#modal-login h3 {
+	color: #545454;
+	text-align: center;
+}
+
+#modal-login a:hover, #modal-login a:focus {
+	text-decoration: none;
+	color: black;
+}
+
+#modal-login a {
+	color: #545454;
+}
+
+
+/************
+-well
+************/		
+.well {
+	margin: 15px 0;
+}
+
+/************
+-footer
+************/		
+
+footer {
+	/*background-color: #5e4485;*/
+	/*background-color: #01959e;*/
+	/*background-color: #363636; o preto claro*/
+	background-color: #2B263D;
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	color: #fff;
+	padding: 0.1%;
+}
+
+footer .the-end {
+	font-size: 12px;
+}
+
+footer a:hover, footer a:focus {
+	text-decoration: none;
+	color: #fff;
+}
+
+.informacoes h3 {
+	font-size: 22px;
+}
+
+.informacoes {
+	text-align: center;
+	font-size: 13px;
+	line-height: 0.5em;
+}
+
+@media only screen and (max-width: 1200px){
+	.informacoes {
+		line-height: 0.95em;
+	}
+
+}
+
+.fa {
+	padding: 10px;
+	font-size: 25px;
+	color: #d4d7db;
+}
+
+.fa:hover, .fa:focus {
+	color: #b3b5b7;
+}
+
+.fa-copyright {
+	font-size: 12px;
+	padding: 3px;
+}

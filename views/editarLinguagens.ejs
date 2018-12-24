@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home - OpenEduPatterns</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Criar a responsividade da página para telas menores -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Não colocar nenhuma tag meta acima deste comentário -->
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <!-- Tema opicional Bootstrap -->
+    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"> -->
+    <!--[Se for o IE 9]-->
+    <script src="../js/html5shiv.min.js"></script>
+    <script src="../js/respond.min.js"></script>
+    <!-- Mdb Bootstrap -->
+    <!-- <link rel="stylesheet" type="text/css" href=""> -->
+    <!-- Bibliotca de icones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Meu CSS -->  
+    <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css">
+    <!-- Fonte da página -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/"><img src="../img/logoedu4.png"></a>
+                <!-- <a href=""><img src="img/logoLab.jpg"></a> -->
+                <!-- <a href=""><img src="img/logo.png"></a> -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Menu do navbar -->
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <!-- Barra de pesquisa -->
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Pesquisar">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/">Página inicial</a></li>
+                    <li class="active"><a href="/linguagens">Linguagens</a></li>
+                    <li><a href="/padroes">Padrões</a></li>
+                    <li><a href="/sobre">Sobre</a></li>
+                    <li><a data-toggle="modal" data-target="#modal-login" href=""><span class="glyphicon glyphicon-lock"></span>Login</a></li>
+                </ul>
+
+                <!-- Modal do login -->
+                <div class="modal fade" id="modal-login">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                             <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">Faça seu Login</h3>
+                             </div>
+                             <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-xs-10 col-xs-offset-1">
+                                        <div class="well">
+                                            <form>
+                                                <div class="form-group">    
+                                                    <label for="login-email" class="control-label">Digite seu e-mail</label>
+                                                    <input autofocus type="text" class="form-control form-control-lg" placeholder="E-mail" name="login-email">
+                                                </div>
+                                                <div class="form-group">    
+                                                    <label for="login-password" class="control-label">Digite sua senha</label>
+                                                    <input type="text" class="form-control form-control-lg" name="login-password" placeholder="Senha">
+                                                </div>
+                                                <button type="submit" class="btn btn-success btn-block">Login</button>
+                                            </form>
+                                            <p>Não possui uma conta? <a href="/cadastro">Cadastre-se agora</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal Login -->
+
+            </div>
+        </div>
+    </nav>  
+
+    <div class="corpo">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2 col-artigos">
+<!-- ==============================================-->
+            <div class="container editarLinguagem">
+                <h1>Edição de Linguagem</h1>
+                <form method="POST" action="salvarEdicaoLinguagens/<%= linguagem.id %>">
+                  <div class="form-group">
+                    <label for="nomeLinguagem">Nome da Linguagem</label>
+                    <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" value="<%= linguagem.nome %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="visibilidade">Visibilidade</label>
+                    <select class="form-control" id="visibilidade"  name="visibilidade">
+                      <option>Público</option>
+                      <option>Privado</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="descricaoLinguagem">Descrição da Linguagem</label>
+                    <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %> </textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                  <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
+                </form>
+                <br>
+                <br>
+                <form method="POST" action="deletarLinguagem/<%= linguagem.id %>">
+                    <button type="submit" class="btn btn-danger btn-lg">Deletar Linguagem</button>    
+                </form>
+            </div>
+
+<!-- =================================== -->
+
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <footer class="text-center">
+        <div class="container">
+            <div class="row">    
+                <div class="col-sm-4 informacoes">
+                    <h3>Desenvolvido por LabES</h3>
+                    <p>Avenida Trabalhador São Carlense, 400 - Centro</p>
+                    <p>Universidade de São Paulo - ICMC Prédio 5 - Sala 6-208</p>
+                    <p>São Carlos - SP 13566-590 - Brasil</p>
+                    <p>Telefone: (16) 3373-9997</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <h3>Conecte-se conosco</h3>
+                        <a href=""><span class="fa fa-facebook"></span></a>
+                        <a href=""><span class="fa fa-twitter"></span></a>
+                        <a href=""><span class="fa fa-youtube"></span></a>
+                        <a href=""><span class="fa fa-globe"></span></a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <!-- <img src="img/bunny.png"> -->
+                    <h3>Crie já sua conta</h3>
+                    <a href="/cadastro"><button type="button" class="btn btn-warning">Cadastre-se</button></a>
+                </div>
+            </div>
+            <div class="row text-center the-end">
+                <p><span class="fa fa-copyright"></span>Copyright 2018 <a href="">Universidade de São Paulo</a></p>
+            </div>      
+        </div>
+    </footer>
+    <!-- SCRIPTS -->
+    <script src="../dataCollectors/collectDataLogin.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+<!-- ANOTAÇÕES/IDEIAS -->
+<!-- Tentar colocar o fundo da navbar como a continuação da foto, e quando rolar para baixo, mudar para a cor roxa atual -->
+
+<!-- TO DO LIST -->
+<!-- Trocar o banner, deverá ser uma foto no fundo com o texto html na frente-->
+<!-- Colocar melhores icones de calendario e comentários -->
+<!-- Colocar o botao do banner de criar conta -->
+<!-- Consertar o pagination para ficar no centro e mudar as cores -->

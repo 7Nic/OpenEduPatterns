@@ -1,0 +1,204 @@
+/************
+-miscelânea
+************/		
+a {
+	text-decoration: none;
+	color: black;
+}
+
+p, a {
+	/*font-family: 'Frank Ruhl Libre', serif;*/
+	font-family: 'Work Sans', serif;	
+}
+
+/************
+-navbar
+************/		
+.navbar-inverse {
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	/*background-color: #5e4485;*/
+	/*background-color: #00d1dc; backup da turquesa original*/
+	background-color: #2B263D;
+
+	margin-bottom: 0;
+	border-radius: 0;
+	border: 0;
+	padding: 0.3%;
+	color: #fff;
+	font-size: 1.2em;
+}
+
+.navbar ul span {
+	font-size: 14px;
+}
+
+.navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	/*background-color: #5e4485;*/
+	background-color: #2B263D;
+}
+
+/*arrumar esse aqui
+.navbar-collapse ul a:hover {
+	color: #fb284c;
+	background-color: red;
+}*/
+
+.logo {
+	float left;
+}
+
+.navbar .navbar-header button:focus {
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	background-color: #2B263D;
+	/*roxo antes 5e4485*/
+}
+
+.navbar .navbar-header button:hover {
+	background-color: #171421;
+}
+
+/************
+-banner
+************/		
+.banner img {
+	/*max-width: 200px;*/
+}
+
+.banner .btn {
+	position: absolute;
+	top: 10px;
+	left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+/*cor de botao #325b8f*/
+
+
+
+/************
+-corpo
+************/		
+.artigo {
+	margin: 25px 10px;
+	padding: 5px;
+	/*background-color: rgba(89, 91, 109, 0.2);*/
+}
+
+.col-artigos {
+	/*background-color: rgba(89, 91, 109, 0.1);*/
+	/*background-color: #e8e8e8; colocar nos posts*/
+	background-color: #f4f4f4;
+	border-radius: 20px;
+}
+
+.artigo p {
+	color: #4d4d4d;
+}
+
+.read-more:hover, .read-more:focus {
+	color: black;
+	text-decoration: none;
+}
+
+.artigo a {
+	/*background-color: red;	*/
+	margin-right: 10px;
+	padding: 0px;
+	font-size: 17px;
+}
+
+.artigo p a:hover, .artigo p a:focus {
+	/*color: #5e4485;*/
+	color: #fb284c;
+	text-decoration: none;
+}
+
+.artigo span {
+	font-size: 16px;
+}
+
+.artigo h2 a {
+	color: black;
+	font-weight: bold;
+	font-size: 30px;
+}
+
+.artigo h2 a:hover, .artigo h2 a:focus {
+	/*color: #fb284c;*/
+	color: #fb284c;
+	text-decoration: none;
+}
+
+
+.artigo .read-more {
+	/*color: #5e4485;*/
+	color: black;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.artigo .read-more:hover {
+	/*color: #5e4485;*/
+	color: #fb284c;
+}
+
+.mais-vistos ul li {
+	font-size: 18px;
+	padding: 5px;
+	text-decoration-style: none;
+	list-style: none;	
+}
+
+/************
+-footer
+************/		
+
+footer {
+	/*background-color: #5e4485;*/
+	/*background-color: #01959e;*/
+	/*background-color: #363636; o preto claro*/
+	background-color: #2B263D;
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	color: #fff;
+	padding: 0.1%;
+}
+
+footer .the-end {
+	font-size: 12px;
+}
+
+footer a:hover, footer a:focus {
+	text-decoration: none;
+	color: #fff;
+}
+
+.informacoes h3 {
+	font-size: 22px;
+}
+
+.informacoes {
+	text-align: left;
+	font-size: 13px;
+	line-height: 0.5em;
+}
+
+.fa {
+	padding: 10px;
+	font-size: 25px;
+	color: #d4d7db;
+}
+
+.fa:hover, .fa:focus {
+	color: #b3b5b7;
+}
+
+.fa-copyright {
+	font-size: 12px;
+	padding: 3px;
+}
