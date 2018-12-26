@@ -2,14 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const mysql = require('mysql');
-
-var connection;
-if (process.env.JAWSDB_URL) {
-    // Database is JawsDB on Heroku
-    connection = mysql.createConnection(process.env.JAWSDB_URL);
-}
-
 const app = express();
 
 //Configure Routes
