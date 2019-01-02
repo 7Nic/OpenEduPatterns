@@ -1,3 +1,8 @@
+// ALTER TABLE thetable ADD UNIQUE INDEX(pageid, name);
+// Coloque esse comando ao criar as 3 tabelas de relacionamento, para evitar valores repetidos
+// Pois usaremos o comando INSERT IGNORE... para ignorar valores repetidos, os quais não serão inseridos
+// ==================================================ANTES DE TUDO========================================
+
 // Arquivo responsavel pelo armazenamento, ele que roda os comandos SQl
 const knex = require('knex')(require('./knexfile'));
 const crypto = require('crypto');
@@ -67,36 +72,67 @@ module.exports = {
             return resultado;
         });
     },
-    pegarLinguagemPorId(userId) {
-        return knex.select('*').from('linguagens').where('id', userId).then((resultado) => {
+    pegarLinguagemPorId(Id) {
+        return knex.select('*').from('linguagens').where('linguagens_id', Id).then((resultado) => {
             return resultado[0];
         });
     },
-    pegarPadraoPorId(userId) {
-        return knex.select('*').from('padroes').where('id', userId).then((resultado) => {
+    pegarPadraoPorId(Id) {
+        return knex.select('*').from('padroes').where('padroes_id', Id).then((resultado) => {
             return resultado[0];
         })
     },
-    editarPadrao({data, userId}) {
-        console.log(`id: ${userId}`);
-        return knex('padroes').where('id', userId).update({
+    pegarUsuarioProId(userId) {
+        return knex.select('*').from('usuarios').where('usuarios_id', userId).then
+    },
+    editarPadrao({data, Id}) {
+        return knex('padroes').where('padroes_id', Id).update({
             titulo: data.nomePadrao,
             visibilidade: data.visibilidade,
             texto: data.texto
         })
     },
-    editarLinguagem({data, userId}) {
-        return knex('linguagens').where('id', userId).update({
+    editarLinguagem({data, Id}) {
+        return knex('linguagens').where('linguagens_id', Id).update({
             nome: data.nomeLinguagem,
             visibilidade: data.visibilidade,
             descricao: data.descricaoLinguagem 
         })
     },
-    deletarPadrao(userId) {
-        return knex('padroes').where('id', userId).del();
+    deletarPadrao(Id) {
+        return knex('padroes').where('padroes_id', Id).del();
     },
-    deletarLinguagem(userId) {
-        return knex('linguagens').where('id', userId).del();
+    deletarLinguagem(Id) {
+        return knex('linguagens').where('linguagens_id', Id).del();
+    },
+    padroesDeUmaLinguagem(Id) { //Retorna os padroes da linguagem que tem o Id que passamos
+        return knex.select('*').from('padroes')
+        .innerJoin('linguagens_padroes', 'padroes.padroes_id', 'linguagens_padroes.padroes_id')
+        .innerJoin('linguagens', 'linguagens_padroes.linguagens_id', 'linguagens.linguagens_id')
+        .where('linguagens.linguagens_id', Id)
+        .then((resultado) => {
+            return resultado;
+        });
+    },
+    pegarIdPadraoPorTitulo(titulo) {
+        return knex.select('padroes_id').from('padroes').where('titulo', `${titulo}`)
+        .then((resultado) => {
+            return resultado[0];
+        });
+    },
+    relacionarPadraoLinguagem(idLinguagem, idPadrao) {
+        //This raw function substitutes INSERT for INSERT IGNORE
+        return knex.raw(knex('linguagens_padroes').insert({
+            linguagens_id: idLinguagem,
+            padroes_id: idPadrao
+            })
+            .toString()
+            .replace('insert', 'INSERT IGNORE'));
+    },
+    desrelacionarPadraoLinguagem(idLinguagem, idPadrao) {
+        console.log(`ling: ${idLinguagem} - pad: ${idPadrao}`);
+        return knex('linguagens_padroes').where('linguagens_id', '=', idLinguagem).andWhere('padroes_id', '=', idPadrao).del();
+        // knex.raw(`delete from linguagens_padroes where padroes_id=? and linguagens_id=?`, [idLinguagem, idPadrao]);
     }
 }
 
@@ -107,7 +143,7 @@ function saltHashPassword ({password, salt = randomString()}) {
         salt: salt,
         hash: hash.digest('hex') //A senha criptograda é binaria, passamos ela como hexadecimal
     }
-}
+}   
 
 function randomString() {
     return crypto.randomBytes(4).toString('hex'); //Strings aleatorias para um hexadecimal

@@ -17,6 +17,7 @@ const criarPadrao = require('./controllers/criarPadrao');
 const criarLinguagem = require('./controllers/criarLinguagem');
 const editarLinguagens = require('./controllers/editarLinguagens');
 const editarPadroes = require('./controllers/editarPadroes');
+const perfilUsuario = require('./controllers/perfilUsuario.js');
 
 
 //Configure middleware
@@ -37,7 +38,10 @@ app.get('/criarPadrao', criarPadrao.getCriarPadrao);
 app.get('/criarLinguagem', criarLinguagem.getCriarLinguagem);
 app.get('/editarLinguagens/:id', editarLinguagens.getEditarLinguagens);
 app.get('/editarPadroes/:id', editarPadroes.getEditarPadroes);
-
+app.get('/perfilUsuario/:id', perfilUsuario.getPerfilUsuario);
+app.get('/incompleto', (req, res) => {
+    res.send('Página a ser criada. Pode ser a exibição de uma linguagem ou padrão');
+})
 
 
 //Post requests
@@ -109,7 +113,7 @@ app.post('/editarPadroes/salvarEdicaoPadrao/:id', (req, res) => {
         data.visibilidade = null;
     }
     console.log(req.params.id);
-    store.editarPadrao({data, userId: req.params.id})
+    store.editarPadrao({data, Id: req.params.id})
     .then(() => {
         res.redirect('/padroes');
     });
@@ -123,7 +127,7 @@ app.post('/editarLinguagens/salvarEdicaoLinguagens/:id', (req, res) => {
     } else {
         data.visibilidade = null;
     }
-    store.editarLinguagem({data, userId: req.params.id})
+    store.editarLinguagem({data, Id: req.params.id})
     .then(() => {
         res.redirect('/linguagens');
     });
@@ -138,6 +142,30 @@ app.post('/editarLinguagens/deletarLinguagem/:id', (req, res) => {
     store.deletarLinguagem(req.params.id)
     .then(() => {
         res.redirect('/linguagens');
+    });
+});
+app.post('/editarLinguagens/relacionarPadrao/:idLinguagem', (req, res) => {
+    var idLinguagem = req.params.idLinguagem;
+    var tituloPadrao = req.body.tituloPadraoRelacionado;
+    store.pegarIdPadraoPorTitulo(tituloPadrao)
+    .then((restultadoBusca) => {
+        var idPadrao = restultadoBusca.padroes_id;
+        store.relacionarPadraoLinguagem(idLinguagem, idPadrao)
+        .then(() => {
+            res.redirect(`/editarLinguagens/${idLinguagem}`);
+        })
+    });
+});
+app.post('/editarLinguagens/desrelacionarPadrao/:idLinguagem', (req, res) => {
+    var idLinguagem = req.params.idLinguagem;
+    var tituloPadrao = req.body.tituloPadraoDesrelacionado;
+    store.pegarIdPadraoPorTitulo(tituloPadrao)
+    .then((restultadoBusca) => {
+        var idPadrao = restultadoBusca.padroes_id;
+        store.desrelacionarPadraoLinguagem(idLinguagem, idPadrao)
+        .then(() => {
+            res.redirect(`/editarLinguagens/${idLinguagem}`);
+        })
     });
 });
 

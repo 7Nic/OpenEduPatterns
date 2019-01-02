@@ -6,3 +6,9 @@ DB_HOST: us-cdbr-iron-east-01.cleardb.net
 DB_DATABASE: heroku_266f60915c6ecc1
 DB_USER: beaf9588d57556
 DB_PASSWORD: 0d2a0244
+
+Conectar no prompt
+mysql -u beaf9588d57556 -h us-cdbr-iron-east-01.cleardb.net -p0d2a0244
+Depois
+use heroku_266f60915c6ecc1;
+

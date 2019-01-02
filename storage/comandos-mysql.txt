@@ -1,0 +1,16 @@
+=======COMANDOS SQL========
+ALTER TABLE document MODIFY document_id INT AUTO_INCREMENT PRIMARY KEY (Make a column auto_increment)
+
+ALTER TABLE vendors ADD COLUMN phone VARCHAR(15) AFTER name;
+
+ALTER TABLE tableName CHANGE `oldcolname` `newcolname` datatype(length);
+
+UPDATE padroes SET usuarios_id='1' WHERE padroes_id='11';
+
+DELETE FROM tutorials_tbl WHERE tutorial_id=3;
+
+ALTER TABLE users AUTO_INCREMENT=1001;
+
+SELECT * FROM padroes p INNER JOIN linguagens_padroes lp ON p.padroes_id = lp.padroes_id INNER JOIN linguagens l ON lp.linguagens_id = l.linguagens_id WHERE l.linguagens_id=21;
+
+INSERT INTO Customer (FirstName, LastName, City, Country, Phone) VALUES ('Craig', 'Smith', 'New York', 'USA', 1-01-993 2800);

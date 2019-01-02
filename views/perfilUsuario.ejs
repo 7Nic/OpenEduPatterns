@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns</title>
+    <title>Home - OpenEduPatterns!</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -20,11 +20,12 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_sobre.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -53,9 +54,9 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/">Página inicial</a></li>
-                    <li class="active"><a href="/linguagens">Linguagens</a></li>
+                    <li><a href="/linguagens">Linguagens</a></li>
                     <li><a href="/padroes">Padrões</a></li>
-                    <li><a href="/sobre">Sobre</a></li>
+                    <li class="active"><a href="/sobre">Sobre</a></li>
                     <li><a data-toggle="modal" data-target="#modal-login" href=""><span class="glyphicon glyphicon-lock"></span>Login</a></li>
                 </ul>
 
@@ -95,96 +96,31 @@
             </div>
         </div>
     </nav>  
-    <br>
-    <br>
 
-    <div class="corpo">
-        <div class="container">
-            <div class="col-md-8 col-md-offset-2 col-artigos">
-<!-- ==============================================-->
-            <div class="container editarLinguagem">
-                <h1>Edição de Linguagem</h1>
-                <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
-                    <br>
-                    <h3>Relacionamento entre Linguagens e Padrões</h3>
-                    
-                    <div class="row artigo">
-                        <label for="">Padrões relacionados a essa Linguagem</label>
-                        <% padroesRelacionados.forEach((padroesRelacionados) => { %>
-                                    <h2><a href="/incompleto"><%= padroesRelacionados.titulo %></a></h2>
-                        <% }); %>
-                    </div>
 
-                    <br>
-                    <form method="POST" action="desrelacionarPadrao/<%= linguagem.linguagens_id %>">
-                        <label for="">Remover padrões desta linguagem</label>
-                        <select class="form-control" id="tituloPadraoDesrelacionado"  name="tituloPadraoDesrelacionado">
-                            <% padroesRelacionados.forEach((padroesRelacionados) => { %>
-                              <option><%= padroesRelacionados.titulo %></option>
-                            <% }); %>    
-                        </select>
-                        <br>
-                        <button class="btn btn-danger">Excluir relacionamento</button>
-                    </form>
-
-                    <br>
-                    <br>
-                    <form method="POST" action="relacionarPadrao/<%= linguagem.linguagens_id %>">
-                        <label for="">Adicionar outros padrões a essa Linguagem</label>  
-                        <div class="form-group">
-                            <select class="form-control" id="tituloPadraoRelacionado" name="tituloPadraoRelacionado">
-                                <% todosPadroes.forEach((todosPadroes) => { %>
-                                    <option><%= todosPadroes.titulo %></option>
-                                <% }); %>
-                            </select>
-                            <br>
-                            <button type="submit" class="btn btn-success">Adicionar relacionamento</button>
-                        </div>
-                    </form>
-                
-                  <!-- ============================ -->
-                <br>
-                <br>  
-                <h3>Propriedades da Linguagem</h3>
-                <form method="POST" action="salvarEdicaoLinguagens/<%= linguagem.linguagens_id %>">
-                  <div class="form-group">
-                    <label for="nomeLinguagem">Nome da Linguagem</label>
-                    <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" value="<%= linguagem.nome %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="visibilidade">Visibilidade</label>
-                    <select class="form-control" id="visibilidade"  name="visibilidade">
-                      <option>Público</option>
-                      <option>Privado</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="descricaoLinguagem">Descrição da Linguagem</label>
-                    <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %> </textarea>
-                  </div>
-
-                  <br>
-                  <br>
-                  <button type="submit" class="btn btn-primary">Salvar propriedades</button>
-                  <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
-                </form>
-                <br>
-                <br>
-                <form method="POST" action="deletarLinguagem/<%= linguagem.linguagens_id %>">
-                    <button type="submit" class="btn btn-danger btn-lg">Deletar Linguagem</button>    
-                </form>
-                <br>
-            </div>
-
-<!-- =================================== -->
-
-            </div>
+    <div class="container">
+        <br>
+        <br>
+        <div class="well">
+            <p>
+                Esta ferramenta está sendo desenvolvida por Gabriel Santos Nicolau, estudante do curso de Engenharia de Computação da Universidade de São Paulo, sob a orientação da professora Elen Francine e colaboração de Maria Lydia Fioravanti (Doutoranda no ICMC/USP).
+            </p>
+            <h3>Padrões e Linguagens de Padrões</h3>
+            <br>
+            <p>
+                A ideia de "padrão" surgiu a partir das investigações do professor arquiteto Christopher Alexander, da Universidade da Califórnia, em Berkeley, no seu livro “A Pattern Language”, no final da década de 70. Para Christopher, cada padrão descreve um problema que se repete, apresentando o núcleo da solução ou melhor forma para resolver tal problema. Dessa forma, o padrão pode ser usado por outras pessoas, em um contexto semelhante, mas que possuem o mesmo problema relacionado.
+            </p>
+            <p>
+                De forma geral, um padrão possui um formato contendo geralmente nome, contexto, problema, solução.
+                Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.
+                Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.
+            </p>
         </div>
+        <br>
+        <br>
+        <br>
     </div>
 
-    <br>
-    <br>
-    <br>
     <footer class="text-center">
         <div class="container">
             <div class="row">    
@@ -222,12 +158,3 @@
 </body>
 </html>
 
-
-<!-- ANOTAÇÕES/IDEIAS -->
-<!-- Tentar colocar o fundo da navbar como a continuação da foto, e quando rolar para baixo, mudar para a cor roxa atual -->
-
-<!-- TO DO LIST -->
-<!-- Trocar o banner, deverá ser uma foto no fundo com o texto html na frente-->
-<!-- Colocar melhores icones de calendario e comentários -->
-<!-- Colocar o botao do banner de criar conta -->
-<!-- Consertar o pagination para ficar no centro e mudar as cores -->
