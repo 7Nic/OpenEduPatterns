@@ -45,16 +45,24 @@ app.get('/incompleto', (req, res) => {
 
 
 //Post requests
-app.post('/cadastrarUsuario', (req, res) => { //app.js(collectDataXXX in this case) will hit this path
-    store
+app.post('/cadastrarUsuario', (req, res) => {
+    // Se os campos estiverem vazios nada será inserido no banco de dados
+    if (req.body.name === '' || req.body.email === '' || req.body.password === '') {
+        console.log('Campos vazios');
+        res.redirect('/');
+    } else {
+        store
         .createUser({
             name: req.body.name,    
             email: req.body.email,
             password: req.body.password
         })
         .then(() => res.redirect('/'));
+    }
 });
+// Autentificação do usuário
 app.post('/fazerLogin', (req, res) => {
+    // Se for sucesso na autentificação, use seu banco de dados para pegar o id do usuario
     store.authenticate({
         email: req.body.email,
         password: req.body.password
@@ -75,15 +83,20 @@ app.post('/adicionarPadrao', (req, res) => {
     } else {
         visibilidadeNum = null;
     }
-    store.criarPadrao({
-        nomePadrao: req.body.nomePadrao,
-        visibilidade: visibilidadeNum,
-        texto: req.body.texto
-    })
-    .then(() => {
-        console.log('aqui chega');
+
+    // Se os campos estiverem vazios nada será inserido no banco de dados
+    if (req.body.nomePadrao === '' || req.body.texto === '') {
         res.redirect('/padroes');
-    });
+    } else {
+        store.criarPadrao({
+            nomePadrao: req.body.nomePadrao,
+            visibilidade: visibilidadeNum,
+            texto: req.body.texto
+        })
+        .then(() => {
+            res.redirect('/padroes');
+        });
+    }
 });
 app.post('/adicionarLinguagem', (req, res) => {
     var visibilidadeNum = null;
@@ -94,14 +107,21 @@ app.post('/adicionarLinguagem', (req, res) => {
     } else {
         visibilidadeNum = null;
     }
-    store.criarLinguagem({
-        nomeLinguagem: req.body.nomeLinguagem,
-        visibilidade: visibilidadeNum,
-        descricaoLinguagem: req.body.descricaoLinguagem
-    })
-    .then(() => {
+
+    // Se os campos estiverem vazios nada será inserido no banco de dados
+    console.log(req.body.nomeLinguagem);
+    if (req.body.nomeLinguagem === '' || req.body.descricaoLinguagem === ''){
         res.redirect('/linguagens');
-    });
+    } else {
+        store.criarLinguagem({
+            nomeLinguagem: req.body.nomeLinguagem,
+            visibilidade: visibilidadeNum,
+            descricaoLinguagem: req.body.descricaoLinguagem
+        })
+        .then(() => {
+            res.redirect('/linguagens');
+        });
+    }
 });
 app.post('/editarPadroes/salvarEdicaoPadrao/:id', (req, res) => {
     var data = req.body;

@@ -4,8 +4,9 @@
 // ==================================================ANTES DE TUDO========================================
 
 // Arquivo responsavel pelo armazenamento, ele que roda os comandos SQl
-const knex = require('knex')(require('./knexfile'));
+const knex   = require('knex')(require('./knexfile'));
 const crypto = require('crypto');
+const mySQL  = require('./mysqlFunctions');
 //Essa é a maneira de importar o knex, faça o paiol e depois passe o objeto com os detalhes do banco de dados, nesse caso colocamos 
 //esse objeto no arquivo knexfile e exportamos ele lá para importar aqui
 
@@ -17,14 +18,13 @@ module.exports = {
         //when the user creates them
         //Recebe o objeto retornado pela salthashpassword
         const {salt, hash} = this.saltHashPassword({password});
-
-        //Comando que manda inserir essas informações na tabela, eu passo aqui o nome da tabela
         return knex('usuarios').insert({
             name,
             email,
             password,
             salt, 
             encryptedPassword: hash, //Porque hash é a senha criptografada, dai colocamos ela na tabela
+            created_at: new Date()
         });
     },
     authenticate ({email, password}) {
@@ -50,7 +50,8 @@ module.exports = {
             titulo: nomePadrao,
             visibilidade,
             texto,
-            id_usuario: 171
+            id_usuario: 171,
+            created_at: new Date()
         });
     },
     criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem}) {
@@ -59,7 +60,8 @@ module.exports = {
             nome: nomeLinguagem,
             visibilidade,
             descricao: descricaoLinguagem,
-            id_usuario: 171
+            id_usuario: 171,
+            created_at: new Date()
         });
     },
     listarPadroes() {
@@ -106,13 +108,15 @@ module.exports = {
         return knex('linguagens').where('linguagens_id', Id).del();
     },
     padroesDeUmaLinguagem(Id) { //Retorna os padroes da linguagem que tem o Id que passamos
-        return knex.select('*').from('padroes')
+        //Não usamos SELECT * pois evitamos busca e download de dados desnecessários 
+        return knex.select('titulo').from('padroes')
         .innerJoin('linguagens_padroes', 'padroes.padroes_id', 'linguagens_padroes.padroes_id')
         .innerJoin('linguagens', 'linguagens_padroes.linguagens_id', 'linguagens.linguagens_id')
         .where('linguagens.linguagens_id', Id)
         .then((resultado) => {
             return resultado;
         });
+        // SELECT * FROM padroes p INNER JOIN linguagens_padroes lp ON p.padroes_id = lp.padroes_id INNER JOIN linguagens l ON lp.linguagens_id = l.linguagens_id WHERE l.linguagens_id=21;
     },
     pegarIdPadraoPorTitulo(titulo) {
         return knex.select('padroes_id').from('padroes').where('titulo', `${titulo}`)
@@ -129,10 +133,28 @@ module.exports = {
             .toString()
             .replace('insert', 'INSERT IGNORE'));
     },
-    desrelacionarPadraoLinguagem(idLinguagem, idPadrao) {
-        console.log(`ling: ${idLinguagem} - pad: ${idPadrao}`);
+    desrelacionarPadraoLinguagem(idLinguagem, idPadrao) {     
         return knex('linguagens_padroes').where('linguagens_id', '=', idLinguagem).andWhere('padroes_id', '=', idPadrao).del();
         // knex.raw(`delete from linguagens_padroes where padroes_id=? and linguagens_id=?`, [idLinguagem, idPadrao]);
+
+    },
+    userPatterns() { //Padrões de um usuário
+        return knex.select('*').from('padroes')
+        .innerJoin('usuarios_padroes', 'padroes.padroes_id', 'usuarios_padroes.padroes_id')
+        .innerJoin('usuarios', 'usuarios_padroes.usuarios_id', 'usuarios.usuarios_id')
+        .where('usuarios.usuarios_id', Id)
+        .then((resultado) => {
+            return resultado;
+        });
+    },
+    userLanguages() { //Linguagens de um usuário
+        return knex.select('*').from('linguagens')
+        .innerJoin('usuarios_linguagens', 'linguagens.linguagens_id', 'usuarios_linguagens.linguagens_id')
+        .innerJoin('usuarios', 'usuarios_linguagens.usuarios_id', 'usuarios.usuarios_id')
+        .where('usuarios.usuarios_id', Id)
+        .then((resultado) => {
+            return resultado;
+        });
     }
 }
 

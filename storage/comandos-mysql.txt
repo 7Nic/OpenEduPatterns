@@ -1,9 +1,11 @@
 =======COMANDOS SQL========
-ALTER TABLE document MODIFY document_id INT AUTO_INCREMENT PRIMARY KEY (Make a column auto_increment)
+ALTER TABLE document MODIFY document_id INT AUTO_INCREMENT PRIMARY KEY; (Make a column auto_increment)
 
-ALTER TABLE vendors ADD COLUMN phone VARCHAR(15) AFTER name;
+ALTER TABLE vendors ADD COLUMN phone VARCHAR(15) AFTER name; (How to add a column)
 
 ALTER TABLE tableName CHANGE `oldcolname` `newcolname` datatype(length);
+
+alter table table_name modify column_name int(5); (Change column type)
 
 UPDATE padroes SET usuarios_id='1' WHERE padroes_id='11';
 

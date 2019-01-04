@@ -102,7 +102,7 @@
         <div class="container">
             <div class="col-md-8 col-md-offset-2 col-artigos">
 <!-- ==============================================-->
-            <div class="container editarLinguagem">
+            <div class="editarLinguagem">
                 <h1>Edição de Linguagem</h1>
                 <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
                     <br>
@@ -130,7 +130,7 @@
                     <br>
                     <br>
                     <form method="POST" action="relacionarPadrao/<%= linguagem.linguagens_id %>">
-                        <label for="">Adicionar outros padrões a essa Linguagem</label>  
+                        <label for="">Adicionar outros padrões a essa Linguagem (aqui entrará uma ferramenta de busca)</label>  
                         <div class="form-group">
                             <select class="form-control" id="tituloPadraoRelacionado" name="tituloPadraoRelacionado">
                                 <% todosPadroes.forEach((todosPadroes) => { %>

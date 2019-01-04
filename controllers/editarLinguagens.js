@@ -5,8 +5,6 @@ module.exports = {
 		store.pegarLinguagemPorId(req.params.id).then((resultadoLinguagem) => {
 			store.padroesDeUmaLinguagem(req.params.id).then((resultadoJoin) => {
 				store.listarPadroes().then((resultadoListarPadroes) => {
-					// console.log(resultadoLinguagem);
-					// console.log(`\n Agr o outro \n ${resultadoJoin}`);
 					res.render('editarLinguagens.ejs', {linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes});
 				})
 			})
