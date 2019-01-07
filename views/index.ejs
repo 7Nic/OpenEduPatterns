@@ -53,13 +53,12 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="/">Página inicial</a></li>
-                    <li><a href="/linguagens">Linguagens</a></li>
-                    <li><a href="/padroes">Padrões</a></li>
-                    <li><a href="/sobre">Sobre</a></li>
+                    <li><a href="/languages">Linguagens</a></li>
+                    <li><a href="/patterns">Padrões</a></li>
+                    <li><a href="/about">Sobre</a></li>
                     <li><a data-toggle="modal" data-target="#modal-login" href=""><span class="glyphicon glyphicon-lock"></span>Login</a></li>
                 </ul>
-
-                <!-- Modal do login -->
+        <!-- Modal do login -->
                 <div class="modal fade" id="modal-login">
                     <div class="modal-dialog modal-md">
                         <div class="modal-content">
@@ -82,7 +81,7 @@
                                                 </div>
                                                 <button type="submit" class="btn btn-success btn-block">Login</button>
                                             </form>  
-                                            <p>Não possui uma conta? <a href="/cadastro">Cadastre-se agora</a></p>
+                                            <p>Não possui uma conta? <a href="/users/create">Cadastre-se agora</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -209,34 +208,7 @@
     <br>
     <br>
     <footer class="text-center">
-        <div class="container">
-            <div class="row">    
-                <div class="col-sm-4 informacoes">
-                    <h3>Desenvolvido por LabES</h3>
-                    <p>Avenida Trabalhador São Carlense, 400 - Centro</p>
-                    <p>Universidade de São Paulo - ICMC Prédio 5 - Sala 6-208</p>
-                    <p>São Carlos - SP 13566-590 - Brasil</p>
-                    <p>Telefone: (16) 3373-9997</p>
-                </div>
-                <div class="col-sm-4">
-                    <div class="row">
-                        <h3>Conecte-se conosco</h3>
-                        <a href=""><span class="fa fa-facebook"></span></a>
-                        <a href=""><span class="fa fa-twitter"></span></a>
-                        <a href=""><span class="fa fa-youtube"></span></a>
-                        <a href=""><span class="fa fa-globe"></span></a>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <!-- <img src="img/bunny.png"> -->
-                    <h3>Crie já sua conta</h3>
-                    <a href="/cadastro"><button type="button" class="btn btn-warning">Cadastre-se</button></a>
-                </div>
-            </div>
-            <div class="row text-center the-end">
-                <p><span class="fa fa-copyright"></span>Copyright 2018 <a href="">Universidade de São Paulo</a></p>
-            </div>      
-        </div>
+        <%- include partials/footer.ejs %>
     </footer>
     <!-- SCRIPTS -->
     <script src="dataCollectors/collectDataLogin.js"></script>

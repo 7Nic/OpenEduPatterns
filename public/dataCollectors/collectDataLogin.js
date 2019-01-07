@@ -6,7 +6,8 @@ login.addEventListener('submit', (e) => {
     e.preventDefault();                                                         
     const email = login.querySelector('[name=login-email]').value;
     const password = login.querySelector('[name=login-password]').value;
-    post('/fazerLogin', {email, password})
+    // post('/fazerLogin', {email, password})
+    post('/users/login', {email, password})
     .then(({status}) => {
         if (status === 200) {
             alert('Login success');
