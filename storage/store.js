@@ -12,6 +12,7 @@ const mySQL  = require('./mysqlFunctions');
 
 module.exports = {
     saltHashPassword,
+
     createUser ({name, email, password}) {
         console.log(`Adding user with email ${email} and name ${name}`);
         //After adding the encryption on the migration, we need to encrypt the passwords
@@ -27,6 +28,7 @@ module.exports = {
             created_at: new Date()
         });
     },
+
     authenticate ({email, password}) {
         console.log(`Authenticating user with email: ${email}`);
         return knex('usuarios')
@@ -44,6 +46,7 @@ module.exports = {
                 }
             });
     },
+
     criarPadrao({nomePadrao, visibilidade, texto}) {
         console.log(`Adicionando padrão: Nome: ${nomePadrao}, visibilidade: ${visibilidade}, texto: ${texto}`);
         return knex('padroes').insert({
@@ -54,6 +57,7 @@ module.exports = {
             created_at: new Date()
         });
     },
+    
     criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem}) {
         console.log(`Adicionando linguagem: Nome: ${nomeLinguagem}, visibilidade: ${visibilidade}, texto: ${descricaoLinguagem}`);
         return knex('linguagens').insert({
@@ -84,8 +88,15 @@ module.exports = {
             return resultado[0];
         })
     },
-    pegarUsuarioProId(userId) {
-        return knex.select('*').from('usuarios').where('usuarios_id', userId).then
+    findUserById(userId) {
+        return knex.select('*').from('usuarios').where('usuarios_id', userId).then((user) => {
+            return user[0];
+        });
+    },
+    findUserByEmail(email) {
+        return knex.select('*').from('usuarios').where('email', email).then((user) => {
+            return user[0];
+        });
     },
     editarPadrao({data, Id}) {
         return knex('padroes').where('padroes_id', Id).update({
@@ -157,6 +168,9 @@ module.exports = {
         });
     }
 }
+
+
+//Encryption functions
 
 function saltHashPassword ({password, salt = randomString()}) {
     const hash = crypto.createHmac('sha512', salt).update(password); //Aqui ocorre a encriptação, passamos o salt e o password, o hash e a senha criptografada

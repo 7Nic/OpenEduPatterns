@@ -13,7 +13,6 @@ router.post('/create', languagesController.languagesCreatePost);
 router.get('/:id/edit', languagesController.languagesEditGet); 
 router.post('/:id/edit', languagesController.languagesEditPost);
 
-router.get('/:id/delete', languagesController.languagesDeleteGet);
 router.post('/:id/delete', languagesController.languagesDeletePost);
 
 router.post('/:id/edit/relatepattern', languagesController.relatePatternPost);

@@ -61,10 +61,6 @@ module.exports = {
         });
     },
 
-    languagesDeleteGet: (req, res) => {
-        //Não tem pois o get, que é a pagina, já a própria página de edição
-    },
-
     languagesDeletePost: (req, res) => {
         store.deletarLinguagem(req.params.id)
         .then(() => {

@@ -80,7 +80,7 @@
             <div class="row main">
                 <div class="main-login main-center">
                 <h5>Crie já sua conta e comece a utilizar a plataforma.</h5>
-                    <form class="createUser" method="POST" action="">
+                    <form class="createUser" method="POST" action=""> <!-- Ao deixar action vazio, ele faz o post no endereço atual -->
                         <div class="form-group">
                             <label for="name" class="cols-sm-2 control-label">Seu nome</label>
                             <div class="cols-sm-10">
@@ -122,8 +122,8 @@
                         </div>
 
                         <div class="form-group ">
-                            <!-- <input type="submit" value="Create User"> -->
-                            <button href="" onClick="window.location.reload()" type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</button>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</button>
                         </div>
                         
                     </form>
@@ -138,7 +138,6 @@
         <%- include partials/footer.ejs %>
     </footer>
     <!-- SCRIPTS -->
-    <!-- <script src="dataCollectors/collectDataCadastro.js"></script> -->
     <script src="../dataCollectors/collectDataLogin.js"></script>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>

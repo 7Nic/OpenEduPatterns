@@ -10,7 +10,7 @@ login.addEventListener('submit', (e) => {
     post('/users/login', {email, password})
     .then(({status}) => {
         if (status === 200) {
-            alert('Login success');
+            window.location = "http://localhost:3000/users/profile";
         } else  {
             alert('Login failed');
         }
