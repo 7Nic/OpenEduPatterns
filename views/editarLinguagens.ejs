@@ -108,6 +108,7 @@
                             <% }); %>    
                         </select>
                         <br>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button class="btn btn-danger">Excluir relacionamento</button>
                     </form>
 
@@ -122,6 +123,7 @@
                                 <% }); %>
                             </select>
                             <br>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit" class="btn btn-success">Adicionar relacionamento</button>
                         </div>
                     </form>
@@ -149,12 +151,14 @@
 
                   <br>
                   <br>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <button type="submit" class="btn btn-primary">Salvar propriedades</button>
                   <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/delete">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit" class="btn btn-danger btn-lg">Deletar Linguagem</button>    
                 </form>
                 <br>

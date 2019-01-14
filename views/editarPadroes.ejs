@@ -103,12 +103,16 @@
                     <label for="texto">Texto</label>
                     <textarea class="form-control" id="texto" name="texto" rows="4"><%= padrao.texto %> </textarea>
                   </div>
-                  <a href="javascript:window.location.reload(true)"><button type="submit" class="btn btn-primary">Salvar alterações</button></a>
+                  <a href="javascript:window.location.reload(true)">
+                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                  </a>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <button onclick="window.location.href='/padroes'" class="btn btn-danger">Cancelar</button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/patterns/<%= padrao.padroes_id %>/delete">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit" class="btn btn-danger btn-lg">Deletar Padrão</button>    
                 </form>
             </div>

@@ -76,6 +76,7 @@
             <label for="descricaoLinguagem">Descrição da Linguagem</label>
             <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"></textarea>
           </div>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="btn btn-primary">Criar Linguagem</button>
           <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
         </form>
