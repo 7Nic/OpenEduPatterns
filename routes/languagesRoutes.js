@@ -1,22 +1,28 @@
 const express = require('express');
 const router = express.Router();
+const csrf = require('csurf');
 
-//Require controller modules
+const csrfProtection = csrf();
+router.use(csrfProtection);
+
+//Require controller and passport modules
 const languagesController = require('../controllers/languagesController');
+const passportFunctions = require('../config/passport');
 
 /// LANGUAGES ROUTES ///
 router.get('/', languagesController.index); //Languages Home Page, list all languages
 
-router.get('/create', languagesController.languagesCreateGet); 
-router.post('/create', languagesController.languagesCreatePost); 
+router.get('/create', passportFunctions.isLoggedIn, languagesController.languagesCreateGet); 
+router.post('/create', passportFunctions.isLoggedIn, languagesController.languagesCreatePost); 
 
-router.get('/:id/edit', languagesController.languagesEditGet); 
-router.post('/:id/edit', languagesController.languagesEditPost);
+router.get('/:id/edit', passportFunctions.isLoggedIn, languagesController.languagesEditGet); 
+router.post('/:id/edit', passportFunctions.isLoggedIn, languagesController.languagesEditPost);
 
-router.post('/:id/delete', languagesController.languagesDeletePost);
+//Todo
+router.post('/:id/delete',  passportFunctions.isLoggedIn,languagesController.languagesDeletePost); //Actually, just the owner of the language can delete it
 
-router.post('/:id/edit/relatepattern', languagesController.relatePatternPost);
+router.post('/:id/edit/relatepattern', passportFunctions.isLoggedIn, languagesController.relatePatternPost);
 
-router.post('/:id/edit/unrelatepattern', languagesController.unrelatePatternPost);
+router.post('/:id/edit/unrelatepattern', passportFunctions.isLoggedIn, languagesController.unrelatePatternPost);
 
 module.exports = router;

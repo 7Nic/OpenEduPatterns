@@ -16,10 +16,6 @@ p, a, h1, h2, h3, h4 {
 -navbar
 ************/		
 .navbar-inverse {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
-	/*background-color: #5e4485;*/
-	/*background-color: #00d1dc; backup da turquesa original*/
 	background-color: #2B263D;
 
 	margin-bottom: 0;
@@ -32,6 +28,11 @@ p, a, h1, h2, h3, h4 {
 
 .navbar ul span {
 	font-size: 14px;
+}
+
+.navbar ul i, .navbar ul i:hover, .navbar ul i:focus {
+	font-size: 17px;
+	padding: 0.3%;	
 }
 
 .navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
@@ -63,36 +64,6 @@ p, a, h1, h2, h3, h4 {
 }
 
 /************
--modal-login
-************/	
-#modal-login p {
-	color: black;
-	font-size: 16px;
-	text-align: center;
-	margin-top: 10px;
-	color: #545454;
-}
-
-#modal-login label {
-	color: black;
-	color: #545454;
-}
-
-#modal-login h3 {
-	color: #545454;
-	text-align: center;
-}
-
-#modal-login a:hover, #modal-login a:focus {
-	text-decoration: none;
-	color: black;
-}
-
-#modal-login a {
-	color: #545454;
-}
-
-/************
 -Formulário
 ************/		
 label {
@@ -100,7 +71,7 @@ label {
 }
 
 h5 {
-	font-size: 20px;;
+	font-size: 20px;
 }
 
 .main{
@@ -128,7 +99,7 @@ input .form-control{
 .main-center{
  	margin-top: 30px;
  	margin: 0 auto;
- 	max-width: 550px;
+ 	max-width: 650px;
     padding: 10px 40px;
 	background:#2B263D;
     color: #FFF;

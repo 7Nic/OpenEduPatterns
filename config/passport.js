@@ -15,21 +15,56 @@ passport.deserializeUser((id, done) => {
     });
 });
 
+//passport.autheticate
 passport.use('local.login', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
 }, (req, email, password, done) => {
-     console.log(`Amigo, estou aqui. email: ${email}`);
-     store.authenticate({email, password}).then(({success}) => {
+    store.authenticate({email, password}).then(({success}) => {
         if (success) {
             store.findUserByEmail(email).then((user) => {
-                console.log(`peguei isso ${user.usuarios_id}`);
-                //This result is the user
                 return done(null, user);
-            })
-         } else {
-             done(null, false, {message: 'E-mail ou senha inválidos'}); 
-         }
-     })
+        })
+        } else {
+            console.log('hey');
+            done(null, false, {message: 'E-mail ou senha inválidos'}); 
+        }
+    });
 }));
+
+//Functions used in other files
+module.exports = {
+    isLoggedIn(req, res, next) {
+        if (req.isAuthenticated()) {
+            next();
+        } else {
+            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
+        }
+    },
+    notLoggedIn(req, res, next) {
+        if (!req.isAuthenticated()) {
+            next();
+        } else {
+            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged out"});
+        }
+    },
+    validateLogin(req, res, next) {
+        req.checkBody('email', 'Email inválido').isEmail();
+        req.checkBody('email', 'Campo de email vazio').notEmpty();
+        req.checkBody('password', 'Campo de senha vazio').notEmpty();
+
+        var errors = req.validationErrors();
+
+        if (errors) {
+            var messages = [];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect('/users/login');
+        } else {
+            next();
+        }
+    }
+}

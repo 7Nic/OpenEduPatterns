@@ -6,42 +6,28 @@ const passport = require('passport');
 const csrfProtection = csrf();
 router.use(csrfProtection); //It catches all requests, no matter what kind
 
-//Require controller modules
+//Require controller and passport modules
 const usersController = require('../controllers/usersController');
+const passportFunctions = require('../config/passport');
 
 /// USERS ROUTES ///
-router.get('/profile', isLoggedIn, (req, res) => {
+router.get('/profile', passportFunctions.isLoggedIn, (req, res) => {
     res.render('profile.ejs', {user: req.user});
 });
 
 router.get('/create', usersController.usersCreateGet);
 router.post('/create', usersController.usersCreatePost);
 
-router.post('/login', notLoggedIn, passport.authenticate('local.login', {
+router.get('/login', usersController.usersLoginGet);
+router.post('/login', passportFunctions.notLoggedIn, passportFunctions.validateLogin, passport.authenticate('local.login', {
     successRedirect: '/users/profile',
-    failureRedirect: '/',
+    failureRedirect: '/users/login',
     failureFlash: true
 }));
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/');
 })
 
 module.exports = router;
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
-    }
-}
-
-function notLoggedIn(req, res, next) {
-    if (!req.isAuthenticated()) {
-        next();
-    } else {
-        res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged out"});
-    }
-}

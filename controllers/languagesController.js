@@ -3,12 +3,12 @@ const store = require('../storage/store');
 module.exports = {
     index: (req, res) => {
         store.listarLinguagens().then((resultado) => {
-			res.render('linguagens.ejs', {linguagens: resultado});
+			res.render('linguagens.ejs', {linguagens: resultado, csrfToken: req.csrfToken(), user: req.user});
 		});
     },
 
     languagesCreateGet: (req, res) => {
-        res.render('criarLinguagem.ejs', {});
+        res.render('criarLinguagem.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
 
     languagesCreatePost: (req, res) => {
@@ -40,7 +40,7 @@ module.exports = {
         store.pegarLinguagemPorId(req.params.id).then((resultadoLinguagem) => {
 			store.padroesDeUmaLinguagem(req.params.id).then((resultadoJoin) => {
 				store.listarPadroes().then((resultadoListarPadroes) => {
-					res.render('editarLinguagens.ejs', {linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes});
+					res.render('editarLinguagens.ejs', {linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
 				})
 			})
 		});

@@ -1,0 +1,189 @@
+/************
+-miscelânea
+************/		
+a {
+	text-decoration: none;
+	color: black;
+}
+
+p, a, h1, h2, h3, h4 {
+	font-family: 'Work Sans', serif;	
+}
+
+/************
+-navbar
+************/		
+.navbar-inverse {
+	background-color: #2B263D;
+
+	margin-bottom: 0;
+	border-radius: 0;
+	border: 0;
+	padding: 0.3%;
+	color: #fff;
+	font-size: 1.2em;
+}
+
+.navbar ul span {
+	font-size: 14px;
+}
+
+.navbar ul i, .navbar ul i:hover, .navbar ul i:focus {
+	font-size: 17px;
+	padding: 0.3%;	
+}
+
+.navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	/*background-color: #5e4485;*/
+	background-color: #2B263D;
+}
+
+/*arrumar esse aqui
+.navbar-collapse ul a:hover {
+	color: #fb284c;
+	background-color: red;
+}*/
+
+.logo {
+	float left;
+}
+
+.navbar .navbar-header button:focus {
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	background-color: #2B263D;
+	/*roxo antes 5e4485*/
+}
+
+.navbar .navbar-header button:hover {
+	background-color: #171421;
+}
+
+/************
+-Formulário
+************/		
+label {
+	font-size: 17px;
+}
+
+.main{
+ 	margin:50px 15px;
+}
+
+.form-group{
+	margin-bottom: 35px;
+}
+
+label{
+	margin-bottom: 15px;
+}
+
+input, input::-webkit-input-placeholder {
+    padding-top: 3px;
+}
+
+input .form-control{
+    height: auto;
+	/*padding: 8px 12px;*/
+	padding: 30px;
+}
+
+.main-center{
+ 	margin-top: 30px;
+ 	margin: 0 auto;
+ 	max-width: 650px;
+    padding: 10px 40px;
+	background:#2B263D;
+    color: #FFF;
+    text-shadow: none;
+	-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+	-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+	box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+}
+
+form p {
+	color: black;
+	font-size: 18px;
+	text-align: center;
+	margin-top: 10px;
+	color: #ffffff;
+}
+
+form a:hover, form a:focus {
+	text-decoration: none;
+	color: black;
+}
+
+form a {
+	color: #ffffff;
+}
+
+/*AUMENTAR O PADDING DOS ICONES E FAZER O INPUT ACOMPANHAR O TAMANHO*/
+span.input-group-addon i {
+    color: #2B263D;
+    font-size: 20px;
+    padding: 0px;
+}
+
+.login-button{
+	margin-top: 5px;
+}
+
+
+/************
+-footer
+************/		
+
+footer {
+	/*background-color: #5e4485;*/
+	/*background-color: #01959e;*/
+	/*background-color: #363636; o preto claro*/
+	background-color: #2B263D;
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
+	color: #fff;
+	padding: 0.1%;
+}
+
+footer .the-end {
+	font-size: 12px;
+}
+
+footer a:hover, footer a:focus {
+	text-decoration: none;
+	color: #fff;
+}
+
+.informacoes h3 {
+	font-size: 22px;
+}
+
+.informacoes {
+	text-align: center;
+	font-size: 13px;
+	line-height: 0.5em;
+}
+
+@media only screen and (max-width: 1200px){
+	.informacoes {
+		line-height: 0.95em;
+	}
+
+}
+
+.fa {
+	padding: 10px;
+	font-size: 25px;
+	color: #d4d7db;
+}
+
+.fa:hover, .fa:focus {
+	color: #b3b5b7;
+}
+
+.fa-copyright {
+	font-size: 12px;
+	padding: 3px;
+}

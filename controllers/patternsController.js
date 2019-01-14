@@ -3,12 +3,12 @@ const store = require('../storage/store');
 module.exports = {
     index: (req, res) => {
         store.listarPadroes().then((resultado) => {
-			res.render('padroes.ejs', {padroes: resultado});
+			res.render('padroes.ejs', {padroes: resultado, csrfToken: req.csrfToken(), user: req.user});
 		});
     },
 
     patternsCreateGet: (req, res) => {
-        res.render('criarPadrao.ejs', {});
+        res.render('criarPadrao.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
 
     patternsCreatePost: (req, res) => {
@@ -38,7 +38,7 @@ module.exports = {
 
     patternsEditGet: (req, res) => {
         store.pegarPadraoPorId(req.params.id).then((resultado) => {
-            res.render('editarPadroes.ejs', {padrao: resultado});
+            res.render('editarPadroes.ejs', {padrao: resultado, csrfToken: req.csrfToken(), user: req.user});
         });
     },
 
