@@ -2,13 +2,19 @@ const store = require('../storage/store');
 
 module.exports = {
     index: (req, res) => {
-        store.listarLinguagens().then((resultado) => {
-			res.render('linguagens.ejs', {linguagens: resultado, csrfToken: req.csrfToken(), user: req.user});
+        store.listLanguagesByUser().then((languages) => {
+            // Date parsing
+            languages.forEach((language) => {
+                language.dayCreation = language.created_at.getDate();
+                language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
+                language.yearCreation = language.created_at.getFullYear();
+            });
+            res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
 		});
     },
 
     languagesCreateGet: (req, res) => {
-        res.render('criarLinguagem.ejs', {csrfToken: req.csrfToken(), user: req.user});
+        res.render('criarLinguagem.ejs', {csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     languagesCreatePost: (req, res) => {
@@ -20,18 +26,36 @@ module.exports = {
         } else {
             visibilidadeNum = null;
         }
-        // Se os campos estiverem vazios nada será inserido no banco de dados
-        console.log(req.body.nomeLinguagem);
-        if (req.body.nomeLinguagem === '' || req.body.descricaoLinguagem === ''){
-            res.redirect('/languages');
+
+        var nomeLinguagem = req.body.nomeLinguagem;
+        var visibilidade = visibilidadeNum;
+        var descricaoLinguagem = req.body.descricaoLinguagem;
+
+        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+
+        var errors = req.validationErrors();
+
+        if(errors) {
+            var messages = [];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect('/languages/create');
         } else {
             store.criarLinguagem({
-                nomeLinguagem: req.body.nomeLinguagem,
-                visibilidade: visibilidadeNum,
-                descricaoLinguagem: req.body.descricaoLinguagem
+                nomeLinguagem,
+                visibilidade,
+                descricaoLinguagem
             })
-            .then(() => {
-                res.redirect('/languages');
+            .then((languageId) => {
+                
+                store.relateUserLanguage(req.user.usuarios_id, languageId)
+                .then(() => {
+                    res.redirect('/languages');
+                });
+    
             });
         }
     },

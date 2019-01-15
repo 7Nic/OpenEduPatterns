@@ -60,6 +60,15 @@
 
     <div class="container criarNovaLinguagem">
         <h1>Criação de Nova Linguagem</h1>
+        <!-- Display errors -->
+        <% if (messages.length > 0) { %>
+            <div class="alert alert-danger">
+                <% messages.forEach((message) => { %>
+                <p><%= message %></p>
+                <% }); %>
+            </div>
+        <% } %>
+        <!-- End display errors -->
         <form method="POST" action="">
           <div class="form-group">
             <label for="nomeLinguagem">Nome da Linguagem</label>
@@ -78,7 +87,7 @@
           </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="btn btn-primary">Criar Linguagem</button>
-          <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
+          <a class="btn btn-danger" href="/languages">Cancelar</a>   
         </form>
     </div>
 

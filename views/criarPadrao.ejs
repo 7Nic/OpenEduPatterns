@@ -60,6 +60,15 @@
 
     <div class="container criarNovoPadrao">
     	<h1>Criação de Novo Padrão</h1>
+        <!-- Display errors -->
+        <% if (messages.length > 0) { %>
+            <div class="alert alert-danger">
+                <% messages.forEach((message) => { %>
+                <p><%= message %></p>
+                <% }); %>
+            </div>
+        <% } %>
+        <!-- End display errors -->
     	<form method="POST" action="">
 		  <div class="form-group">
 		    <label for="nomePadrao">Nome do Padrão</label>
@@ -82,7 +91,7 @@
 		  <!-- <a href="" type="button" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</a> -->
 		  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="btn btn-info">Criar Padrão</button>
-		  <button onclick="window.location.href='/padroes'" class="btn btn-danger">Cancelar</button>
+		  <a class="btn btn-danger" href="/patterns">Cancelar</a>   
 		</form>
 
     </div>

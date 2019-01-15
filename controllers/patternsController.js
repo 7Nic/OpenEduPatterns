@@ -2,13 +2,19 @@ const store = require('../storage/store');
 
 module.exports = {
     index: (req, res) => {
-        store.listarPadroes().then((resultado) => {
-			res.render('padroes.ejs', {padroes: resultado, csrfToken: req.csrfToken(), user: req.user});
+        store.listPatternsByUser().then((patterns) => {
+            // Date parsing
+            patterns.forEach((pattern) => {
+                pattern.dayCreation = pattern.created_at.getDate();
+                pattern.monthCreation = pattern.created_at.getMonth() + 1; //Starts counting from 0
+                pattern.yearCreation = pattern.created_at.getFullYear();
+            });
+            res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user});
 		});
     },
 
     patternsCreateGet: (req, res) => {
-        res.render('criarPadrao.ejs', {csrfToken: req.csrfToken(), user: req.user});
+        res.render('criarPadrao.ejs', {csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     patternsCreatePost: (req, res) => {
@@ -21,17 +27,35 @@ module.exports = {
             visibilidadeNum = null;
         }
 
-        // Se os campos estiverem vazios nada será inserido no banco de dados
-        if (req.body.nomePadrao === '' || req.body.texto === '') {
-            res.redirect('/patterns');
+        var nomePadrao = req.body.nomePadrao;
+        var visibilidade = visibilidadeNum;
+        var texto = req.body.texto        
+
+        req.checkBody('nomePadrao', 'Campo de nome vazio').notEmpty();
+        req.checkBody('texto', 'Campo de texto vazio').notEmpty();
+
+        var errors = req.validationErrors();
+        
+        if(errors) {
+            var messages = [];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect('/languages/create');
         } else {
             store.criarPadrao({
-                nomePadrao: req.body.nomePadrao,
-                visibilidade: visibilidadeNum,
-                texto: req.body.texto
+                nomePadrao,
+                visibilidade,
+                texto
             })
-            .then(() => {
-                res.redirect('/patterns');
+            .then((patternId) => {
+                
+                store.relateUserPattern(req.user.usuarios_id, patternId)
+                .then(() => {
+                    res.redirect('/patterns');
+                });
+    
             });
         }
     },

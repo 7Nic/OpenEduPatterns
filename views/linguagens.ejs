@@ -111,10 +111,11 @@
                     <p>
                        <%= linguagens.descricao %>
                     </p>
-                    <p>
-                        <a href=""><span class="glyphicon glyphicon-user"></span> <%= linguagens.id_usuario %></a>
+                    <p> 
+                                                                                      <!-- Username -->
+                        <a href=""><span class="glyphicon glyphicon-user"></span> <%= linguagens.name %></a>
                         <a href="" class="glyphicon glyphicon-comment"> 3</a>
-                        <span class="glyphicon glyphicon-calendar"> 20/08/2018</span>
+                        <span class="glyphicon glyphicon-calendar"><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></span>
                     </p>    
 
                 </div>
