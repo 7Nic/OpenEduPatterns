@@ -2,9 +2,12 @@ const passport = require('passport');
 const store = require('../storage/store');
 const LocalStrategy = require('passport-local').Strategy;
 
-//Here we configure which information of the user will be stored in the session. To access use => req.session.passport.user
+// This serializeUser function will be executed right after authentication
+// What this function does?
+// 1) saves the user id to the session file store 
+// 2) saves the user id in the request object as request.session.passport and 
+// 3) adds the user object to the request object as request.user
 passport.serializeUser((user, done) => {
-    console.log(`Amiguinho, o user.id é ${user.usuarios_id}`);
     done(null, user.usuarios_id);
 });
 
@@ -65,6 +68,36 @@ module.exports = {
             res.redirect('/users/login');
         } else {
             next();
+        }
+    },
+    isOwnerOfPattern(req, res, next) {
+        if (req.isAuthenticated()) {
+            var patternId = req.params.id;
+            store.ownerOfPattern(patternId).then((ownerOfPattern) => {
+                if (req.user.usuarios_id === ownerOfPattern.usuarios_id) {
+                    next();
+                } else {
+                    res.render('mensagem.ejs', {mensagem: "You're not the owner of this pattern. You can't edit or delete it."});
+                }
+            });
+        } else {
+            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
+        }
+        
+
+    },
+    isOwnerOfLanguage(req, res, next) {
+        if (req.isAuthenticated()) {
+            var languageId = req.params.id;
+            store.ownerOfLanguage(languageId).then((ownerOfLanguage) => {
+                if (req.user.usuarios_id === ownerOfLanguage.usuarios_id) {
+                    next();
+                } else {
+                    res.render('mensagem.ejs', {mensagem: "You're not the owner of this language. You can't edit or delete it."});
+                }
+            });
+        } else {
+            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
         }
     }
 }

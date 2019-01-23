@@ -11,9 +11,7 @@ const usersController = require('../controllers/usersController');
 const passportFunctions = require('../config/passport');
 
 /// USERS ROUTES ///
-router.get('/profile', passportFunctions.isLoggedIn, (req, res) => {
-    res.render('profile.ejs', {user: req.user});
-});
+router.get('/profile', passportFunctions.isLoggedIn, usersController.profileGet);
 
 router.get('/create', usersController.usersCreateGet);
 router.post('/create', usersController.usersCreatePost);
@@ -24,6 +22,14 @@ router.post('/login', passportFunctions.notLoggedIn, passportFunctions.validateL
     failureRedirect: '/users/login',
     failureFlash: true
 }));
+// Notes for the authenticate function above:
+// - After the local strategy tell us we are authenticated or not, the callback is called. Here, this callback is {sucessredirect:...}
+// - But, what really happens is callback, is that the function req.login() is called. When this happens the function serializeUser is also called
+// - The serializeUser stores user info in these two places:
+//   console.log(req.session.passport) --> req.session.passport: {"user":"2f24vvg"}
+//   console.log(req.user)             --> req.user: {"id":"2f24vvg","email":"test@test.com","password":"password"}
+// Note that before the serializeUser function was called, the req.session.passport and req.user were undefined objects
+// with these two objects stored, the server knows what user we are, and that we're logged in
 
 router.get('/logout', (req, res) => {
     req.logout();

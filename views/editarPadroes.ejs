@@ -86,6 +86,17 @@
 <!-- ==============================================-->
             <div class="criarNovaLinguagem">
                 <h1>Edição de Padrão</h1>
+
+                <!-- Display errors -->
+                <% if (messages.length > 0) { %>
+                    <div class="alert alert-danger">
+                        <% messages.forEach((message) => { %>
+                            <p><%= message %></p>
+                        <% }); %>
+                    </div>
+                <% } %>
+                <!-- End Display errors -->
+
                 <form method="POST" action="">
                   <div class="form-group">
                     <label for="nomePadrao">Nome do Padrão</label>

@@ -58,8 +58,13 @@
         </div>
     </nav>  
 
-    <div class="container criarNovoPadrao">
-    	<h1>Criação de Novo Padrão</h1>
+
+<!-- Fazer assim:
+Uma página terá os templates default com os campos pertencentes a ele, dai o usuarios escolhe e dá um post, eu pego a info e renderizo a proxima pagina -->
+
+
+    <div class="container">
+    	<!-- <h1>Escolha seu Template</h1> -->
         <!-- Display errors -->
         <% if (messages.length > 0) { %>
             <div class="alert alert-danger">
@@ -69,28 +74,42 @@
             </div>
         <% } %>
         <!-- End display errors -->
-    	<form method="POST" action="">
+    	<form onsubmit="sortElements()" method="POST" action="/patterns/chosetemplate">
     	  <div class="form-group">
-    	    <label for="nomePadrao">Nome do Padrão</label>
-    	    <input type="text" class="form-control" id="nomePadrao" name="nomePadrao" placeholder="Digite o nome do seu padrão">
+            <h1>Escolha um Template já existente</h1>
+            <div class="well">
+                <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
+                <p>Nome, Contexto, Figura, Problema. Solução e Diagrama da solução.</p>    
+            </div>
+            
+            <div class="well">
+                <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
+                <p>Nome, Contexto, Descrição e Solução.</p>
+            </div>
+            
+            <div class="well">
+                <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
+                <p>Nome, Contexto, Problema. Solução, Alias, Forças, Exemplo, Usos conhecidos, Padrões relacionados, Contexto  
+            </div>
     	  </div>
+          <h3>ou...</h3>
     	  <div class="form-group">
-    	  <div class="form-group">
-    	    <label for="visibilidade">Visibilidade</label>
-    	    <select class="form-control" id="visibilidade"  name="visibilidade">
-    	      <option>Público</option>
-    	      <option>Privado</option>
-    	    </select>
-    	  </div>
-    	  </div>
-    	  <div class="form-group">
-    	    <label for="">Texto</label>
-    	    <textarea class="form-control" id="texto" name="texto" rows="7"></textarea>
-    	  </div>
+    	    <h1 for="">Crie um novo template</h1>
+            <input class="form-control" type="text" name="templateName" placeholder="Digite aqui o nome de seu novo template">
+            <br>
+            <div class="newTemplateElements">
+                <div class="element0">
+                    <input class="form-control" type="text" name="contentElement0" placeholder="Digite aqui o título do elemento">
+                    <br>
+                </div>
+    	        <a class="btn btn-info" onclick="addElement(this)" id="addElement">Adicionar elemento</a>
+    	    </div>
+            <!-- <a onclick="sortElements()" class="btn btn-default">Sort!</a> -->
+          </div>
 
     	  <!-- <a href="" type="button" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</a> -->
     	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-info">Criar Padrão</button>
+          <button type="submit" class="btn btn-success">Criar Padrão</button>
     	  <a class="btn btn-danger" href="/patterns">Cancelar</a>   
 		</form>
 
@@ -105,5 +124,42 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <!-- Dynamic form -->
+    <script type="text/javascript">
+        var counter = 0;
+        function addElement(obj) {
+            counter += 1;
+            var theHTML = "<div class='element"+counter+"'>"+
+                          "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>"+
+                          "<br>"+
+                          "<br>"+
+                          "<input class='form-control' type='text' name='contentElement"+counter+"' placeholder='Digite aqui o título do elemento'>"+
+                          "<br>"+
+                          "</div>";
+            obj.insertAdjacentHTML('beforebegin', theHTML);
+        }
+
+        function removeElement(obj) {
+            var elementToRemove = obj.id;
+            console.log(elementToRemove);
+            $("."+elementToRemove).remove();
+        }
+
+        //To make sure the elements are sorted (you could add 5 elements and remove the 'element2' for example)
+        function sortElements() {
+            $(".newTemplateElements div").each(function(i) {
+                $(this).attr('class', 'element[]');
+            });
+
+            $(".newTemplateElements input").each(function(i) {
+                $(this).attr('name', 'titleElement[]');
+            });
+
+            $(".newTemplateElements a").each(function(i) {
+                $(this).attr('class', 'element[]');
+            });
+        }
+    </script>
+    <!-- Explanation: whe rename the id's classes and names for referencing in the remove function. When the form is submitted another function is called to rename the name of inputs for converting them to array-type -->
 </body>
 </html>

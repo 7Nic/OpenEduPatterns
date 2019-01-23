@@ -94,7 +94,7 @@
             <h1>Padrões populares</h1>
             <div class="col-md-10 col-md-offset-1 col-artigos">
                 <div class="row artigo">
-                    <h2><a href="/patterns/create">Criar novo Padrão</a><h2>
+                    <h2><a href="/patterns/chosetemplate">Criar novo Padrão</a><h2>
                 </div>
                 <div class="row artigo">
                     <h2><a href="">Padrão un</a></h2>
@@ -125,7 +125,7 @@
 
                 <% padroes.forEach((padroes) => { %>
                     <div class="row artigo">
-                        <h2><a href="/patterns/<%= padroes.padroes_id %>/edit"> <%= padroes.titulo %> </a></h2>
+                        <h2><a href="/patterns/<%= padroes.padroes_id %>"> <%= padroes.titulo %> </a></h2>
                         <!-- INICIO FORMATAÇÃO DO USUARIO -->
                         <!-- AQUI ENTRARÁ A FORMATAÇÃO EM HTML DIGITADA PELO USUARIO ATE UMA CERTA QUANTIDADE DE LINHAS -->
                         <p>

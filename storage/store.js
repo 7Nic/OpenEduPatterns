@@ -1,12 +1,11 @@
-// ALTER TABLE thetable ADD UNIQUE INDEX(pageid, name);
-// Coloque esse comando ao criar as 3 tabelas de relacionamento, para evitar valores repetidos
+// ALTER TABLE thetable ADD UNIQUE INDEX(col1, col2);
+// Coloque esse comando ao criar as tabelas de relacionamento, para evitar valores repetidos
 // Pois usaremos o comando INSERT IGNORE... para ignorar valores repetidos, os quais não serão inseridos
 // ==================================================ANTES DE TUDO========================================
 
 // Arquivo responsavel pelo armazenamento, ele que roda os comandos SQl
 const knex   = require('knex')(require('./knexfile'));
 const crypto = require('crypto');
-const mySQL  = require('./mysqlFunctions');
 //Essa é a maneira de importar o knex, faça o paiol e depois passe o objeto com os detalhes do banco de dados, nesse caso colocamos 
 //esse objeto no arquivo knexfile e exportamos ele lá para importar aqui
 
@@ -76,14 +75,14 @@ module.exports = {
             return resultado;
         });
     },
-    listLanguagesByUser() {
+    listLanguagesWithOwner() {
         // select l.nome, l.linguagens_id, u.name, u.usuarios_id from usuarios u inner join usuarios_linguagens ul on u.usuarios_id = ul.usuarios_id inner join linguagens l on ul.linguagens_id = l.linguagens_id;
         return knex.select('linguagens.linguagens_id', 'linguagens.nome', 'usuarios.usuarios_id', 'usuarios.name', 'linguagens.created_at', 'linguagens.descricao')
             .from('usuarios')
             .innerJoin('usuarios_linguagens', 'usuarios.usuarios_id', 'usuarios_linguagens.usuarios_id')
             .innerJoin('linguagens', 'usuarios_linguagens.linguagens_id', 'linguagens.linguagens_id');
     },
-    listPatternsByUser() {
+    listPatternsWithOwner() {
         return knex.select('usuarios.usuarios_id', 'usuarios.name', 'padroes.padroes_id', 'padroes.titulo', 'padroes.created_at', 'padroes.texto')
             .from('usuarios')
             .innerJoin('usuarios_padroes', 'usuarios.usuarios_id', 'usuarios_padroes.usuarios_id')
@@ -131,7 +130,9 @@ module.exports = {
     },
     padroesDeUmaLinguagem(Id) { //Retorna os padroes da linguagem que tem o Id que passamos
         //Não usamos SELECT * pois evitamos busca e download de dados desnecessários 
-        return knex.select('titulo').from('padroes')
+        return knex
+            .select('titulo')
+            .from('padroes')
             .innerJoin('linguagens_padroes', 'padroes.padroes_id', 'linguagens_padroes.padroes_id')
             .innerJoin('linguagens', 'linguagens_padroes.linguagens_id', 'linguagens.linguagens_id')
             .where('linguagens.linguagens_id', Id)
@@ -175,8 +176,9 @@ module.exports = {
         return knex('linguagens_padroes').where('linguagens_id', '=', idLinguagem).andWhere('padroes_id', '=', idPadrao).del();
 
     },
-    userPatterns() { //Padrões de um usuário
-        return knex.select('*').from('padroes')
+    userPatterns(Id) { //Padrões de um usuário
+        return knex.select('*')
+        .from('padroes')
         .innerJoin('usuarios_padroes', 'padroes.padroes_id', 'usuarios_padroes.padroes_id')
         .innerJoin('usuarios', 'usuarios_padroes.usuarios_id', 'usuarios.usuarios_id')
         .where('usuarios.usuarios_id', Id)
@@ -184,20 +186,131 @@ module.exports = {
             return resultado;
         });
     },
-    userLanguages() { //Linguagens de um usuário
-        return knex.select('*').from('linguagens')
-        .innerJoin('usuarios_linguagens', 'linguagens.linguagens_id', 'usuarios_linguagens.linguagens_id')
-        .innerJoin('usuarios', 'usuarios_linguagens.usuarios_id', 'usuarios.usuarios_id')
-        .where('usuarios.usuarios_id', Id)
-        .then((resultado) => {
-            return resultado;
+    userLanguages(Id) { //Linguagens de um usuário
+        return knex.select('*')
+            .from('linguagens')
+            .innerJoin('usuarios_linguagens', 'linguagens.linguagens_id', 'usuarios_linguagens.linguagens_id')
+            .innerJoin('usuarios', 'usuarios_linguagens.usuarios_id', 'usuarios.usuarios_id')
+            .where('usuarios.usuarios_id', Id)
+            .then((resultado) => {
+                return resultado;
+            });
+    },
+    ownerOfPattern(patternId) {
+        // select u.usuarios_id from usuarios u inner join usuarios_padroes up on u.usuarios_id = up.usuarios_id inner join padroes p on up.padroes_id = p.padroes_id where p.padroes_id=191;
+        return knex
+            .select('usuarios.usuarios_id', 'usuarios.name')
+            .from('usuarios')
+            .innerJoin('usuarios_padroes', 'usuarios.usuarios_id', 'usuarios_padroes.usuarios_id')
+            .innerJoin('padroes', 'usuarios_padroes.padroes_id', 'padroes.padroes_id')
+            .where('padroes.padroes_id', patternId)
+            .then((result) => {
+                return result[0];
+            });
+    },
+    ownerOfLanguage(languageId) {
+        return knex
+            .select('usuarios.usuarios_id', 'usuarios.name')
+            .from('usuarios')
+            .innerJoin('usuarios_linguagens', 'usuarios.usuarios_id', 'usuarios_linguagens.usuarios_id')
+            .innerJoin('linguagens', 'usuarios_linguagens.linguagens_id', 'linguagens.linguagens_id')
+            .where('linguagens.linguagens_id', languageId)
+            .then((result) => {
+                return result[0];
+            });
+    },
+    addCommentLanguage(text, user_id, language_id, user_name) {
+        return knex('languages_comments').insert({
+            text,
+            user_id,
+            language_id,
+            user_name,
+            created_at: new Date()
         });
+    },
+    addCommentPattern(text, user_id, pattern_id, user_name) {
+        return knex('patterns_comments').insert({
+            text,
+            user_id,
+            pattern_id,
+            user_name,
+            created_at: new Date()
+        });
+    },
+    commentsOfLanguageById(languageId) {
+        // select lc.text, lc.user_name, lc.created_at from languages_comments lc join linguagens l on lc.language_id = l.linguagens_id where l.linguagens_id=251;
+        return knex
+            .select('languages_comments.text', 'languages_comments.user_name', 'languages_comments.created_at')
+            .from('languages_comments')
+            .join('linguagens', 'languages_comments.language_id', 'linguagens.linguagens_id')
+            .where('linguagens.linguagens_id', languageId);
+    },
+    commentsOfPatternById(patternId) {
+        return knex
+            .select('patterns_comments.text', 'patterns_comments.user_name', 'patterns_comments.created_at')
+            .from('patterns_comments')
+            .join('padroes', 'patterns_comments.pattern_id', 'padroes.padroes_id')
+            .where('padroes.padroes_id', patternId);
+    },
+    assemblyPatternById(patternId) {
+        // SELECT e.name, ec.content FROM templates t 
+        // INNER JOIN templates_elements te ON t.templates_id = te.templates_id 
+        // INNER JOIN elements e ON te.elements_id = e.elements_id 
+        // INNER JOIN elements_content ec ON e.elements_id = ec.elements_id 
+        // INNER JOIN padroes p ON ec.patterns_id = p.padroes_id 
+        // WHERE padroes_id=151
+        // ORDER BY e.order ASC; 
+        return knex
+        .select('elements.name', 'elements_content.content')
+        .from('templates')
+        .innerJoin('templates_elements', 'templates.templates_id', 'templates_elements.templates_id')
+        .innerJoin('elements', 'templates_elements.elements_id', 'elements.elements_id')
+        .innerJoin('elements_content', 'elements.elements_id', 'elements_content.elements_id')
+        .innerJoin('padroes', 'elements_content.patterns_id', 'padroes.padroes_id')
+        .where('padroes.padroes_id', patternId)
+        .orderBy('elements.order', 'ASC');
+    },
+    addTemplate({name, ownerId}) {
+        return knex('templates').insert({
+                    name: name,
+                    owner_id: ownerId
+                }).returning('templates_id');
+    },
+    addElementsInDB(elementsNamesArray) {
+        //The promisse all already returns the array, so we just return the promise itself
+        return Promise.all(elementsNamesArray.map((elementName, index) => {
+            return knex('elements')
+                .insert({
+                    name: elementName,
+                    order: index+1 //index starts counting from 0
+                })
+                .returning('elements_id'); //Delete me: it is right, because returns only one variable, and the .map needs to return only, so it is right
+        }));
+    },
+    addContentOfElementsInDB(templateId, elementsIdArray) {
+        return Promise.all(elementsIdArray.map(elementId => {
+            //This raw function substitutes INSERT for INSERT IGNORE
+            return knex.raw(knex('templates_elements').insert({
+                templates_id: templateId,
+                elements_id: elementId
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
+    },
+    elementsOfTemplate(templateId) {
+        // select e.name from templates_elements te inner join elements e on te.elements_id = e.elements_id where te.templates_id=81 order by e.order asc;
+        return knex
+            .select('elements.name')
+            .from('templates_elements')
+            .innerJoin('elements', 'templates_elements.elements_id', 'elements.elements_id')
+            .where('templates_elements.templates_id', templateId)
+            .orderBy('elements.order', 'ASC');
     }
 }
 
 
 //Encryption functions
-
 function saltHashPassword ({password, salt = randomString()}) {
     const hash = crypto.createHmac('sha512', salt).update(password); //Aqui ocorre a encriptação, passamos o salt e o password, o hash e a senha criptografada
     //Retorna o objeto

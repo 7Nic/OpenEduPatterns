@@ -20,8 +20,8 @@ app.set('views', __dirname + '/views'); // set express to look in this folder to
 app.set('view engine', 'ejs'); // configure template engine
 
 //Configure middleware (This order cannot be changed!!!)
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // Middleware: We just use this function to be able to handle json files
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(validator()); //Needs to be here because it uses the body already parsed to validate
 app.use(cookieParser());
 app.use(session({secret: 'EYSYAOWPB8DsuF04Ucsv', resave: false, saveUninitialized: false}));

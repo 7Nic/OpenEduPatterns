@@ -13,6 +13,5 @@ router.get('/', indexController.homePageGet);
 
 router.get('/about', indexController.aboutGet);
 
-//Se der ruim, tente tirar a barra (/) inicial de cada um dos caminhos
 
 module.exports = router;

@@ -47,5 +47,13 @@ module.exports = {
         } else {
             res.render('login.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
         }
+    },
+    profileGet: (req, res) => {
+        store.userLanguages(req.user.usuarios_id).then((languages) => {
+            store.userPatterns(req.user.usuarios_id).then((patterns) => {
+                console.log(patterns);
+                res.render('profile.ejs', {user: req.user, languages: languages, patterns: patterns});
+            });
+        });
     }
 }

@@ -12,13 +12,21 @@ const passportFunctions = require('../config/passport');
 /// LANGUAGES ROUTES ///
 router.get('/', patternsController.index); //Languages Home Page, list all languages
 
+router.get('/chosetemplate', patternsController.choseTemplateGet);
+router.post('/chosetemplate', patternsController.choseTemplatePost);
+
 router.get('/create', passportFunctions.isLoggedIn, patternsController.patternsCreateGet); 
 router.post('/create', passportFunctions.isLoggedIn, patternsController.patternsCreatePost); 
 
-router.get('/:id/edit', passportFunctions.isLoggedIn, patternsController.patternsEditGet); 
-router.post('/:id/edit', passportFunctions.isLoggedIn, patternsController.patternsEditPost);
+router.get('/:id', patternsController.patternPageGet);
 
-router.get('/:id/delete', passportFunctions.isLoggedIn, patternsController.patternsDeleteGet);
-router.post('/:id/delete', passportFunctions.isLoggedIn, patternsController.patternsDeletePost);
+router.post('/:id/addcomment', passportFunctions.isLoggedIn, patternsController.addCommentPattern);
+
+router.get('/:id/edit', passportFunctions.isOwnerOfPattern, patternsController.patternsEditGet);
+router.post('/:id/edit', passportFunctions.isOwnerOfPattern, patternsController.patternsEditPost);
+
+router.post('/:id/delete', passportFunctions.isOwnerOfPattern, patternsController.patternsDeletePost);
+
+
 
 module.exports = router;

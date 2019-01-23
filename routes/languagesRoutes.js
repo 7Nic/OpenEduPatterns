@@ -15,14 +15,17 @@ router.get('/', languagesController.index); //Languages Home Page, list all lang
 router.get('/create', passportFunctions.isLoggedIn, languagesController.languagesCreateGet); 
 router.post('/create', passportFunctions.isLoggedIn, languagesController.languagesCreatePost); 
 
-router.get('/:id/edit', passportFunctions.isLoggedIn, languagesController.languagesEditGet); 
-router.post('/:id/edit', passportFunctions.isLoggedIn, languagesController.languagesEditPost);
+router.get('/:id', languagesController.languagePageGet);
 
-//Todo
-router.post('/:id/delete',  passportFunctions.isLoggedIn,languagesController.languagesDeletePost); //Actually, just the owner of the language can delete it
+router.post('/:id/addcomment', passportFunctions.isLoggedIn, languagesController.addCommentLanguage);
 
-router.post('/:id/edit/relatepattern', passportFunctions.isLoggedIn, languagesController.relatePatternPost);
+router.get('/:id/edit', passportFunctions.isOwnerOfLanguage, languagesController.languagesEditGet); 
+router.post('/:id/edit', passportFunctions.isOwnerOfLanguage, languagesController.languagesEditPost);
 
-router.post('/:id/edit/unrelatepattern', passportFunctions.isLoggedIn, languagesController.unrelatePatternPost);
+router.post('/:id/delete',  passportFunctions.isOwnerOfLanguage,languagesController.languagesDeletePost);
+
+router.post('/:id/edit/relatepattern', passportFunctions.isOwnerOfLanguage, languagesController.relatePatternPost);
+
+router.post('/:id/edit/unrelatepattern', passportFunctions.isOwnerOfLanguage, languagesController.unrelatePatternPost);
 
 module.exports = router;

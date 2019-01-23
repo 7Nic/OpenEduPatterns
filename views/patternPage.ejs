@@ -20,7 +20,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_sobre.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -53,7 +53,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/">Página inicial</a></li>
                     <li><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
+                    <li class="active"><a href="/patterns">Padrões</a></li>
                     <li><a href="/about">Sobre</a></li>
                     <% if (loggedIn) { %>
                         <li>
@@ -81,35 +81,55 @@
         </div>
     </nav>  
 
+
     <div class="container">
         <br>
         <br>
-        <h1>Bem vindo, <%= user.name %></h1>
-        <div class="well">
-            <div class="row">
-                <h1>Minhas Linguagens</h1>
-                <div class="artigo">
-                    <% languages.forEach((language) => { %>
-                        <h2><a href="/languages/<%= language.linguagens_id %>"> <%= language.nome %> </a></h2>
-                    <% }); %>
-                </div>
-
-                <br>
-                <br>
-
-                <h1>Meus Padrões</h1>
-                <div class="artigo">
-                    <% patterns.forEach((pattern) => { %>
-                        <h2><a href="/patterns/<%= pattern.padroes_id %>"> <%= pattern.titulo %> </a></h2>
-                    <% }); %>
-                </div>                
-            </div>
-
-            
-
-
-        </div>
+        <h1>Exibição de Padrão</h1>
         <br>
+        <% if (pattern) { %>
+            <a class="btn btn-info" href="/patterns/<%= pattern.padroes_id %>/edit">Editar Padrão</a>
+            <h4>Autor: <%= owner.name %></h4>
+            <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
+            <h4>Visibilidade: <%= pattern.visibilidade %></h4>
+            <div class="well">
+                <h2><%= pattern.titulo %></h2>
+                <% patternContent.forEach((element) => { %>
+                    <h2><%= element.name %></h2>
+                    <p><%= element.content %></p>
+                <% }); %>
+            </div>
+            <h3>Comentários</h3>
+            <br>
+
+            <!-- Add comment -->
+            <% if (isLoggedIn) { %>
+                <form method="POST" action="/patterns/<%= pattern.padroes_id %>/addcomment">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" id="patternComment" name="patternComment"></textarea>
+                    </div>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="btn btn-info">Enviar</button>
+                </form>
+            <% } else { %>
+                <h4>Você não está logado, para comentar efetue o <a href="/users/login">Login</a>.</h4>
+                <br>
+            <% } %>
+
+            <!-- Comments here -->
+            <% comments.forEach((comment) => { %>
+                <div class="well">
+                    <h4><%= comment.user_name %>:</h4>
+                    <p><%= comment.text %></p>
+                </div>
+            <% }); %>
+            <!-- End of comments -->
+
+        <% } else { %>
+            <div class="well">
+                <h2>Este Padrão não existe</h2>
+            </div>
+        <% } %>
         <br>
         <br>
     </div>

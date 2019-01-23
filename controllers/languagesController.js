@@ -2,7 +2,7 @@ const store = require('../storage/store');
 
 module.exports = {
     index: (req, res) => {
-        store.listLanguagesByUser().then((languages) => {
+        store.listLanguagesWithOwner().then((languages) => {
             // Date parsing
             languages.forEach((language) => {
                 language.dayCreation = language.created_at.getDate();
@@ -64,7 +64,7 @@ module.exports = {
         store.pegarLinguagemPorId(req.params.id).then((resultadoLinguagem) => {
 			store.padroesDeUmaLinguagem(req.params.id).then((resultadoJoin) => {
 				store.listarPadroes().then((resultadoListarPadroes) => {
-					res.render('editarLinguagens.ejs', {linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+					res.render('editarLinguagens.ejs', {messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
 				})
 			})
 		});
@@ -79,10 +79,32 @@ module.exports = {
         } else {
             data.visibilidade = null;
         }
-        store.editarLinguagem({data, Id: req.params.id})
-        .then(() => {
-            res.redirect('/languages');
-        });
+
+        var nomeLinguagem = req.body.nomeLinguagem;
+        var descricaoLinguagem = req.body.descricaoLinguagem;
+
+        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+
+        console.log(`aka ${req.body.nomeLinguagem}`);
+        console.log(`aka2 ${req.body.descricaoLinguagem}`);
+
+        var errors = req.validationErrors();
+
+        if(errors) {
+            var messages =[];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect(`/languages/${req.params.id}/edit`);
+
+        } else {
+            store.editarLinguagem({data, Id: req.params.id})
+                .then(() => {
+                    res.redirect(`/languages/${req.params.id}`);
+                });
+        }
     },
 
     languagesDeletePost: (req, res) => {
@@ -104,6 +126,7 @@ module.exports = {
             })
         });
     },
+
     unrelatePatternPost: (req, res) => {
         var idLinguagem = req.params.id;
         var tituloPadrao = req.body.tituloPadraoDesrelacionado;
@@ -115,5 +138,36 @@ module.exports = {
                 res.redirect(`/languages/${idLinguagem}/edit`);
             })
         });
+    },
+
+    languagePageGet: (req, res) => {
+        store.pegarLinguagemPorId(req.params.id).then((language) => {
+            store.ownerOfLanguage(req.params.id).then((owner) => {
+                store.commentsOfLanguageById(req.params.id).then((comments) => {
+                    if (language) {
+                        language.dayCreation = language.created_at.getDate();
+                        language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
+                        language.yearCreation = language.created_at.getFullYear();
+                        if (language.visibilidade === 0) {
+                            language.visibilidade = 'Público';
+                        } else {
+                            language.visibilidade = 'Privado';
+                        }
+                    }
+                    res.render('languagePage.ejs', {isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+                });
+            });
+        });
+    },
+
+    addCommentLanguage: (req, res) => {
+        var text = req.body.languageComment;
+        var userId = req.user.usuarios_id;
+        var languageId = req.params.id;
+        var userName = req.user.name;
+
+        store.addCommentLanguage(text, userId, languageId, userName).then(() => {
+            res.redirect(`/languages/${req.params.id}`);
+        })
     }
 }

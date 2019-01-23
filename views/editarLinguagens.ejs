@@ -88,6 +88,16 @@
 <!-- ==============================================-->
             <div class="editarLinguagem">
                 <h1>Edição de Linguagem</h1>
+                    <!-- Display errors -->
+                    <% if (messages.length > 0) { %>
+                        <div class="alert alert-danger">
+                            <% messages.forEach((message) => { %>
+                                <p><%= message %></p>
+                            <% }); %>
+                        </div>
+                    <% } %>
+                    <!-- End Display errors -->
+
                 <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
                     <br>
                     <h3>Relacionamento entre Linguagens e Padrões</h3>
@@ -146,7 +156,7 @@
                   </div>
                   <div class="form-group">
                     <label for="descricaoLinguagem">Descrição da Linguagem</label>
-                    <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %> </textarea>
+                    <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %></textarea>
                   </div>
 
                   <br>
