@@ -98,11 +98,7 @@
                 <!-- End Display errors -->
 
                 <form method="POST" action="">
-                  <div class="form-group">
-                    <label for="nomePadrao">Nome do Padrão</label>
-                    <input type="text" class="form-control" id="nomePadrao" name="nomePadrao" value="<%= padrao.titulo %>"> 
-                    <!-- <textarea id="nomePadrao"> <%= padrao.titulo %> </textarea> -->
-                  </div>
+                  
                   <div class="form-group">
                     <label for="visibilidade">Visibilidade</label>
                     <select class="form-control" id="visibilidade" name="visibilidade">
@@ -110,10 +106,20 @@
                       <option>Privado</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label for="texto">Texto</label>
-                    <textarea class="form-control" id="texto" name="texto" rows="4"><%= padrao.texto %> </textarea>
-                  </div>
+
+                  <!-- Loop -->
+                  <% patternContent.forEach((element) => { %>
+                    <div class="form-group">
+                        <label><%= element.name %></label>
+                        <br>
+                        <textarea class="form-control" rows="4" name="elementContent[]"><%= element.content %></textarea>
+                    </div>
+                  <% }); %>
+
+                  <!-- End Loop -->
+                  
+
+
                   <a href="javascript:window.location.reload(true)">
                     <button type="submit" class="btn btn-primary">Salvar alterações</button>
                   </a>
@@ -122,7 +128,7 @@
                 </form>
                 <br>
                 <br>
-                <form method="POST" action="/patterns/<%= padrao.padroes_id %>/delete">
+                <form method="POST" action="/patterns/<%= patternId %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit" class="btn btn-danger btn-lg">Deletar Padrão</button>    
                 </form>

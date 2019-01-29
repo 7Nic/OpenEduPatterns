@@ -109,12 +109,19 @@ module.exports = {
             return user[0];
         });
     },
-    editarPadrao({data, Id}) {
+    editPatternInPadroes({data, Id}) {
         return knex('padroes').where('padroes_id', Id).update({
-            titulo: data.nomePadrao,
-            visibilidade: data.visibilidade,
-            texto: data.texto
-        })
+            titulo: data.elementContent[0],
+            visibilidade: data.visibilidade
+        });
+    },
+    editPatternInElementsContent({patternId, elementsContentArray}) {
+        return Promise.all(elementsContentArray.map((content, index) => {
+            // UPDATE elements_content ec inner join elements e on ec.elements_id = e.elements_id SET ec.content="Soluçãoo" where ec.patterns_id=391 and e.order=4;
+            return knex('elements_content').innerJoin('elements', 'elements_content.elements_id', 'elements.elements_id').where('elements_content.patterns_id', patternId).andWhere('elements.order', index+1).update({
+                content: content
+            });
+        }));
     },
     editarLinguagem({data, Id}) {
         return knex('linguagens').where('linguagens_id', Id).update({

@@ -22,10 +22,6 @@ module.exports = {
     },
 
     patternsCreatePost: (req, res) => {
-        // console.log(req.session.templateId);
-        // console.log(req.body.elementName); array
-        // console.log(req.body.elementContent); array
-        // console.log(req.body.newTemplateName);
         console.log(req.body.createNewTemplate);
         
         var visibilidadeNum = null;
@@ -39,11 +35,8 @@ module.exports = {
         
         req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
         if (req.body.createNewTemplate) {
-            console.log('caminho 1');
             store.addTemplate({name: req.body.newTemplateName, ownerId: req.user.usuarios_id}).then((templateId) => {
                 var elementsNamesArray = req.body.elementName;
-                console.log('ghgh');
-                console.log(req.body.elementName);
                 store.addElementsInDB(elementsNamesArray).then((elementsIdArray) => {
                     store.relateContent2Element(templateId, elementsIdArray).then(() => {
                         store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId}).then((newPatternId) => {
@@ -108,8 +101,8 @@ module.exports = {
     },
 
     patternsEditGet: (req, res) => {
-        store.pegarPadraoPorId(req.params.id).then((resultado) => {
-            res.render('editarPadroes.ejs', {padrao: resultado, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        store.assemblyPatternById(req.params.id).then((assembledPattern) => {
+            res.render('editarPadroes.ejs', {patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
         });
     },
 
@@ -122,28 +115,32 @@ module.exports = {
         } else {
             data.visibilidade = null;
         }
-        
-        var nomePadrao = req.body.nomePadrao;
-        var texto = req.body.texto;
 
-        req.checkBody('nomePadrao', 'Campo de nome vazio').notEmpty();
-        req.checkBody('texto', 'Campo de texto vazio').notEmpty();
-
-        var errors = req.validationErrors();
-
-        if (errors) {
-            var messages = [];
-            errors.forEach((error) => {
-                messages.push(error.msg);
+        store.editPatternInPadroes({data, Id: req.params.id}).then(() => {
+            store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent}).then(() => {
+                res.redirect(`/patterns/${req.params.id}`);
             });
-            req.flash('error', messages);
-            res.redirect(`/patterns/${req.params.id}/edit`);
-        } else {
-            store.editarPadrao({data, Id: req.params.id})
-                .then(() => {
-                    res.redirect(`/patterns/${req.params.id}`);
-                });
-        }
+        });
+        
+
+        // req.checkBody('nomePadrao', 'Campo de nome vazio').notEmpty();
+        // req.checkBody('texto', 'Campo de texto vazio').notEmpty();
+
+        // var errors = req.validationErrors();
+
+        // if (errors) {
+        //     var messages = [];
+        //     errors.forEach((error) => {
+        //         messages.push(error.msg);
+        //     });
+        //     req.flash('error', messages);
+        //     res.redirect(`/patterns/${req.params.id}/edit`);
+        // } else {
+            // store.editarPadrao({data, Id: req.params.id})
+            //     .then(() => {
+            //         res.redirect(`/patterns/${req.params.id}`);
+            //     });
+        // }
     },
 
     patternsDeletePost: (req, res) => {
