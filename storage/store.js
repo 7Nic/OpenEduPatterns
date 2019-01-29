@@ -145,7 +145,7 @@ module.exports = {
     padroesDeUmaLinguagem(Id) { //Retorna os padroes da linguagem que tem o Id que passamos
         //Não usamos SELECT * pois evitamos busca e download de dados desnecessários 
         return knex
-            .select('titulo')
+            .select('titulo', 'padroes.padroes_id')
             .from('padroes')
             .innerJoin('linguagens_padroes', 'padroes.padroes_id', 'linguagens_padroes.padroes_id')
             .innerJoin('linguagens', 'linguagens_padroes.linguagens_id', 'linguagens.linguagens_id')

@@ -97,8 +97,12 @@
             <div class="well">
                 <h2><%= language.nome %></h2>
                 <br>
-                <br>
                 <p><%= language.descricao %></p>
+                <br>
+                <h1>Padrões relacionados</h1>
+                <% padroesRelacionados.forEach((padrao) => { %>
+                    <h2><a href="/patterns/<%= padrao.padroes_id %>"><%= padrao.titulo %></a></h2>
+                <% }); %>
             </div>
             <h3>Comentários</h3>
             <br>

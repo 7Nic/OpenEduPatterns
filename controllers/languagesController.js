@@ -144,17 +144,19 @@ module.exports = {
         store.pegarLinguagemPorId(req.params.id).then((language) => {
             store.ownerOfLanguage(req.params.id).then((owner) => {
                 store.commentsOfLanguageById(req.params.id).then((comments) => {
-                    if (language) {
-                        language.dayCreation = language.created_at.getDate();
-                        language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
-                        language.yearCreation = language.created_at.getFullYear();
-                        if (language.visibilidade === 0) {
-                            language.visibilidade = 'Público';
-                        } else {
-                            language.visibilidade = 'Privado';
+                    store.padroesDeUmaLinguagem(req.params.id).then((padroesRelacionados) => {
+                        if (language) {
+                            language.dayCreation = language.created_at.getDate();
+                            language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
+                            language.yearCreation = language.created_at.getFullYear();
+                            if (language.visibilidade === 0) {
+                                language.visibilidade = 'Público';
+                            } else {
+                                language.visibilidade = 'Privado';
+                            }
                         }
-                    }
-                    res.render('languagePage.ejs', {isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+                        res.render('languagePage.ejs', {padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+                    });
                 });
             });
         });
