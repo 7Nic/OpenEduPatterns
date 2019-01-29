@@ -45,11 +45,12 @@ module.exports = {
             });
     },
 
-    criarPadrao({nomePadrao, visibilidade, texto}) {
+    criarPadrao({nomePadrao, visibilidade, texto, templateId}) {
         return knex('padroes').insert({
             titulo: nomePadrao,
             visibilidade,
             texto,
+            templates_id: templateId,
             created_at: new Date()
         })
         .returning('padroes_id');
@@ -122,8 +123,14 @@ module.exports = {
             descricao: data.descricaoLinguagem 
         })
     },
-    deletarPadrao(Id) {
+    deletePatternInPadroes(Id) {
         return knex('padroes').where('padroes_id', Id).del();
+    },
+    deletePatternInUsuariosPadroes(Id) {
+        return knex('usuarios_padroes').where('padroes_id', Id).del();
+    },
+    deletePatternInElementsContent(Id) {
+        return knex('elements_content').where('patterns_id', Id).del();
     },
     deletarLinguagem(Id) {
         return knex('linguagens').where('linguagens_id', Id).del();
@@ -277,7 +284,7 @@ module.exports = {
                 }).returning('templates_id');
     },
     addElementsInDB(elementsNamesArray) {
-        //The promisse all already returns the array, so we just return the promise itself
+        //The promisse.all already returns the array, so we just return the promise itself
         return Promise.all(elementsNamesArray.map((elementName, index) => {
             return knex('elements')
                 .insert({
@@ -287,7 +294,7 @@ module.exports = {
                 .returning('elements_id'); //Delete me: it is right, because returns only one variable, and the .map needs to return only, so it is right
         }));
     },
-    addContentOfElementsInDB(templateId, elementsIdArray) {
+    relateContent2Element(templateId, elementsIdArray) {
         return Promise.all(elementsIdArray.map(elementId => {
             //This raw function substitutes INSERT for INSERT IGNORE
             return knex.raw(knex('templates_elements').insert({
@@ -298,7 +305,7 @@ module.exports = {
                 .replace('insert', 'INSERT IGNORE'));
         }));
     },
-    elementsOfTemplate(templateId) {
+    elementsNameOfTemplate(templateId) {
         // select e.name from templates_elements te inner join elements e on te.elements_id = e.elements_id where te.templates_id=81 order by e.order asc;
         return knex
             .select('elements.name')
@@ -306,6 +313,25 @@ module.exports = {
             .innerJoin('elements', 'templates_elements.elements_id', 'elements.elements_id')
             .where('templates_elements.templates_id', templateId)
             .orderBy('elements.order', 'ASC');
+    },
+    elementsIdOfTemplate(templateId) {
+        // select e.elements_id from templates_elements te inner join elements e on te.elements_id = e.elements_id where te.templates_id=81 order by e.order asc;
+        return knex
+            .select('elements.elements_id')
+            .from('templates_elements')
+            .innerJoin('elements', 'templates_elements.elements_id', 'elements.elements_id')
+            .where('templates_elements.templates_id', templateId)
+            .orderBy('elements.order', 'ASC');
+    },
+    addContentOfElements({elementContentArray, patternId, elementsIdArray}) {
+        return Promise.all(elementContentArray.map((elementContent, index) => {
+            return knex('elements_content')
+                .insert({
+                    content: elementContent,
+                    patterns_id: patternId,
+                    elements_id: elementsIdArray[index] // [index] because elementContentArray and elementsIdArray has the same amount of elements and [index].elements_id because is an array of objects (returned by knex)
+                });
+        })); 
     }
 }
 

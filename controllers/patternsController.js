@@ -15,27 +15,64 @@ module.exports = {
 
     patternsCreateGet: (req, res) => {
         var templateId = req.session.templateId;
-        req.session.templateId = null; //Reset the used variable
-        store.elementsOfTemplate(templateId).then((templateElements) => {
+        // req.session.templateId = null; //Reset the used variable
+        store.elementsNameOfTemplate(templateId).then((templateElements) => {
             res.render('createPattern.ejs', {templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
         });
     },
 
     patternsCreatePost: (req, res) => {
+        // console.log(req.session.templateId);
+        // console.log(req.body.elementName); array
+        // console.log(req.body.elementContent); array
+        // console.log(req.body.newTemplateName);
+        console.log(req.body.createNewTemplate);
         
-        // console.log(req.body.elementName);
-        // console.log(req.body.elementContent);
-        // console.log(req.body.createNewTemplate);
+        var visibilidadeNum = null;
+        if(req.body.visibilidade === 'Público'){
+            visibilidadeNum = 0;
+        } else if(req.body.visibilidade === 'Privado'){
+            visibilidadeNum = 1;
+        } else {
+            visibilidadeNum = null;
+        }
         
-        res.redirect('/patterns/chosetemplate');
-        // var visibilidadeNum = null;
-        // if(req.body.visibilidade === 'Público'){
-        //     visibilidadeNum = 0;
-        // } else if(req.body.visibilidade === 'Privado'){
-        //     visibilidadeNum = 1;
-        // } else {
-        //     visibilidadeNum = null;
-        // }
+        req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
+        if (req.body.createNewTemplate) {
+            console.log('caminho 1');
+            store.addTemplate({name: req.body.newTemplateName, ownerId: req.user.usuarios_id}).then((templateId) => {
+                var elementsNamesArray = req.body.elementName;
+                console.log('ghgh');
+                console.log(req.body.elementName);
+                store.addElementsInDB(elementsNamesArray).then((elementsIdArray) => {
+                    store.relateContent2Element(templateId, elementsIdArray).then(() => {
+                        store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId}).then((newPatternId) => {
+                            store.relateUserPattern(req.user.usuarios_id, newPatternId).then(() => {
+                                store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray}).then(() => {
+                                    res.redirect('/patterns');
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        } else {
+            console.log('caminho 2');
+            store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId}).then((newPatternId) => {
+                store.relateUserPattern(req.user.usuarios_id, newPatternId).then(() => {
+                    store.elementsIdOfTemplate(req.session.templateId).then((elementsIdArrayOfObjects) => {
+                        //Convert array of objects to array
+                        var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
+                            return obj.elements_id;
+                        });
+                        store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray}).then(() => {
+                            res.redirect('/patterns');
+                        });
+                    });
+                });
+            });
+        }
+
 
         // var nomePadrao = req.body.nomePadrao;
         // var visibilidade = visibilidadeNum;
@@ -110,9 +147,12 @@ module.exports = {
     },
 
     patternsDeletePost: (req, res) => {
-        store.deletarPadrao(req.params.id)
-        .then(() => {
-            res.redirect('/patterns');
+        store.deletePatternInPadroes(req.params.id).then(() => {
+            store.deletePatternInUsuariosPadroes(req.params.id).then(() => {
+                store.deletePatternInElementsContent(req.params.id).then(() => {
+                    res.redirect('/patterns');
+                });
+            });
         });
     },
 
@@ -179,7 +219,7 @@ module.exports = {
                 req.session.templateId = templateId; //Use this info the render the next page
                 var elementsNamesArray = req.body.titleElement;
                 store.addElementsInDB(elementsNamesArray).then((elementsIdArray) => {
-                    store.addContentOfElementsInDB(templateId, elementsIdArray).then(() => {
+                    store.relateContent2Element(templateId, elementsIdArray).then(() => {
                         res.redirect('/patterns/create');
                     });
                 });

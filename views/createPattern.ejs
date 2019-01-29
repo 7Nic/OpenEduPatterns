@@ -157,6 +157,7 @@
             $("."+elementToRemove).remove();
         }
 
+        // If the user didn't add an element, no template will be created 
         function verifyNewTemplate() {
             var qttNewElements = $("form .newElement").length;
             if (qttNewElements === 0) {

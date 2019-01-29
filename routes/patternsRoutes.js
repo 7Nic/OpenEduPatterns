@@ -12,8 +12,8 @@ const passportFunctions = require('../config/passport');
 /// LANGUAGES ROUTES ///
 router.get('/', patternsController.index); //Languages Home Page, list all languages
 
-router.get('/chosetemplate', patternsController.choseTemplateGet);
-router.post('/chosetemplate', patternsController.choseTemplatePost);
+router.get('/chosetemplate', passportFunctions.isLoggedIn, patternsController.choseTemplateGet);
+router.post('/chosetemplate', passportFunctions.isLoggedIn, patternsController.choseTemplatePost);
 
 router.get('/create', passportFunctions.isLoggedIn, patternsController.patternsCreateGet); 
 router.post('/create', passportFunctions.isLoggedIn, patternsController.patternsCreatePost); 
@@ -26,7 +26,5 @@ router.get('/:id/edit', passportFunctions.isOwnerOfPattern, patternsController.p
 router.post('/:id/edit', passportFunctions.isOwnerOfPattern, patternsController.patternsEditPost);
 
 router.post('/:id/delete', passportFunctions.isOwnerOfPattern, patternsController.patternsDeletePost);
-
-
 
 module.exports = router;
