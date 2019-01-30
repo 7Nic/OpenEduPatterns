@@ -90,13 +90,13 @@ module.exports = {
             .innerJoin('padroes', 'usuarios_padroes.padroes_id', 'padroes.padroes_id');
     },
     pegarLinguagemPorId(Id) {
-        return knex.select('*').from('linguagens').where('linguagens_id', Id).then((resultado) => {
-            return resultado[0];
+        return knex.select('*').from('linguagens').where('linguagens_id', Id).then((result) => {
+            return result[0]; //[0] to return just the unique row 
         });
     },
     pegarPadraoPorId(Id) {
-        return knex.select('*').from('padroes').where('padroes_id', Id).then((resultado) => {
-            return resultado[0];
+        return knex.select('*').from('padroes').where('padroes_id', Id).then((result) => {
+            return result[0];
         })
     },
     findUserById(userId) {
@@ -339,6 +339,39 @@ module.exports = {
                     elements_id: elementsIdArray[index] // [index] because elementContentArray and elementsIdArray has the same amount of elements and [index].elements_id because is an array of objects (returned by knex)
                 });
         })); 
+    },
+    templatesIdOfUser(userId) {
+        return knex.select('templates_id').from('templates').where('owner_id', userId).then((result) =>{
+            var Ids = result.map((template) => { //To return a clean array of Ids, not an array of objects
+                return template.templates_id;
+            });
+            return Ids;
+        });
+    },
+    multipleTemplateElements(templatesIdArray) {
+        return Promise.all(templatesIdArray.map((templateId) => {
+            // select e.name from templates t inner join  templates_elements te on t.templates_id = te.templates_id inner join elements e on te.elements_id = e.elements_id where t.templates_id=191 order by t.templates_id asc, e.order asc;
+            return knex
+                .select('elements.name')
+                .from('templates')
+                .innerJoin('templates_elements', 'templates.templates_id', 'templates_elements.templates_id')
+                .innerJoin('elements', 'templates_elements.elements_id', 'elements.elements_id')
+                .where('templates.templates_id', templateId)
+                .orderBy('elements.order', 'asc')
+                .then(result => {
+                    return result.map(oneName => {
+                        return oneName.name;
+                    }); //To return an array strings, not an array of objects
+                });
+        }));
+    },
+    templatesNameOfUser(userId) {
+        // select name from templates where owner_id=271;
+        return knex.select('name').from('templates').where('owner_id', userId).then((namesArray) =>{
+            return namesArray.map((oneName) => { //To return a clean array of names, not an array of objects
+                return oneName.name;
+            });
+        });
     }
 }
 

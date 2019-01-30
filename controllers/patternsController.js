@@ -188,14 +188,14 @@ module.exports = {
         })
     },
 
-    testAssembly: (req, res) => {
-        store.assemblyPatternByElements(req.params.id).then((result) => {
-
-        });
-    },
-
     choseTemplateGet: (req, res) => {
-        res.render('choseTemplate.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error')});
+        store.templatesIdOfUser(req.user.usuarios_id).then((templatesId) => {
+            store.multipleTemplateElements(templatesId).then((templatesElements) => {
+                store.templatesNameOfUser(req.user.usuarios_id).then((templatesName) => {
+                   res.render('choseTemplate.ejs', {templatesId: templatesId ,templatesElements: templatesElements, templatesName: templatesName, csrfToken: req.csrfToken(), messages: req.flash('error')});
+                });
+            });
+        });
     },
 
     // Callback hell!!!

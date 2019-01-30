@@ -59,12 +59,7 @@
     </nav>  
 
 
-<!-- Fazer assim:
-Uma página terá os templates default com os campos pertencentes a ele, dai o usuarios escolhe e dá um post, eu pego a info e renderizo a proxima pagina -->
-
-
     <div class="container">
-    	<!-- <h1>Escolha seu Template</h1> -->
         <!-- Display errors -->
         <% if (messages.length > 0) { %>
             <div class="alert alert-danger">
@@ -79,20 +74,28 @@ Uma página terá os templates default com os campos pertencentes a ele, dai o u
             <h1>Escolha um Template já existente</h1>
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
-                <p>Nome, Contexto, Figura, Problema. Solução e Diagrama da solução.</p>    
+                <p>| Nome | Contexto | Figura | Problema | Solução | Diagrama da solução |</p>    
             </div>
             
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
-                <p>Nome, Contexto, Descrição e Solução.</p>
+                <p>| Nome | Contexto | Descrição | Solução |</p>
             </div>
             
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
-                <p>Nome, Contexto, Problema. Solução, Alias, Forças, Exemplo, Usos conhecidos, Padrões relacionados, Contexto  
+                <p>| Nome | Contexto | Problema | Solução | Alias | Forças | Exemplo | Usos conhecidos | Padrões relacionados | Contexto | resultante | Rationale |</p>  
             </div>
             <!-- Loop -->
-            
+            <% templatesName.forEach((templateName, index) => { %>
+            <div class="well"> 
+                    <h3><input type="radio" name="templateChosenId" value="<%= templatesId[index] %>">  <%= templateName %></h3>
+                    <p>|<%  templatesElements[index].forEach((elementName) => { %>
+                            <%= elementName %> |
+                        <% }); %>
+                    </p>
+            </div>
+            <% }); %>
             <!-- End loop -->
 
     	  </div>
