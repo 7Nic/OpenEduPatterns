@@ -84,7 +84,7 @@
             
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
-                <p>| Nome | Contexto | Problema | Solução | Alias | Forças | Exemplo | Usos conhecidos | Padrões relacionados | Contexto | resultante | Rationale |</p>  
+                <p>| Nome | Contexto | Problema | Solução | Alias | Forças | Exemplo | Usos conhecidos | Padrões relacionados | Contexto | Resultante | Rationale |</p>  
             </div>
             <!-- Loop -->
             <% templatesName.forEach((templateName, index) => { %>
@@ -106,7 +106,26 @@
             <br>
             <div class="newTemplateElements">
                 <div class="element0">
-                    <input class="form-control" type="text" name="contentElement0" placeholder="Digite aqui o título do elemento">
+                    <input class="form-control" type="text" name="contentElement0" list="commonNames" placeholder="Digite aqui o título do elemento">
+                    <datalist id="commonNames">
+                        <option>Nome</option>
+                        <option>Classificação</option>
+                        <option>Contexto</option>
+                        <option>Motivação</option>
+                        <option>Figura</option>
+                        <option>Descrição</option>
+                        <option>Problema</option>
+                        <option>Solução</option>
+                        <option>Alias</option>
+                        <option>Diagrama da solução</option>
+                        <option>Forças</option>
+                        <option>Consequências</option>
+                        <option>Usos conhecidos</option>
+                        <option>Padrões relacionados</option>
+                        <option>Contexto resultante</option>
+                        <option>Justificativa</option>
+                        <option>Rationale</option>
+                    </datalist>
                     <br>
                 </div>
     	        <a class="btn btn-info" onclick="addElement(this)" id="addElement">Adicionar elemento</a>
@@ -140,7 +159,7 @@
                           "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>"+
                           "<br>"+
                           "<br>"+
-                          "<input class='form-control' type='text' name='contentElement"+counter+"' placeholder='Digite aqui o título do elemento'>"+
+                          "<input class='form-control' type='text' list='commonNames' name='contentElement"+counter+"' placeholder='Digite aqui o título do elemento'>"+
                           "<br>"+
                           "</div>";
             obj.insertAdjacentHTML('beforebegin', theHTML);

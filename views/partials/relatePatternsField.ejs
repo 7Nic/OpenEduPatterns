@@ -1,0 +1,10 @@
+<br>
+<br>
+<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>
+<br>
+<br>
+<div class='form-group'>
+	<% patterns.forEach((pattern) => { %>
+		<label><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' ><%= pattern.titulo %></label>
+	<% }) %>
+</div>

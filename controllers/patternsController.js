@@ -17,12 +17,16 @@ module.exports = {
         var templateId = req.session.templateId;
         // req.session.templateId = null; //Reset the used variable
         store.elementsNameOfTemplate(templateId).then((templateElements) => {
-            res.render('createPattern.ejs', {templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+            store.listarPadroes().then((patterns) => {
+                res.render('createPattern.ejs', {patterns: patterns, templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+            });
         });
     },
 
     patternsCreatePost: (req, res) => {
-        console.log(req.body.createNewTemplate);
+        // console.log(req.body.relatedPatterns);
+        // console.log(req.body.elementName);
+        
         
         var visibilidadeNum = null;
         if(req.body.visibilidade === 'Público'){
@@ -32,6 +36,16 @@ module.exports = {
         } else {
             visibilidadeNum = null;
         }
+
+        var patternsToRelateArray = req.body.relatedPatterns;
+        //If req.body.relatedPatterns is not an array, we'll create an array in order to use .map function
+        if (patternsToRelateArray.length === 1) {
+            patternsToRelateArray = [];
+            patternsToRelateArray.push(req.body.relatedPatterns);
+        }
+        console.log('olha ele');
+        console.log(patternsToRelateArray);
+
         
         req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
         if (req.body.createNewTemplate) {
@@ -42,7 +56,9 @@ module.exports = {
                         store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId}).then((newPatternId) => {
                             store.relateUserPattern(req.user.usuarios_id, newPatternId).then(() => {
                                 store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray}).then(() => {
-                                    res.redirect('/patterns');
+                                    store.relatePattern2Pattern(newPatternId, patternsToRelateArray).then(() => {
+                                        res.redirect('/patterns');
+                                    });
                                 });
                             });
                         });
@@ -50,22 +66,27 @@ module.exports = {
                 });
             });
         } else {
-            console.log('caminho 2');
             store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId}).then((newPatternId) => {
                 store.relateUserPattern(req.user.usuarios_id, newPatternId).then(() => {
-                    store.elementsIdOfTemplate(req.session.templateId).then((elementsIdArrayOfObjects) => {
-                        //Convert array of objects to array
-                        var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
-                            return obj.elements_id;
-                        });
-                        store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray}).then(() => {
-                            res.redirect('/patterns');
+                    
+                    
+                    store.relatePattern2Pattern(newPatternId, patternsToRelateArray).then(() => {
+                        store.elementsIdOfTemplate(req.session.templateId).then((elementsIdArrayOfObjects) => {
+                            //Convert array of objects to array
+                            var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
+                                return obj.elements_id;
+                            });
+                            store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray}).then(() => {
+                                res.redirect('/patterns');
+                            });
                         });
                     });
                 });
             });
         }
 
+
+        //=====================================OLD GUY FOR REFERENCE!!!======================================
 
         // var nomePadrao = req.body.nomePadrao;
         // var visibilidade = visibilidadeNum;

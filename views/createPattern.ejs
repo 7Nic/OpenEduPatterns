@@ -88,24 +88,56 @@
           <% }; %>
           
           <!-- Loop -->
-          <p id="explanation">Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso, baseado no padrão escolhido anteriormente.</p>
+          <p id="explanation">Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.</p>
           <% templateElements.forEach((element) => { %>
           <div class="form-group">
-            <label><%= element.name %></label>
-            <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
-            <textarea class="form-control" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea>
-          </div>
-          <a class="btn btn-info" onclick="addElement(this)">Adicionar campo aqui</a>
-          <br>
-          <br>
-          <% }); %>
+            <% if (element.name === "Padrões relacionados") { %>
+              
+              <label>Padrões relacionados</label>
+              <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+              <% patterns.forEach((pattern) => { %>
+                  <p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>
+              <% }) %>
 
+            <% } else { %>
+                <label><%= element.name %></label>
+                <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
+                <textarea class="form-control" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea>
+            <% } %>
+
+            </div>
+            <a class="btn btn-info" onclick="addElement(this)">Adicionar campo aqui</a>
+            <br>
+            <br>
+
+            
+          <% }); %>
           <!-- End Loop -->
+
+          <datalist id="commonNames">
+                        <option>Nome</option>
+                        <option>Classificação</option>
+                        <option>Contexto</option>
+                        <option>Motivação</option>
+                        <option>Figura</option>
+                        <option>Descrição</option>
+                        <option>Problema</option>
+                        <option>Solução</option>
+                        <option>Alias</option>
+                        <option>Diagrama da solução</option>
+                        <option>Forças</option>
+                        <option>Consequências</option>
+                        <option>Usos conhecidos</option>
+                        <option>Padrões relacionados</option>
+                        <option>Contexto resultante</option>
+                        <option>Justificativa</option>
+                        <option>Rationale</option>
+                    </datalist>
 
           <% if (templateElements.length > 0) { %>
               <input type="hidden" name="createNewTemplate" id="createNewTemplate" value="">
         	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              <button type="submit" class="btn btn-info">Criar Padrão</button>
+              <button type="submit" class="btn btn-success">Criar Padrão</button>
         	  <a class="btn btn-danger" href="/patterns">Cancelar</a>   
           <% }; %>
 		</form>
@@ -134,15 +166,16 @@
                 $("#explanation").after(inputForTemplate);
             }
             counter += 1;
-            var theHTML = "<a class='btn btn-info element"+counter+"' onclick='addElement(this)'>Adicionar campo aqui</a>"+
-                          "<div class='element"+counter+" newElement'>"+
+            var theHTML = "<a class='btn btn-info element"+counter+"Button' onclick='addElement(this)'>Adicionar campo aqui</a>"+
+                          "<div class='element"+counter+"Div newElement' id='element"+counter+"'>"+
                           "<br>"+
                           "<br>"+
                           "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>"+
+                          "<a id='element"+counter+"' class='btn btn-success btn-xs' onclick='relatePatterns(this)'>Relacionar Padrões</a>"+
                           "<br>"+
                           "<br>"+
                           "<div class='form-group'>"+
-                          "<input class='form-control' type='text' name='elementName[]' placeholder='Digite o nome do elemento'>"+
+                          "<input class='form-control' type='text' name='elementName[]' list='commonNames' placeholder='Digite o nome do elemento'>"+
                           "<br>"+
                           "<textarea class='form-control' id='elementContent[]' name='elementContent[]' rows=4 placeholder='Digite aqui o conteúdo deste elemento'></textarea>"+
                           "</div>"
@@ -152,8 +185,9 @@
         }
 
         function removeElement(obj) {
-            var elementToRemove = obj.id;
-            $("."+elementToRemove).remove();
+            var elementToRemove = obj.id;   
+            $("."+elementToRemove+"Button").remove();
+            $("."+elementToRemove+"Div").remove();
         }
 
         // If the user didn't add an element, no template will be created 
@@ -165,6 +199,26 @@
                 $("#createNewTemplate").attr('value', true);
             }
             console.log(qttNewElements);
+        }
+
+        function relatePatterns(obj) {
+            var theHTML = "<br>"+
+                          "<br>"+
+                          "<a id='"+obj.id+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>"+
+                          "<br>"+
+                          "<br>"+
+                          "<div class='form-group'>"+
+                            "<label>Padrões relacionados</label>"+
+                            "<input class='form-control' type='hidden' name='elementName[]' value='Padrões relacionados'>"+
+                            "<% patterns.forEach((pattern) => { %>"+
+                                "<p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>"+
+                            "<% }) %>"+
+                          "</div>";                        
+
+
+
+            $("."+obj.id+"Div").html(theHTML);
+
         }
 
     </script>

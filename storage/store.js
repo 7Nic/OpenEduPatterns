@@ -361,7 +361,7 @@ module.exports = {
                 .then(result => {
                     return result.map(oneName => {
                         return oneName.name;
-                    }); //To return an array strings, not an array of objects
+                    }); //To return an array of strings, not an array of objects
                 });
         }));
     },
@@ -372,7 +372,48 @@ module.exports = {
                 return oneName.name;
             });
         });
+    },
+    patternsRelatedToAPattern(patternId) {
+        // SELECT b.titulo 
+        // FROM padroes AS a 
+        // INNER JOIN patterns_patterns AS pp ON a.padroes_id = pp.patterns_id1 
+        // INNER JOIN padroes AS b ON pp.patterns_id2 = b.padroes_id 
+        // WHERE a.padroes_id=391;
+        return knex
+            .select('b.titulo')
+            .from('padroes AS a')
+            .innerJoin('patterns_patterns AS pp', 'a.padroes_id', 'pp.patterns_id1')
+            .innerJoin('padroes AS b', 'pp.patterns_id2', 'b.padroes_id')
+            .where('a.padroes_id', patternId)
+            .then(result => {
+                return result.map(oneRow => {
+                    return oneRow.titulo;
+                }); //To return an array of strings, not an array of objects
+            });
+    },
+    relatePattern2Pattern(relatedPattern, patternsToRelateArray) {
+        if (patternsToRelateArray != undefined) {
+            console.log('faça algo');
+            return Promise.all(patternsToRelateArray.map(patternToRelate => {
+                //This raw function substitutes INSERT for INSERT IGNORE
+                return knex.raw(knex('patterns_patterns').insert({
+                    patterns_id1: relatedPattern,
+                    patterns_id2: patternToRelate
+                    })
+                    .toString()
+                    .replace('insert', 'INSERT IGNORE'));
+            }));
+        } else {
+            console.log('faça nada');
+            //Do nothing
+            //But we need to return a Promise, even though it is empty
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        }
+        
     }
+
 }
 
 
