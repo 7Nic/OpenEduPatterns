@@ -2,7 +2,6 @@ const login = document.querySelector('#modal-login');
 
 //OBS.: O botão com o submit deverá ficar dentro da tag form , senão ele não é detectado
 login.addEventListener('submit', (e) => {
-    console.log('clicou');
     e.preventDefault();                                                         
     const email = login.querySelector('[name=login-email]').value;
     const password = login.querySelector('[name=login-password]').value;

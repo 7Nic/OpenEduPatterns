@@ -95,6 +95,7 @@
               
               <label>Padrões relacionados</label>
               <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+              <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
               <% patterns.forEach((pattern) => { %>
                   <p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>
               <% }) %>

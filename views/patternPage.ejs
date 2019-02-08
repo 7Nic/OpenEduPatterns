@@ -93,10 +93,25 @@
             <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
             <h4>Visibilidade: <%= pattern.visibilidade %></h4>
             <div class="well">
+                <!-- LOOP -->
                 <% patternContent.forEach((element) => { %>
+                    
                     <h2><%= element.name %></h2>
-                    <p><%= element.content %></p>
+                    <% if (element.name === "Padrões relacionados") { %>
+                        <p>|
+                        <% relatedPatterns.forEach((relatedPattern) => { %>
+                            <a href="/patterns/<%= relatedPattern.padroes_id %>"><%= relatedPattern.titulo %></a> |
+                        <% }); %>
+                        </p>
+
+
+
+                    <% } else { %>
+                        <p><%= element.content %></p>
+                    <% } %>
+
                 <% }); %>
+                <!-- END LOOP -->
             </div>
             <h3>Comentários</h3>
             <br>

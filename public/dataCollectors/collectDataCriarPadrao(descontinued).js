@@ -12,7 +12,6 @@ criarNovoPadrao.addEventListener('submit', (e) => {
     } else {
         visibilidade = null;
     }
-    console.log(visibilidade);
     post('/adicionarPadrao', {nomePadrao, visibilidade, texto})
     .then(({status}) => {
         if (status === 200) {

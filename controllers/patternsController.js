@@ -24,10 +24,6 @@ module.exports = {
     },
 
     patternsCreatePost: (req, res) => {
-        // console.log(req.body.relatedPatterns);
-        // console.log(req.body.elementName);
-        
-        
         var visibilidadeNum = null;
         if(req.body.visibilidade === 'Público'){
             visibilidadeNum = 0;
@@ -38,14 +34,11 @@ module.exports = {
         }
 
         var patternsToRelateArray = req.body.relatedPatterns;
-        //If req.body.relatedPatterns is not an array, we'll create an array in order to use .map function
-        if (patternsToRelateArray.length === 1) {
+        //If req.body.relatedPatterns is not an array, we'll create an array of one object in order to use .map function
+        if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
             patternsToRelateArray = [];
             patternsToRelateArray.push(req.body.relatedPatterns);
-        }
-        console.log('olha ele');
-        console.log(patternsToRelateArray);
-
+        } 
         
         req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
         if (req.body.createNewTemplate) {
@@ -123,7 +116,11 @@ module.exports = {
 
     patternsEditGet: (req, res) => {
         store.assemblyPatternById(req.params.id).then((assembledPattern) => {
-            res.render('editarPadroes.ejs', {patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+            store.patternsRelatedToAPattern(req.params.id).then((relatedPatterns) => {
+                store.listarPadroes().then((patterns) => {
+                    res.render('editarPadroes.ejs', {patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+                })
+            });
         });
     },
 
@@ -137,9 +134,20 @@ module.exports = {
             data.visibilidade = null;
         }
 
+        var patternsToRelateArray = req.body.patterns2Relate;
+        //If req.body.relatedPatterns is not an array, we'll create an array of one object in order to use .map function
+        if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
+            patternsToRelateArray = [];
+            patternsToRelateArray.push(req.body.patterns2Relate);
+        }
+
         store.editPatternInPadroes({data, Id: req.params.id}).then(() => {
             store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent}).then(() => {
-                res.redirect(`/patterns/${req.params.id}`);
+                store.deletePatternsInPatternsPatterns(req.params.id).then(() => {
+                    store.relatePattern2Pattern(req.params.id, patternsToRelateArray).then(() => {
+                        res.redirect(`/patterns/${req.params.id}`);
+                    });
+                });
             });
         });
         
@@ -168,7 +176,9 @@ module.exports = {
         store.deletePatternInPadroes(req.params.id).then(() => {
             store.deletePatternInUsuariosPadroes(req.params.id).then(() => {
                 store.deletePatternInElementsContent(req.params.id).then(() => {
-                    res.redirect('/patterns');
+                    store.deletePatternsInPatternsPatterns(req.params.id).then(() => {
+                        res.redirect('/patterns');
+                    });
                 });
             });
         });
@@ -180,17 +190,19 @@ module.exports = {
             store.ownerOfPattern(req.params.id).then((owner) => {
                 store.commentsOfPatternById(req.params.id).then((comments) => {
                     store.assemblyPatternById(req.params.id).then((assembledPattern) => {
-                        if (patternInfo) {
-                            patternInfo.dayCreation = patternInfo.created_at.getDate();
-                            patternInfo.monthCreation = patternInfo.created_at.getMonth() + 1; //Starts counting from 0
-                            patternInfo.yearCreation = patternInfo.created_at.getFullYear();
-                            if (patternInfo.visibilidade === 0) {
-                                patternInfo.visibilidade = 'Público';
-                            } else {
-                                patternInfo.visibilidade = 'Privado';
+                        store.patternsRelatedToAPattern(req.params.id).then((relatedPatterns) => {
+                            if (patternInfo) {
+                                patternInfo.dayCreation = patternInfo.created_at.getDate();
+                                patternInfo.monthCreation = patternInfo.created_at.getMonth() + 1; //Starts counting from 0
+                                patternInfo.yearCreation = patternInfo.created_at.getFullYear();
+                                if (patternInfo.visibilidade === 0) {
+                                    patternInfo.visibilidade = 'Público';
+                                } else {
+                                    patternInfo.visibilidade = 'Privado';
+                                }
                             }
-                        }
-                        res.render('patternPage.ejs', {patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
+                            res.render('patternPage.ejs', {relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
+                        });
                     });
                 });
             });
@@ -228,8 +240,6 @@ module.exports = {
         // res.redirect('/patterns/chosetemplate');
 
         if (req.body.templateChosenId) {
-            console.log('aqui');
-            console.log(req.body.templateChosenId)
             req.session.templateId = req.body.templateChosenId; //Use this info the render the next page
             res.redirect('/patterns/create');
         } else {

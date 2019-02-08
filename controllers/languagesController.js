@@ -64,9 +64,11 @@ module.exports = {
         store.pegarLinguagemPorId(req.params.id).then((resultadoLinguagem) => {
 			store.padroesDeUmaLinguagem(req.params.id).then((resultadoJoin) => {
 				store.listarPadroes().then((resultadoListarPadroes) => {
-					res.render('editarLinguagens.ejs', {messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
-				})
-			})
+                    store.languagesRelatedToALanguage(req.params.id).then((relatedLanguages) => {
+                        res.render('editarLinguagens.ejs', {relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+                    });
+				});
+			});
 		});
     },
 
@@ -85,9 +87,6 @@ module.exports = {
 
         req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
         req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
-
-        console.log(`aka ${req.body.nomeLinguagem}`);
-        console.log(`aka2 ${req.body.descricaoLinguagem}`);
 
         var errors = req.validationErrors();
 
@@ -145,17 +144,19 @@ module.exports = {
             store.ownerOfLanguage(req.params.id).then((owner) => {
                 store.commentsOfLanguageById(req.params.id).then((comments) => {
                     store.padroesDeUmaLinguagem(req.params.id).then((padroesRelacionados) => {
-                        if (language) {
-                            language.dayCreation = language.created_at.getDate();
-                            language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
-                            language.yearCreation = language.created_at.getFullYear();
-                            if (language.visibilidade === 0) {
-                                language.visibilidade = 'Público';
-                            } else {
-                                language.visibilidade = 'Privado';
+                        store.languagesRelatedToALanguage(req.params.id).then((relatedLanguages) => {
+                            if (language) {
+                                language.dayCreation = language.created_at.getDate();
+                                language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
+                                language.yearCreation = language.created_at.getFullYear();
+                                if (language.visibilidade === 0) {
+                                    language.visibilidade = 'Público';
+                                } else {
+                                    language.visibilidade = 'Privado';
+                                }
                             }
-                        }
-                        res.render('languagePage.ejs', {padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+                            res.render('languagePage.ejs', {relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+                        });
                     });
                 });
             });

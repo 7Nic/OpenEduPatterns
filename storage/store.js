@@ -13,7 +13,6 @@ module.exports = {
     saltHashPassword,
 
     createUser ({name, email, password}) {
-        console.log(`Adding user with email ${email} and name ${name}`);
         //After adding the encryption on the migration, we need to encrypt the passwords
         //when the user creates them
         //Recebe o objeto retornado pela salthashpassword
@@ -28,7 +27,6 @@ module.exports = {
     },
 
     authenticate ({email, password}) {
-        console.log(`Authenticating user with email: ${email}`);
         return knex('usuarios')
             .where({email})
             .then(([usuarios]) => {
@@ -374,26 +372,20 @@ module.exports = {
         });
     },
     patternsRelatedToAPattern(patternId) {
-        // SELECT b.titulo 
+        // SELECT b.padroes_id, b.titulo 
         // FROM padroes AS a 
         // INNER JOIN patterns_patterns AS pp ON a.padroes_id = pp.patterns_id1 
         // INNER JOIN padroes AS b ON pp.patterns_id2 = b.padroes_id 
         // WHERE a.padroes_id=391;
         return knex
-            .select('b.titulo')
+            .select('b.padroes_id', 'b.titulo')
             .from('padroes AS a')
             .innerJoin('patterns_patterns AS pp', 'a.padroes_id', 'pp.patterns_id1')
             .innerJoin('padroes AS b', 'pp.patterns_id2', 'b.padroes_id')
-            .where('a.padroes_id', patternId)
-            .then(result => {
-                return result.map(oneRow => {
-                    return oneRow.titulo;
-                }); //To return an array of strings, not an array of objects
-            });
+            .where('a.padroes_id', patternId);
     },
     relatePattern2Pattern(relatedPattern, patternsToRelateArray) {
         if (patternsToRelateArray != undefined) {
-            console.log('faça algo');
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
                 //This raw function substitutes INSERT for INSERT IGNORE
                 return knex.raw(knex('patterns_patterns').insert({
@@ -404,16 +396,51 @@ module.exports = {
                     .replace('insert', 'INSERT IGNORE'));
             }));
         } else {
-            console.log('faça nada');
             //Do nothing
             //But we need to return a Promise, even though it is empty
             return new Promise((resolve, reject) => {
                 resolve();
             });
         }
-        
+    },
+    deletePatternsInPatternsPatterns(patternId) { //Delete the relationship between the 2 patterns
+        return knex('patterns_patterns').where('patterns_id1', patternId).orWhere('patterns_id2', patternId).del();
+    },
+    languagesRelatedToALanguage(languageId) {
+        // SELECT b.linguagens_id, b.nome 
+        // FROM linguagens AS a 
+        // INNER JOIN languages_languages AS ll ON a.linguagens_id = ll.languages_id1
+        // INNER JOIN linguagens AS b ON ll.languages_id2 = b.linguagens_id 
+        // WHERE a.linguagens_id=391;
+        return knex
+            .select('b.linguagens_id', 'b.nome')
+            .from('linguagens AS a')
+            .innerJoin('languages_languages AS ll', 'a.linguagens_id', 'll.languages_id1')
+            .innerJoin('linguagens AS b', 'll.languages_id2', 'b.linguagens_id')
+            .where('a.linguagens_id', languageId);
+    },
+    relateLanguage2Language(relatedLanguage, languagesToRelateArray) {
+        if (languagesToRelateArray != undefined) {
+            return Promise.all(languagesToRelateArray.map(languageToRelate => {
+                //This raw function substitutes INSERT for INSERT IGNORE
+                return knex.raw(knex('languages_languages').insert({
+                    patterns_id1: relatedLanguage,
+                    patterns_id2: languageToRelate
+                    })
+                    .toString()
+                    .replace('insert', 'INSERT IGNORE'));
+            }));
+        } else {
+            //Do nothing
+            //But we need to return a Promise, even though it is empty
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        }
+    },
+    deleteLanguageInLanguagesLanguages(languageId) { //Delete the relationship between the 2 languages
+        return knex('languages_languages').where('languages_id1', languageId).orWhere('languages_id2', languageId).del();
     }
-
 }
 
 

@@ -30,7 +30,6 @@ passport.use('local.login', new LocalStrategy({
                 return done(null, user);
         })
         } else {
-            console.log('hey');
             done(null, false, {message: 'E-mail ou senha inválidos'}); 
         }
     });

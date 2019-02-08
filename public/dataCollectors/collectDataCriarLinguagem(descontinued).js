@@ -12,7 +12,6 @@ criarNovaLinguagem.addEventListener('submit', (e) => {
     } else {
         visibilidade = null;
     }
-    console.log(visibilidade);
     post('/adicionarLinguagem', {nomeLinguagem, visibilidade, descricaoLinguagem})
     .then(({status}) => {
         if (status === 200) {

@@ -31,7 +31,6 @@ module.exports = {
             res.redirect('/users/create');
         } else {
             store.findUserByEmail(email).then((user) => {
-                console.log(user);
                 if(user) {
                     req.flash('error', 'Email já registrado');
                     res.redirect('/users/create');
@@ -51,7 +50,6 @@ module.exports = {
     profileGet: (req, res) => {
         store.userLanguages(req.user.usuarios_id).then((languages) => {
             store.userPatterns(req.user.usuarios_id).then((patterns) => {
-                console.log(patterns);
                 res.render('profile.ejs', {user: req.user, languages: languages, patterns: patterns});
             });
         });

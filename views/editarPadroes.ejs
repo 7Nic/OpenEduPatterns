@@ -98,33 +98,51 @@
                 <!-- End Display errors -->
 
                 <form method="POST" action="">
-                  
-                  <div class="form-group">
-                    <label for="visibilidade">Visibilidade</label>
-                    <select class="form-control" id="visibilidade" name="visibilidade">
-                      <option>Público</option>
-                      <option>Privado</option>
-                    </select>
-                  </div>
-
-                  <!-- Loop -->
-                  <% patternContent.forEach((element) => { %>
+                    
                     <div class="form-group">
-                        <label><%= element.name %></label>
-                        <br>
-                        <textarea class="form-control" rows="4" name="elementContent[]"><%= element.content %></textarea>
+                        <label for="visibilidade">Visibilidade</label>
+                        <select class="form-control" id="visibilidade" name="visibilidade">
+                        <option>Público</option>
+                            <option>Privado</option>
+                        </select>
                     </div>
-                  <% }); %>
 
-                  <!-- End Loop -->
+                    <!-- Loop -->
+                    <% patternContent.forEach((element) => { %>
+                        <% if (element.name === "Padrões relacionados") { %>
+                            
+                            <% if(relatedPatterns.length > 0) { %>
+                                <label>Padrões relacionados antes da edição</label>
+                                <h4>|
+                                    <% relatedPatterns.forEach((relatedPattern) => { %>
+                                        <a href="/patterns/<%= relatedPattern.padroes_id %>"><%= relatedPattern.titulo %></a> |
+                                    <% }); %>
+                                </h4>
+                            <% } %>
+
+
+                            <label>Novo relacionamento de Padrões</label>
+                            <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+                            <% patterns.forEach((pattern) => { %>
+                                  <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>
+                            <% }) %>
+                            <br>
+                        <% } else { %>
+                            <label><%= element.name %></label>
+                            <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
+                            <textarea class="form-control" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"><%= element.content %></textarea>
+                        <% } %>
+                        <br>
+                    <% }); %>
+                    <!-- End Loop -->
                   
 
 
-                  <a href="javascript:window.location.reload(true)">
-                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
-                  </a>
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  <button onclick="window.location.href='/padroes'" class="btn btn-danger">Cancelar</button>    
+                    <a href="javascript:window.location.reload(true)">
+                      <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                    </a>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button onclick="window.location.href='/padroes'" class="btn btn-danger">Cancelar</button>    
                 </form>
                 <br>
                 <br>
