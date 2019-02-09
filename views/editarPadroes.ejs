@@ -109,7 +109,7 @@
 
                     <!-- Loop -->
                     <% patternContent.forEach((element) => { %>
-                        <% if (element.name === "Padrões relacionados") { %>
+                        <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
                             
                             <% if(relatedPatterns.length > 0) { %>
                                 <label>Padrões relacionados antes da edição</label>
@@ -124,7 +124,7 @@
                             <label>Novo relacionamento de Padrões</label>
                             <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
                             <% patterns.forEach((pattern) => { %>
-                                  <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>
+                                <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>'> <%= pattern.titulo %></p>
                             <% }) %>
                             <br>
                         <% } else { %>

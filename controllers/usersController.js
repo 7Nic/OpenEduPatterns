@@ -1,4 +1,6 @@
 const store = require('../storage/store');
+const multer = require('multer');
+
 
 module.exports = {
     usersCreateGet: (req, res) => {
@@ -50,8 +52,21 @@ module.exports = {
     profileGet: (req, res) => {
         store.userLanguages(req.user.usuarios_id).then((languages) => {
             store.userPatterns(req.user.usuarios_id).then((patterns) => {
-                res.render('profile.ejs', {user: req.user, languages: languages, patterns: patterns});
+                store.getProfilePhoto(req.user.usuarios_id).then((profilePhoto) => {
+                    console.log(profilePhoto);
+                    res.render('profile.ejs', {profilePhoto, user: req.user, languages, patterns, csrfToken: req.csrfToken()});
+                });
             });
+        });
+    },
+    uploadProfilePhoto: (req, res, next) => {
+        store.storeProfilePhoto(req.user.usuarios_id, req.file.filename).then(() => {
+            res.redirect('/users/profile');
+        });
+    },
+    deleteProfilePhoto: (req, res, next) => {
+        store.deleteProfilePhoto(req.user.usuarios_id).then(() => {
+            res.redirect('/users/profile');
         });
     }
 }

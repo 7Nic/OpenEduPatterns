@@ -123,8 +123,8 @@ module.exports = {
     },
     editarLinguagem({data, Id}) {
         return knex('linguagens').where('linguagens_id', Id).update({
-            nome: data.nomeLinguagem,
-            visibilidade: data.visibilidade,
+            nome: data.nomeLinguagem, 
+            visibilidade: data.visibilidade, 
             descricao: data.descricaoLinguagem 
         })
     },
@@ -424,8 +424,8 @@ module.exports = {
             return Promise.all(languagesToRelateArray.map(languageToRelate => {
                 //This raw function substitutes INSERT for INSERT IGNORE
                 return knex.raw(knex('languages_languages').insert({
-                    patterns_id1: relatedLanguage,
-                    patterns_id2: languageToRelate
+                    languages_id1: relatedLanguage,
+                    languages_id2: languageToRelate
                     })
                     .toString()
                     .replace('insert', 'INSERT IGNORE'));
@@ -440,6 +440,21 @@ module.exports = {
     },
     deleteLanguageInLanguagesLanguages(languageId) { //Delete the relationship between the 2 languages
         return knex('languages_languages').where('languages_id1', languageId).orWhere('languages_id2', languageId).del();
+    },
+    storeProfilePhoto(userId, filenameProfilePhoto) {
+        return knex('usuarios').where('usuarios_id', userId).update({
+            profile_photo: filenameProfilePhoto
+        })
+    },
+    getProfilePhoto(userId) {
+        return knex.select('profile_photo').from('usuarios').where('usuarios_id', userId).then((result) => {
+            return result[0].profile_photo;
+        });
+    },
+    deleteProfilePhoto(userId) {
+        return knex('usuarios').where('usuarios_id', userId).update({
+            profile_photo: null
+        });
     }
 }
 

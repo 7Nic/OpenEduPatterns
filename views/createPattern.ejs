@@ -91,7 +91,7 @@
           <p id="explanation">Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.</p>
           <% templateElements.forEach((element) => { %>
           <div class="form-group">
-            <% if (element.name === "Padrões relacionados") { %>
+                <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
               
               <label>Padrões relacionados</label>
               <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">

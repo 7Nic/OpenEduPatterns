@@ -102,10 +102,18 @@
                 <h1>Padrões relacionados</h1>
                 <% if (padroesRelacionados.length > 0) { %>
                     <% padroesRelacionados.forEach((padrao) => { %>
-                        <h2><a href="/patterns/<%= padrao.padroes_id %>"><%= padrao.titulo %></a></h2>
+                        <h3><a href="/patterns/<%= padrao.padroes_id %>"><%= padrao.titulo %></a></h3>
                     <% }); %>
                 <% } else { %>
                     <p>Esta linguagem não possui padrões relacionados</p>
+                <% } %>
+
+                <% if (relatedLanguages.length > 0) { %>
+                    <h1>Linguagens relacionadas</h1>
+                    <% relatedLanguages.forEach((relatedLanguage) => { %>
+                        <h3><a href="/languages/<%= relatedLanguage.linguagens_id %>"><%= relatedLanguage.nome %></a></h3>
+                    <% }); %>
+
                 <% } %>
             </div>
             <h3>Comentários</h3>

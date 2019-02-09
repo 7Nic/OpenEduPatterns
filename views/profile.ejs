@@ -20,7 +20,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_profile.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -84,7 +84,27 @@
     <div class="container">
         <br>
         <br>
-        <h1>Bem vindo, <%= user.name %></h1>
+        <h1>Bem vindo, <%= user.name %></h1> 
+        <div class="profilePhoto">
+            <% if (profilePhoto) { %>
+                <img src="../uploads/profilePhotos/<%= profilePhoto %>">
+            <% } else { %>
+                <img src="../uploads/profilePhotos/profilePhotoDefault2.png">
+        <% } %>
+        </div>
+        <br>
+        <h4>Faça upload de sua foto de perfil</h4>
+        <!-- Explanation: we use multipart/form-data for the multer(NodeJS), but we also need to send the csrf token, as we cannot just add an input hidden, because the enctype is different from original, we add ?_csrf=<TOKEN> -->
+        <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
+            <input type="file" name="profilePhoto" id="profilePhoto">   
+            <button type="submit" class="btn btn-success">Alterar foto de perfil</button>
+        </form>
+        <br>
+        <form method="POST" action="/users/deleteprofilephoto">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-danger">Apagar foto de perfil</button>
+        </form>
+        <br>
         <div class="well">
             <div class="row">
                 <h1>Minhas Linguagens</h1>

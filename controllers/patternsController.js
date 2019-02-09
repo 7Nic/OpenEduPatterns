@@ -61,8 +61,6 @@ module.exports = {
         } else {
             store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId}).then((newPatternId) => {
                 store.relateUserPattern(req.user.usuarios_id, newPatternId).then(() => {
-                    
-                    
                     store.relatePattern2Pattern(newPatternId, patternsToRelateArray).then(() => {
                         store.elementsIdOfTemplate(req.session.templateId).then((elementsIdArrayOfObjects) => {
                             //Convert array of objects to array
@@ -135,7 +133,7 @@ module.exports = {
         }
 
         var patternsToRelateArray = req.body.patterns2Relate;
-        //If req.body.relatedPatterns is not an array, we'll create an array of one object in order to use .map function
+        //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
         if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
             patternsToRelateArray = [];
             patternsToRelateArray.push(req.body.patterns2Relate);

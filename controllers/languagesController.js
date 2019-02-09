@@ -27,6 +27,14 @@ module.exports = {
             visibilidadeNum = null;
         }
 
+        var languagesToRelateArray = req.body.relatedLanguages;
+        //If req.body.relatedLanguages is not an array, we'll create an array of one object in order to use .map function
+        if (typeof languagesToRelateArray === 'string') { //If languagesToRelateArray is a string, it is just an element, and we'll create an array
+            languagesToRelateArray = [];
+            languagesToRelateArray.push(req.body.relatedLanguages);
+        }
+
+
         var nomeLinguagem = req.body.nomeLinguagem;
         var visibilidade = visibilidadeNum;
         var descricaoLinguagem = req.body.descricaoLinguagem;
@@ -37,6 +45,7 @@ module.exports = {
         var errors = req.validationErrors();
 
         if(errors) {
+            //Show errors in the same page
             var messages = [];
             errors.forEach((error) => {
                 messages.push(error.msg);
@@ -44,18 +53,13 @@ module.exports = {
             req.flash('error', messages);
             res.redirect('/languages/create');
         } else {
-            store.criarLinguagem({
-                nomeLinguagem,
-                visibilidade,
-                descricaoLinguagem
-            })
-            .then((languageId) => {
-                
-                store.relateUserLanguage(req.user.usuarios_id, languageId)
-                .then(() => {
-                    res.redirect('/languages');
+            //Execute queries in MySQL to create a language
+            store.criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem}).then((newLanguageId) => {
+                store.relateUserLanguage(req.user.usuarios_id, newLanguageId).then(() => {
+                    store.relateLanguage2Language(newLanguageId, languagesToRelateArray).then(() => {
+                        res.redirect('/languages');
+                    });
                 });
-    
             });
         }
     },
@@ -65,7 +69,9 @@ module.exports = {
 			store.padroesDeUmaLinguagem(req.params.id).then((resultadoJoin) => {
 				store.listarPadroes().then((resultadoListarPadroes) => {
                     store.languagesRelatedToALanguage(req.params.id).then((relatedLanguages) => {
-                        res.render('editarLinguagens.ejs', {relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+                        store.listarLinguagens().then((languages) => {
+                            res.render('editarLinguagens.ejs', {languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+                        });
                     });
 				});
 			});
@@ -82,34 +88,59 @@ module.exports = {
             data.visibilidade = null;
         }
 
-        var nomeLinguagem = req.body.nomeLinguagem;
-        var descricaoLinguagem = req.body.descricaoLinguagem;
+        var languagesToRelateArray = req.body.languages2Relate;
+        console.log('antes');
+        console.log(languagesToRelateArray);
+        //If req.body.languages2Relate is not an array, we'll create an array of one object in order to use .map function
+        if (typeof languagesToRelateArray === 'string') { //If is a string, it is just an element, and we'll create an array
+            console.log('é unico');
+            languagesToRelateArray = [];
+            languagesToRelateArray.push(req.body.languages2Relate);
+        } 
 
-        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
-        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+        console.log('depois');
+        console.log(languagesToRelateArray);
 
-        var errors = req.validationErrors();
-
-        if(errors) {
-            var messages =[];
-            errors.forEach((error) => {
-                messages.push(error.msg);
-            });
-            req.flash('error', messages);
-            res.redirect(`/languages/${req.params.id}/edit`);
-
-        } else {
-            store.editarLinguagem({data, Id: req.params.id})
-                .then(() => {
+        store.editarLinguagem({data, Id: req.params.id}).then(() => {
+            store.deleteLanguageInLanguagesLanguages(req.params.id).then(() => {
+                store.relateLanguage2Language(req.params.id, languagesToRelateArray).then(() => {
                     res.redirect(`/languages/${req.params.id}`);
                 });
-        }
+            });
+        });
+
+
+
+
+        // var nomeLinguagem = req.body.nomeLinguagem;
+        // var descricaoLinguagem = req.body.descricaoLinguagem;
+
+        // req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+        // req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+
+        // var errors = req.validationErrors();
+
+        // if(errors) {
+        //     var messages =[];
+        //     errors.forEach((error) => {
+        //         messages.push(error.msg);
+        //     });
+        //     req.flash('error', messages);
+        //     res.redirect(`/languages/${req.params.id}/edit`);
+
+        // } else {
+        //     store.editarLinguagem({data, Id: req.params.id})
+        //         .then(() => {
+        //             res.redirect(`/languages/${req.params.id}`);
+        //         });
+        // }
     },
 
     languagesDeletePost: (req, res) => {
-        store.deletarLinguagem(req.params.id)
-        .then(() => {
-            res.redirect('/languages');
+        store.deletarLinguagem(req.params.id).then(() => {
+            store.deleteLanguageInLanguagesLanguages(req.params.id).then(() => {
+                res.redirect('/languages');
+            });
         });
     },
 

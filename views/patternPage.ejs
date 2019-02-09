@@ -97,7 +97,7 @@
                 <% patternContent.forEach((element) => { %>
                     
                     <h2><%= element.name %></h2>
-                    <% if (element.name === "Padrões relacionados") { %>
+                    <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
                         <p>|
                         <% relatedPatterns.forEach((relatedPattern) => { %>
                             <a href="/patterns/<%= relatedPattern.padroes_id %>"><%= relatedPattern.titulo %></a> |
