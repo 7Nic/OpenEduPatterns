@@ -455,6 +455,21 @@ module.exports = {
         return knex('usuarios').where('usuarios_id', userId).update({
             profile_photo: null
         });
+    },
+    patternsOfTheSameLanguage(patternId) {
+        // select distinct p.padroes_id, p.titulo from linguagens_padroes as lp1 
+        // inner join linguagens as l on lp1.linguagens_id=l.linguagens_id  
+        // inner join linguagens_padroes as lp2 on l.linguagens_id=lp2.linguagens_id 
+        // inner join padroes as p on lp2.padroes_id=p.padroes_id 
+        // where lp1.padroes_id=151 and p.padroes_id<>151;
+        return knex('linguagens_padroes as lp1')
+                .distinct('p.padroes_id')
+                .select('p.padroes_id', 'p.titulo')
+                .innerJoin('linguagens as l', 'lp1.linguagens_id', 'l.linguagens_id')
+                .innerJoin('linguagens_padroes as lp2', 'l.linguagens_id', 'lp2.linguagens_id')
+                .innerJoin('padroes as p', 'lp2.padroes_id', 'p.padroes_id')
+                .where('lp1.padroes_id', patternId)
+                .andWhere('p.padroes_id', '!=', patternId);
     }
 }
 

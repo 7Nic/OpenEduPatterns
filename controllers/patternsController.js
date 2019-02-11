@@ -116,7 +116,9 @@ module.exports = {
         store.assemblyPatternById(req.params.id).then((assembledPattern) => {
             store.patternsRelatedToAPattern(req.params.id).then((relatedPatterns) => {
                 store.listarPadroes().then((patterns) => {
-                    res.render('editarPadroes.ejs', {patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+                    store.patternsOfTheSameLanguage(req.params.id).then((patternsOfTheSameLanguage) => {
+                        res.render('editarPadroes.ejs', {patternsOfTheSameLanguage, patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+                    });
                 })
             });
         });
