@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Agr</title>
+	<script type="text/javascript" src="ckeditor.js"></script>
+</head>
+<body>
+	<textarea class="ckeditor" id="editor1" name="editor1"></textarea>
+	<script type="text/javascript">
+		ClassicEditor
+	.create( document.querySelector( '#editor1' ) )
+	.then( editor => {
+		console.log( editor );
+	} )
+	.catch( error => {
+		console.error( error );
+	} );
+	</script>
+	<br>
+	<textarea class="ckeditor" id="editor2" name="editor2"></textarea>
+	<script type="text/javascript">
+		ClassicEditor.create( document.querySelector( '#editor2' ) ).catch( error => {console.error( error );} );
+	</script>
+</body>
+<script>
+// ClassicEditor.create( document.querySelector( '#uno' ) ).then( editor => {.catch( error => {console.error( error );} );
+
+// ClassicEditor
+// 	.create( document.querySelector( '#dos' ) )
+// 	.then( editor => {
+// 		console.log( editor );
+// 	} )
+// 	.catch( error => {
+// 		console.error( error );
+// 	} );
+</script>	
+</html>

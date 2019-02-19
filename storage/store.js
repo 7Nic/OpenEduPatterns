@@ -470,6 +470,79 @@ module.exports = {
                 .innerJoin('padroes as p', 'lp2.padroes_id', 'p.padroes_id')
                 .where('lp1.padroes_id', patternId)
                 .andWhere('p.padroes_id', '!=', patternId);
+    },
+    templateOfPattern(patternId) {
+        return knex.select('templates_id').from('padroes').where('padroes_id', patternId).then((result) => {
+            return result[0].templates_id;
+        });
+    },
+    searchInPatterns(word) {
+        // select distinct ec.patterns_id, p.titulo 
+        // from elements_content as ec 
+        // inner join padroes as p on ec.patterns_id = p.padroes_id  
+        // where ec.content LIKE '%word%' or p.titulo LIKE '%word%';
+        return knex('elements_content as ec')
+            .distinct('p.padroes_id')
+            .select('p.padroes_id', 'p.titulo')
+            .innerJoin('padroes as p', 'ec.patterns_id', 'p.padroes_id')
+            .where('visibilidade', 0)
+            .andWhere((query) => {
+                return query
+                    .where('ec.content', 'LIKE', '%'+word+'%')
+                    .orWhere('p.titulo', 'LIKE', '%'+word+'%');
+            });
+            
+    },
+    searchInLanguages(word) {
+        // SELECT DISTINCT linguagens_id, nome
+        // FROM linguagens 
+        // WHERE (nome LIKE '%test%' OR descricao LIKE '%desc%') AND visibilidade=0; 
+        return knex('linguagens')
+            .distinct('linguagens_id')
+            .select('linguagens_id', 'nome')
+            .where('visibilidade', 0)
+            .andWhere((query) => {
+                return query
+                    .where('nome', 'LIKE', '%'+word+'%')
+                    .orWhere('descricao', 'LIKE', '%'+word+'%');
+            });
+    },
+    searchByAuthorInPatterns(word) {
+        // SELECT p.padroes_id, p.titulo 
+        // FROM usuarios AS u 
+        // INNER JOIN usuarios_padroes AS up ON u.usuarios_id=up.usuarios_id 
+        // INNER JOIN padroes AS p ON up.padroes_id=p.padroes_id
+        // WHERE u.name LIKE '%word%';
+        return knex('usuarios AS u')
+            .select('p.padroes_id', 'p.titulo')
+            .innerJoin('usuarios_padroes AS up', 'u.usuarios_id', 'up.usuarios_id')
+            .innerJoin('padroes AS p', 'up.padroes_id', 'p.padroes_id')
+            .where('u.name', 'LIKE', '%'+word+'%');
+    },
+    searchByAuthorInLanguages(word) {
+        // SELECT l.linguagens_id, l.nome 
+        // FROM usuarios AS u 
+        // INNER JOIN usuarios_linguagens AS ul ON u.usuarios_id=ul.usuarios_id 
+        // INNER JOIN linguagens AS l ON ul.linguagens_id=l.linguagens_id
+        // WHERE u.name LIKE '%word%';
+        return knex('usuarios AS u')
+            .select('l.linguagens_id', 'l.nome')
+            .innerJoin('usuarios_linguagens AS ul', 'u.usuarios_id', 'ul.usuarios_id')
+            .innerJoin('linguagens AS l', 'ul.linguagens_id', 'l.linguagens_id')
+            .where('u.name', 'LIKE', '%'+word+'%');
+    },
+    searchInElementContent(element, word) {
+        // SELECT p.padroes_id, p.titulo, e.name, ec.content 
+        // FROM elements AS e 
+        // INNER JOIN elements_content AS ec ON e.elements_id=ec.elements_id 
+        // INNER JOIN padroes AS p ON ec.patterns_id=p.padroes_id 
+        // WHERE e.name='Nome' AND ec.content LIKE '%p%';
+        return knex('elements AS e')
+            .select('p.padroes_id', 'p.titulo')
+            .innerJoin('elements_content AS ec', 'e.elements_id', 'ec.elements_id')
+            .innerJoin('padroes AS p', 'ec.patterns_id', 'p.padroes_id')
+            .where('e.name', element)
+            .andWhere('ec.content', 'LIKE', '%'+word+'%');
     }
 }
 

@@ -13,5 +13,12 @@ router.get('/', indexController.homePageGet);
 
 router.get('/about', indexController.aboutGet);
 
+router.post('/generalsearch', indexController.generalSearchPost);
+
+router.post('/filteredsearch', indexController.filteredSearchPost);
+
+router.get('/filteredpatternsearch', indexController.filteredPatternSearchGet);
+
+router.post('/filteredpatternsearch', indexController.filteredPatternSearchPost);
 
 module.exports = router;

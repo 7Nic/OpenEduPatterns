@@ -44,13 +44,7 @@ app.use('/languages', languagesRouter);
 app.use('/patterns', patternsRouter);
 app.use('/', indexRouter);
 
-/////===============Apague-me após conclusão do projeto!!================/////
-app.get('/building', (req, res) => {
-    res.send('Página a ser criada. Pode ser a exibição de uma linguagem ou padrão');
-});
-/////===============Apague-me================/////
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port} ou na porta setada pelo Heroku`);
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });

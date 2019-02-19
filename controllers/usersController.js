@@ -1,12 +1,12 @@
 const store = require('../storage/store');
 const multer = require('multer');
 
-
 module.exports = {
-    usersCreateGet: (req, res) => {
+    async usersCreateGet (req, res) {
         res.render('cadastro.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
     },
-    usersCreatePost: (req, res) => {
+
+    async usersCreatePost (req, res) {
         var name = req.body.name;    
         var email = req.body.email;
         var password = req.body.password;
@@ -32,41 +32,39 @@ module.exports = {
             req.flash('error', messages);
             res.redirect('/users/create');
         } else {
-            store.findUserByEmail(email).then((user) => {
-                if(user) {
-                    req.flash('error', 'Email já registrado');
-                    res.redirect('/users/create');
-                } else {
-                    store.createUser({name, email, password}).then(() => res.redirect('/'));
-                }
-            });
+            var user = await store.findUserByEmail(email);
+            if(user) {
+                req.flash('error', 'Email já registrado');
+                res.redirect('/users/create');
+            } else {
+                await store.createUser({name, email, password});
+                res.redirect('/');
+            }
         }
     },
-    usersLoginGet: (req, res) => {
+
+    async usersLoginGet (req, res) {
         if (req.isAuthenticated()) {
             res.redirect('/users/profile');
         } else {
             res.render('login.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
         }
     },
-    profileGet: (req, res) => {
-        store.userLanguages(req.user.usuarios_id).then((languages) => {
-            store.userPatterns(req.user.usuarios_id).then((patterns) => {
-                store.getProfilePhoto(req.user.usuarios_id).then((profilePhoto) => {
-                    console.log(profilePhoto);
-                    res.render('profile.ejs', {profilePhoto, user: req.user, languages, patterns, csrfToken: req.csrfToken()});
-                });
-            });
-        });
+
+    async profileGet (req, res) {
+        var languages = await store.userLanguages(req.user.usuarios_id);
+        var patterns = await store.userPatterns(req.user.usuarios_id);
+        var profilePhoto = await store.getProfilePhoto(req.user.usuarios_id);
+        res.render('profile.ejs', {profilePhoto, user: req.user, languages, patterns, csrfToken: req.csrfToken()});
     },
-    uploadProfilePhoto: (req, res, next) => {
-        store.storeProfilePhoto(req.user.usuarios_id, req.file.filename).then(() => {
-            res.redirect('/users/profile');
-        });
+
+    async uploadProfilePhoto (req, res) {
+        await store.storeProfilePhoto(req.user.usuarios_id, req.file.filename);
+        res.redirect('/users/profile');
     },
-    deleteProfilePhoto: (req, res, next) => {
-        store.deleteProfilePhoto(req.user.usuarios_id).then(() => {
-            res.redirect('/users/profile');
-        });
+
+    async deleteProfilePhoto (req, res) {
+        await store.deleteProfilePhoto(req.user.usuarios_id);
+        res.redirect('/users/profile');
     }
 }

@@ -20,7 +20,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../css/style_sobre.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_patternPage.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -40,9 +40,10 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" role="search">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -94,20 +95,22 @@
             <h4>Visibilidade: <%= pattern.visibilidade %></h4>
             <div class="well">
                 <!-- LOOP -->
-                <% patternContent.forEach((element) => { %>
+                <% patternContent.forEach((element, index) => { %>
                     
                     <h2><%= element.name %></h2>
                     <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
                         <p>|
                         <% relatedPatterns.forEach((relatedPattern) => { %>
-                            <a href="/patterns/<%= relatedPattern.padroes_id %>"><%= relatedPattern.titulo %></a> |
+                            <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
                         <% }); %>
                         </p>
 
-
-
                     <% } else { %>
-                        <p><%= element.content %></p>
+                        <%- element.content %>
+                    <% } %>
+
+                    <% if (isAlexander && index+1 != patternContent.length) { %>
+                        <h3><strong>***</strong></h3>
                     <% } %>
 
                 <% }); %>

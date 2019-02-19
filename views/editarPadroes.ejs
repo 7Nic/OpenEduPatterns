@@ -24,6 +24,8 @@
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <!-- CkEditor -->
+    <script type="text/javascript" src="../../ckeditor5/ckeditor.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -39,9 +41,10 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" role="search">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -115,7 +118,7 @@
                                 <label>Padrões relacionados antes da edição do padrão</label>
                                 <h4>|
                                     <% relatedPatterns.forEach((relatedPattern) => { %>
-                                        <a href="/patterns/<%= relatedPattern.padroes_id %>"><%= relatedPattern.titulo %></a> |
+                                        <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
                                     <% }); %>
                                 </h4>
                             <% } %>
@@ -123,22 +126,23 @@
 
                             <h3>Faça aqui seu novo relacionamento de Padrões</h3>
                             <% if (patternsOfTheSameLanguage) { %>
-                                <label>Padrões pertencentes à mesma linguagem</label>
+                                <label>Padrões pertencentes à mesma linguagem</label>  
                                 <% patternsOfTheSameLanguage.forEach((eachPattern) => { %>
-                                    <p><input type='checkbox' name='patterns2Relate' value='<%= eachPattern.padroes_id %>'> <%= eachPattern.titulo %></p>
+                                    <p><input type='checkbox' name='patterns2Relate' value='<%= eachPattern.padroes_id %>'> <%- eachPattern.titulo %></p>
                                 <% }); %>
                             <% } %>
 
                             <label>Padrões públicos</label>
                             <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+                            <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
                             <% patterns.forEach((pattern) => { %>
-                                <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>'> <%= pattern.titulo %></p>
+                                <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>'> <%- pattern.titulo %></p>
                             <% }) %>
                             <br>
                         <% } else { %>
                             <label><%= element.name %></label>
                             <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
-                            <textarea class="form-control" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"><%= element.content %></textarea>
+                            <textarea class="form-control ckeditor" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"><%= element.content %></textarea>
                         <% } %>
                         <br>
                     <% }); %>
@@ -173,9 +177,23 @@
         <%- include partials/footer.ejs %>
     </footer>
     <!-- SCRIPTS -->
-    <script src="../../dataCollectors/collectDataLogin.js"></script>
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+          var editorsArray = document.querySelectorAll( '.ckeditor' );
+
+          editorsArray.forEach(eachEditor => {
+            ClassicEditor
+            .create(eachEditor, {
+              removePlugins: [ 'MediaEmbed', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload' ],
+            })
+            .catch( error => {
+              console.error( error );
+            });
+          });
+        }
+    </script>
 </body>
 </html>
 

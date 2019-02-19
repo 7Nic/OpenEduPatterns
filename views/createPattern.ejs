@@ -2,6 +2,7 @@
 <html>
 <head>
     <% include partials/head.ejs %>
+    <script type="text/javascript" src="../ckeditor5/ckeditor.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -17,9 +18,10 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" role="search">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -60,7 +62,10 @@
 
     <div class="container criarNovoPadrao">
     	<h1>Criação de Novo Padrão</h1>
-
+      <br>
+      <h4>Observações:</h4>
+      <p id="explanation">1 - Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.</p>
+      <p id="explanation">2 - Ao inserir um link coloque o endereço completo: <strong>http://meulink.com</strong></p>
         <!-- Handle error -->
           <% if (templateElements.length === 0) { %>
             <p>Você reiniciou a página. Por favor volte à página anterior e escolha novamente seu template.</p>
@@ -76,8 +81,9 @@
             </div>
         <% } %>
         <!-- End display errors -->
+
     	<form method="POST" action="" onsubmit="verifyNewTemplate()">
-    	  <% if (templateElements.length > 0) { %>
+    	   <% if (templateElements.length > 0) { %>
               <div class="form-group">
         	    <label for="visibilidade">Visibilidade</label>
         	    <select class="form-control" id="visibilidade"  name="visibilidade">
@@ -88,30 +94,26 @@
           <% }; %>
           
           <!-- Loop -->
-          <p id="explanation">Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.</p>
-          <% templateElements.forEach((element) => { %>
+          <% templateElements.forEach((element, index) => { %>
           <div class="form-group">
-                <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
-              
-              <label>Padrões relacionados</label>
-              <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
-              <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
+              <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
+                <label>Padrões relacionados</label>
+                <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+                <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
               <% patterns.forEach((pattern) => { %>
-                  <p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>
+                  <p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%- pattern.titulo %></p>
               <% }) %>
 
             <% } else { %>
                 <label><%= element.name %></label>
                 <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
-                <textarea class="form-control" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea>
+                <textarea class="form-control ckeditor" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea>
             <% } %>
 
             </div>
             <a class="btn btn-info" onclick="addElement(this)">Adicionar campo aqui</a>
             <br>
             <br>
-
-            
           <% }); %>
           <!-- End Loop -->
 
@@ -167,7 +169,7 @@
                 $("#explanation").after(inputForTemplate);
             }
             counter += 1;
-            var theHTML = "<a class='btn btn-info element"+counter+"Button' onclick='addElement(this)'>Adicionar campo aqui</a>"+
+            var theHTML = "<a class='btn btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'>Adicionar campo aqui</a>"+
                           "<div class='element"+counter+"Div newElement' id='element"+counter+"'>"+
                           "<br>"+
                           "<br>"+
@@ -178,11 +180,22 @@
                           "<div class='form-group'>"+
                           "<input class='form-control' type='text' name='elementName[]' list='commonNames' placeholder='Digite o nome do elemento'>"+
                           "<br>"+
-                          "<textarea class='form-control' id='elementContent[]' name='elementContent[]' rows=4 placeholder='Digite aqui o conteúdo deste elemento'></textarea>"+
-                          "</div>"
+                          "<textarea class='form-control ckeditor' id='elementContent[]' name='elementContent[]' rows=4 placeholder='Digite aqui o conteúdo deste elemento'></textarea>"+
+                          "</div>"+
                           "</div>";
 
             obj.insertAdjacentHTML('beforebegin', theHTML);
+
+
+            textareaObj = document.querySelector( '.element'+counter+'Div textarea' );
+          
+            ClassicEditor
+            .create(textareaObj, {
+              removePlugins: [ 'MediaEmbed', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload' ],
+            })
+            .catch( error => {
+              console.error( error );
+            });
         }
 
         function removeElement(obj) {
@@ -212,16 +225,28 @@
                             "<label>Padrões relacionados</label>"+
                             "<input class='form-control' type='hidden' name='elementName[]' value='Padrões relacionados'>"+
                             "<% patterns.forEach((pattern) => { %>"+
-                                "<p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%= pattern.titulo %></p>"+
+                                "<p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%- pattern.titulo %></p>"+
                             "<% }) %>"+
                           "</div>";                        
-
-
-
             $("."+obj.id+"Div").html(theHTML);
-
         }
 
+        window.onload = function() {
+          var editorsArray = document.querySelectorAll( '.ckeditor' );
+
+          editorsArray.forEach(eachEditor => {
+            ClassicEditor
+            .create(eachEditor, {
+              removePlugins: [ 'MediaEmbed', 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload' ],
+            })
+            .catch( error => {
+              console.error( error );
+            });
+          });
+
+          //Print the names of all plugins on the console
+          // ClassicEditor.builtinPlugins.map( plugin => console.log(plugin.pluginName));
+        }
     </script>
 </body>
 </html>
