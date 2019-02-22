@@ -6,7 +6,7 @@ const csrfProtection = csrf();
 router.use(csrfProtection);
 
 //Require controller and passport modules
-var patternsController = require('../controllers/patternsController');
+const patternsController = require('../controllers/patternsController');
 const passportFunctions = require('../config/passport');
 
 /// LANGUAGES ROUTES ///

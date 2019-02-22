@@ -64,28 +64,84 @@ module.exports = {
         })
         .returning('linguagens_id');
     },
-    listarPadroes() {
-        return knex.select('*').from('padroes').then((resultado) => {
+    listarTodosPadroes() {
+        return knex
+        .select('*')
+        .from('padroes')
+        .then((resultado) => {
             return resultado;
         });
     },
-    listarLinguagens() {
+    listarPadroesPublicos() {
+        return knex
+        .select('*')
+        .from('padroes')
+        .where('visibilidade', 0)
+        .then((resultado) => {
+            return resultado;
+        });
+    },
+    listarTodasLinguagens() {
         return knex.select('*').from('linguagens').then((resultado) => {
             return resultado;
         });
     },
-    listLanguagesWithOwner() {
+    listarLinguagensPublicas() {
+        return knex
+        .select('*')
+        .from('linguagens')
+        .where('visibilidade', 0)
+        .then((resultado) => {
+            return resultado;
+        });
+    },
+    listPublicLanguagesWithOwner() {
         // select l.nome, l.linguagens_id, u.name, u.usuarios_id from usuarios u inner join usuarios_linguagens ul on u.usuarios_id = ul.usuarios_id inner join linguagens l on ul.linguagens_id = l.linguagens_id;
+        return knex.select('linguagens.linguagens_id', 'linguagens.nome', 'usuarios.usuarios_id', 'usuarios.name', 'linguagens.created_at', 'linguagens.descricao')
+            .from('usuarios')
+            .innerJoin('usuarios_linguagens', 'usuarios.usuarios_id', 'usuarios_linguagens.usuarios_id')
+            .innerJoin('linguagens', 'usuarios_linguagens.linguagens_id', 'linguagens.linguagens_id')
+            .where('linguagens.visibilidade', 0);
+    },
+    listAllLangugagesWithOwner() {
         return knex.select('linguagens.linguagens_id', 'linguagens.nome', 'usuarios.usuarios_id', 'usuarios.name', 'linguagens.created_at', 'linguagens.descricao')
             .from('usuarios')
             .innerJoin('usuarios_linguagens', 'usuarios.usuarios_id', 'usuarios_linguagens.usuarios_id')
             .innerJoin('linguagens', 'usuarios_linguagens.linguagens_id', 'linguagens.linguagens_id');
     },
-    listPatternsWithOwner() {
+    listPrivateLanguagesOfAnUserWithOwner(userId) {
+        return knex.select('linguagens.linguagens_id', 'linguagens.nome', 'usuarios.usuarios_id', 'usuarios.name', 'linguagens.created_at', 'linguagens.descricao')
+            .from('usuarios')
+            .innerJoin('usuarios_linguagens', 'usuarios.usuarios_id', 'usuarios_linguagens.usuarios_id')
+            .innerJoin('linguagens', 'usuarios_linguagens.linguagens_id', 'linguagens.linguagens_id')
+            .where('linguagens.visibilidade', 1)
+            .andWhere('usuarios.usuarios_id', userId);
+    },
+    listPublicPatternsWithOwner() {
+        return knex.select('usuarios.usuarios_id', 'usuarios.name', 'padroes.padroes_id', 'padroes.titulo', 'padroes.created_at', 'padroes.texto')
+            .from('usuarios')
+            .innerJoin('usuarios_padroes', 'usuarios.usuarios_id', 'usuarios_padroes.usuarios_id')
+            .innerJoin('padroes', 'usuarios_padroes.padroes_id', 'padroes.padroes_id')
+            .where('padroes.visibilidade', 0);
+    },
+    listAllPatternsWithOwner() {
         return knex.select('usuarios.usuarios_id', 'usuarios.name', 'padroes.padroes_id', 'padroes.titulo', 'padroes.created_at', 'padroes.texto')
             .from('usuarios')
             .innerJoin('usuarios_padroes', 'usuarios.usuarios_id', 'usuarios_padroes.usuarios_id')
             .innerJoin('padroes', 'usuarios_padroes.padroes_id', 'padroes.padroes_id');
+    },
+    listPrivatePatternsOfAnUserWithOwner(userId) {
+        // SELECT u.usuarios_id, u.name, p.padroes_id, p.titulo, p.created_at, p.texto 
+        // FROM usuarios AS u 
+        // INNER JOIN usuarios_padroes AS up ON u.usuarios_id=up.usuarios_id 
+        // INNER JOIN padroes AS p ON up.padroes_id=p.padroes_id 
+        // WHERE p.visibilidade=1  AND u.usuarios_id=271;
+        return knex.select('usuarios.usuarios_id', 'usuarios.name', 'padroes.padroes_id', 'padroes.titulo', 'padroes.created_at', 'padroes.texto')
+            .from('usuarios')
+            .innerJoin('usuarios_padroes', 'usuarios.usuarios_id', 'usuarios_padroes.usuarios_id')
+            .innerJoin('padroes', 'usuarios_padroes.padroes_id', 'padroes.padroes_id')
+            .where('padroes.visibilidade', 1)
+            .andWhere('usuarios.usuarios_id', userId);
     },
     pegarLinguagemPorId(Id) {
         return knex.select('*').from('linguagens').where('linguagens_id', Id).then((result) => {
@@ -517,7 +573,8 @@ module.exports = {
             .select('p.padroes_id', 'p.titulo')
             .innerJoin('usuarios_padroes AS up', 'u.usuarios_id', 'up.usuarios_id')
             .innerJoin('padroes AS p', 'up.padroes_id', 'p.padroes_id')
-            .where('u.name', 'LIKE', '%'+word+'%');
+            .where('u.name', 'LIKE', '%'+word+'%')
+            .andWhere('visibilidade', 0);
     },
     searchByAuthorInLanguages(word) {
         // SELECT l.linguagens_id, l.nome 
@@ -529,7 +586,8 @@ module.exports = {
             .select('l.linguagens_id', 'l.nome')
             .innerJoin('usuarios_linguagens AS ul', 'u.usuarios_id', 'ul.usuarios_id')
             .innerJoin('linguagens AS l', 'ul.linguagens_id', 'l.linguagens_id')
-            .where('u.name', 'LIKE', '%'+word+'%');
+            .where('u.name', 'LIKE', '%'+word+'%')
+            .andWhere('visibilidade', 0);;
     },
     searchInElementContent(element, word) {
         // SELECT p.padroes_id, p.titulo, e.name, ec.content 
@@ -542,7 +600,8 @@ module.exports = {
             .innerJoin('elements_content AS ec', 'e.elements_id', 'ec.elements_id')
             .innerJoin('padroes AS p', 'ec.patterns_id', 'p.padroes_id')
             .where('e.name', element)
-            .andWhere('ec.content', 'LIKE', '%'+word+'%');
+            .andWhere('ec.content', 'LIKE', '%'+word+'%')
+            .andWhere('visibilidade', 0);
     }
 }
 

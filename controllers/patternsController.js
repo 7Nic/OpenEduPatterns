@@ -2,7 +2,11 @@ const store = require('../storage/store');
 
 module.exports = {
     async index (req, res) {
-        var patterns = await store.listPatternsWithOwner();
+        var patterns = await store.listPublicPatternsWithOwner();
+        if (res.locals.loggedIn) {
+            var privatePatternsOfLoggedUser = await store.listPrivatePatternsOfAnUserWithOwner(req.user.usuarios_id);
+            patterns = patterns.concat(privatePatternsOfLoggedUser);
+        }
         // Date parsing
         patterns.forEach((pattern) => {
             pattern.dayCreation = pattern.created_at.getDate();
@@ -16,7 +20,7 @@ module.exports = {
         var templateId = req.session.templateId;
         // req.session.templateId = null; //Reset the used variable
         var templateElements = await store.elementsNameOfTemplate(templateId);
-        var patterns = await store.listarPadroes();
+        var patterns = await store.listarTodosPadroes();
         res.render('createPattern.ejs', {patterns: patterns, templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
@@ -101,7 +105,7 @@ module.exports = {
     async patternsEditGet (req, res) {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
         var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
-        var patterns = await store.listarPadroes();
+        var patterns = await store.listarTodosPadroes();
         var patternsOfTheSameLanguage = await store.patternsOfTheSameLanguage(req.params.id);
         //I want an undefined object, not an empty array
         if (patternsOfTheSameLanguage.length === 0) {

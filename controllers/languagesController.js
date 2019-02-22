@@ -2,7 +2,11 @@ const store = require('../storage/store');
 
 module.exports = {
     async index (req, res) {
-        var languages = await store.listLanguagesWithOwner();
+        var languages = await store.listPublicLanguagesWithOwner();
+        if (req.isAuthenticated()) {
+            var privateLanguagesOfLoggedUser = await store.listPrivateLanguagesOfAnUserWithOwner(req.user.usuarios_id);
+            languages = languages.concat(privateLanguagesOfLoggedUser);
+        }
         // Date parsing
         languages.forEach((language) => {
             language.dayCreation = language.created_at.getDate();
@@ -62,9 +66,9 @@ module.exports = {
     async languagesEditGet (req, res) {
         var resultadoLinguagem = await store.pegarLinguagemPorId(req.params.id);
 		var resultadoJoin = await store.padroesDeUmaLinguagem(req.params.id);
-		var resultadoListarPadroes = await store.listarPadroes();
+		var resultadoListarPadroes = await store.listarPadroesPublicos();
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
-        var languages = await store.listarLinguagens();
+        var languages = await store.listarLinguagensPublicas();
         res.render('editarLinguagens.ejs', {languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
     },
 
