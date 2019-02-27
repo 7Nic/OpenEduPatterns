@@ -23,7 +23,7 @@ module.exports = {
     async languagesCreatePost (req, res) {
         var visibilidadeNum = null;
         if(req.body.visibilidade === 'Público'){
-            visibilidadeNum = 0;
+            visibilidadeNum = 0;                                                       
         } else if(req.body.visibilidade === 'Privado'){
             visibilidadeNum = 1;
         } else {
@@ -89,34 +89,34 @@ module.exports = {
             languagesToRelateArray.push(req.body.languages2Relate);
         } 
 
-        await store.editarLinguagem({data, Id: req.params.id});
-        await store.deleteLanguageInLanguagesLanguages(req.params.id);
-        await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
-        res.redirect(`/languages/${req.params.id}`);
+        // await store.editarLinguagem({data, Id: req.params.id});
+        // await store.deleteLanguageInLanguagesLanguages(req.params.id);
+        // await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
+        // res.redirect(`/languages/${req.params.id}`);
 
 
-        // var nomeLinguagem = req.body.nomeLinguagem;
-        // var descricaoLinguagem = req.body.descricaoLinguagem;
+        var nomeLinguagem = req.body.nomeLinguagem;
+        var descricaoLinguagem = req.body.descricaoLinguagem;
 
-        // req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
-        // req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
 
-        // var errors = req.validationErrors();
+        var errors = req.validationErrors();
 
-        // if(errors) {
-        //     var messages =[];
-        //     errors.forEach((error) => {
-        //         messages.push(error.msg);
-        //     });
-        //     req.flash('error', messages);
-        //     res.redirect(`/languages/${req.params.id}/edit`);
+        if(errors) {
+            var messages =[];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect(`/languages/${req.params.id}/edit`);
 
-        // } else {
-        //     store.editarLinguagem({data, Id: req.params.id})
-        //         .then(() => {
-        //             res.redirect(`/languages/${req.params.id}`);
-        //         });
-        // }
+        } else {
+            store.editarLinguagem({data, Id: req.params.id})
+                .then(() => {
+                    res.redirect(`/languages/${req.params.id}`);
+                });
+        }
     },
 
     async languagesDeletePost (req, res) {
