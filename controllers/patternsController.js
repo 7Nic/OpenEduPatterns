@@ -40,66 +40,49 @@ module.exports = {
             patternsToRelateArray = [];
             patternsToRelateArray.push(req.body.relatedPatterns);
         } 
-        
-        req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
-        
-        if (req.body.createNewTemplate) {
-            var templateId = await store.addTemplate({name: req.body.newTemplateName, ownerId: req.user.usuarios_id});
-            var elementsNamesArray = req.body.elementName;
-            var elementsIdArray = await store.addElementsInDB(elementsNamesArray);
-            await store.relateContent2Element(templateId, elementsIdArray);
-            var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId});
-            await store.relateUserPattern(req.user.usuarios_id, newPatternId);
-            await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
-            await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
-            res.redirect('/patterns');
-        } else {
-            var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId});
-            await store.relateUserPattern(req.user.usuarios_id, newPatternId);
-            await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
-            var elementsIdArrayOfObjects = await store.elementsIdOfTemplate(req.session.templateId);
-            //Convert array of objects to array
-            var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
-                return obj.elements_id;
-            });
-            await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
-            res.redirect('/patterns');
+
+        // Handle CkEditor issues with empty fields
+        if (req.body.elementContent[0] === '<p>&nbsp;</p>') {
+            req.body.elementContent[0] = undefined;
         }
 
+        req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
+        var errors = req.validationErrors();
 
-        //=====================================OLD GUY FOR REFERENCE!!!======================================
+        if(errors) {
+                var messages = [];
+                errors.forEach((error) => {
+                    messages.push(error.msg);
+                });
+                req.flash('error', messages);
+                res.redirect('/patterns/create');
+        } else {
+            req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
 
-        // var nomePadrao = req.body.nomePadrao;
-        // var visibilidade = visibilidadeNum;
-        // var texto = req.body.texto        
+            if (req.body.createNewTemplate) {
+                var templateId = await store.addTemplate({name: req.body.newTemplateName, ownerId: req.user.usuarios_id});
+                var elementsNamesArray = req.body.elementName;
+                var elementsIdArray = await store.addElementsInDB(elementsNamesArray);
+                await store.relateContent2Element(templateId, elementsIdArray);
+                var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId});
+                await store.relateUserPattern(req.user.usuarios_id, newPatternId);
+                await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
+                await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
+                res.redirect('/patterns');
+            } else {
+                var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId});
+                await store.relateUserPattern(req.user.usuarios_id, newPatternId);
+                await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
+                var elementsIdArrayOfObjects = await store.elementsIdOfTemplate(req.session.templateId);
+                //Convert array of objects to array
+                var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
+                    return obj.elements_id;
+                });
+                await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
+                res.redirect('/patterns');
+            }
+        }
 
-        // req.checkBody('nomePadrao', 'Campo de nome vazio').notEmpty();
-        // req.checkBody('texto', 'Campo de texto vazio').notEmpty();
-
-        // var errors = req.validationErrors();
-        
-        // if(errors) {
-        //     var messages = [];
-        //     errors.forEach((error) => {
-        //         messages.push(error.msg);
-        //     });
-        //     req.flash('error', messages);
-        //     res.redirect('/languages/create');
-        // } else {
-        //     store.criarPadrao({
-        //         nomePadrao,
-        //         visibilidade,
-        //         texto
-        //     })
-        //     .then((patternId) => {
-                
-        //         store.relateUserPattern(req.user.usuarios_id, patternId)
-        //         .then(() => {
-        //             res.redirect('/patterns');
-        //         });
-    
-        //     });
-        // }
     },
 
     async patternsEditGet (req, res) {
@@ -130,32 +113,30 @@ module.exports = {
             patternsToRelateArray = [];
             patternsToRelateArray.push(req.body.patterns2Relate);
         }
-
-        await store.editPatternInPadroes({data, Id: req.params.id});
-        await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
-        await store.deletePatternsInPatternsPatterns(req.params.id);
-        await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
-        res.redirect(`/patterns/${req.params.id}`);
         
+        // Handle CkEditor issues with empty fields
+        if (req.body.elementContent[0] === '<p>&nbsp;</p>') {
+            req.body.elementContent[0] = undefined;
+        }
 
-        // req.checkBody('nomePadrao', 'Campo de nome vazio').notEmpty();
-        // req.checkBody('texto', 'Campo de texto vazio').notEmpty();
+        req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
 
-        // var errors = req.validationErrors();
+        var errors = req.validationErrors();
 
-        // if (errors) {
-        //     var messages = [];
-        //     errors.forEach((error) => {
-        //         messages.push(error.msg);
-        //     });
-        //     req.flash('error', messages);
-        //     res.redirect(`/patterns/${req.params.id}/edit`);
-        // } else {
-            // store.editarPadrao({data, Id: req.params.id})
-            //     .then(() => {
-            //         res.redirect(`/patterns/${req.params.id}`);
-            //     });
-        // }
+        if (errors) {
+            var messages = [];
+            errors.forEach((error) => {
+                messages.push(error.msg);
+            });
+            req.flash('error', messages);
+            res.redirect(`/patterns/${req.params.id}/edit`);
+        } else {
+            await store.editPatternInPadroes({data, Id: req.params.id});
+            await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
+            await store.deletePatternsInPatternsPatterns(req.params.id);
+            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
+            res.redirect(`/patterns/${req.params.id}`);
+        }
     },
 
     async patternsDeletePost (req, res) {

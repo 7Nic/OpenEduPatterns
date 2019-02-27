@@ -131,7 +131,7 @@ module.exports = {
             var patternsConcat = await store.searchInElementContent('Rationale', req.body.keyword2);
             patterns = patterns.concat(patternsConcat);
         }
-        // console.log(patterns);
+        
         res.render('filteredSearchPatternsResults.ejs', {patterns, csrfToken: req.csrfToken(), user: req.user});
     }
 }

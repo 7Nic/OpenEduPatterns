@@ -82,7 +82,7 @@
         <% } %>
         <!-- End display errors -->
 
-    	<form method="POST" action="" onsubmit="verifyNewTemplate()">
+    	<form method="POST" action="" onsubmit="checkEmptyName(); verifyNewTemplate();">
     	   <% if (templateElements.length > 0) { %>
               <div class="form-group">
         	    <label for="visibilidade">Visibilidade</label>
@@ -213,6 +213,7 @@
                 $("#createNewTemplate").attr('value', true);
             }
             console.log(qttNewElements);
+            // alert('qqr coisa2');
         }
 
         function relatePatterns(obj) {
@@ -248,22 +249,22 @@
           // ClassicEditor.builtinPlugins.map( plugin => console.log(plugin.pluginName));
         }
 
-        // function checkEmptyName() {
-        //   // var str = $("#elementContent[1] p").text();
-        //   // alert(str);
-        //   alert('bora');
+        function checkEmptyName() {
+          // var str = $("#elementContent[1] p").text();
+          // alert(str);
+          alert('bora');
           
-        //   // var values = $("textarea[name='elementContent[]']")
-        //   //     .map(function(){return $(this).text();}).get();
+          // var values = $("textarea[name='elementContent[]']")
+          //     .map(function(){return $(this).text();}).get();
 
-        //   var arr = $('input[name="pname[]"]').map(function () {
-        //     return this.value; // $(this).val()
-        //   }).get();
+          var arr = $('input[name="pname[]"]').map(function () {
+            return this.value; // $(this).val()
+          }).get();
 
-        //   console.log(arr);
-        //   alert([1]);
+          console.log(arr);
+          alert(arr[1]);
 
-        // }
+        }
     </script>
 </body>
 </html>

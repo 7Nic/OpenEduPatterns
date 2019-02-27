@@ -89,12 +89,6 @@ module.exports = {
             languagesToRelateArray.push(req.body.languages2Relate);
         } 
 
-        // await store.editarLinguagem({data, Id: req.params.id});
-        // await store.deleteLanguageInLanguagesLanguages(req.params.id);
-        // await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
-        // res.redirect(`/languages/${req.params.id}`);
-
-
         var nomeLinguagem = req.body.nomeLinguagem;
         var descricaoLinguagem = req.body.descricaoLinguagem;
 
@@ -112,10 +106,10 @@ module.exports = {
             res.redirect(`/languages/${req.params.id}/edit`);
 
         } else {
-            store.editarLinguagem({data, Id: req.params.id})
-                .then(() => {
-                    res.redirect(`/languages/${req.params.id}`);
-                });
+            await store.editarLinguagem({data, Id: req.params.id});
+            await store.deleteLanguageInLanguagesLanguages(req.params.id);
+            await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
+            res.redirect(`/languages/${req.params.id}`);
         }
     },
 
