@@ -89,6 +89,13 @@
         <h1>Exibição de Padrão</h1>
         <br>
         <% if (pattern) { %>
+            <!-- <form method="POST" action="/patterns/<%= pattern.padroes_id %>/exportpdf">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button style="text-align: center;" type="submit" class="btn btn-success" >Exportar PDF</button>
+            </form> -->
+            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-success" >Exportar PDF</button>
+            <br>
+            <br>
             <a class="btn btn-info" href="/patterns/<%= pattern.padroes_id %>/edit">Editar Padrão</a>
             <h4>Autor: <%= owner.name %></h4>
             <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
@@ -97,20 +104,26 @@
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>
                     
-                    <h2><%= element.name %></h2>
+                    <% if (isAlexander && index === 0) { %>
+                        <h2><strong> <%= element.name %></strong></h2>
+                    <% } else if (!isAlexander) { %>
+                        <h2><%= element.name %></h2>
+                    <% } %>
+
                     <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
                         <p>|
                         <% relatedPatterns.forEach((relatedPattern) => { %>
                             <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
                         <% }); %>
                         </p>
-
+                    <% } else if (isAlexander && (index === 3 || index === 4)) { %> <!-- Problem and Solution of Alexander template has to be bold -->
+                        <strong><%- element.content %></strong>
                     <% } else { %>
                         <%- element.content %>
                     <% } %>
 
                     <% if (isAlexander && index+1 != patternContent.length) { %>
-                        <h3><strong>***</strong></h3>
+                        <p style="font-style: italic;">***</p>
                     <% } %>
 
                 <% }); %>

@@ -132,6 +132,6 @@ module.exports = {
             patterns = patterns.concat(patternsConcat);
         }
         
-        res.render('filteredSearchPatternsResults.ejs', {patterns, csrfToken: req.csrfToken(), user: req.user});
+        res.render('searchresults.ejs', {languages: [], patterns, csrfToken: req.csrfToken(), user: req.user});
     }
 }

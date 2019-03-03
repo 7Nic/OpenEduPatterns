@@ -326,7 +326,7 @@ module.exports = {
         // INNER JOIN elements e ON te.elements_id = e.elements_id 
         // INNER JOIN elements_content ec ON e.elements_id = ec.elements_id 
         // INNER JOIN padroes p ON ec.patterns_id = p.padroes_id 
-        // WHERE padroes_id=151
+        // WHERE padroes_id=593
         // ORDER BY e.order ASC; 
         return knex
         .select('elements.name', 'elements_content.content')

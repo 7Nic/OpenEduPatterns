@@ -87,21 +87,43 @@
     <div class="container">
         <br>
         <br>
-        <h1>Resultados da busca</h1>
-        <p>Filtros:</p>
+        <h3>Pesquisa geral</h3>
+        <h5>Nomes e conteúdos serão analisados</h5>
         <form method="POST" action="/filteredsearch">
-            <input type="checkbox" name="pattern" checked> Padrões
-            <input type="checkbox" name="language" checked> Linguagens
-            <input type="checkbox" name="author" checked> Autores
+            <input type="checkbox" name="pattern" checked> Padrão
+            <input type="checkbox" name="language" checked> Linguagem
+            <input type="checkbox" name="author" checked> Autor
             <br>
-            <input type="text" placeholder="Buscar" name="keyword2">
+            <input type="text" placeholder="Pesquisar" name="keyword2">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn btn-info btn-sm" type="submit">Pesquisar</button>
-            <br>
-            <br>
-            <p>Também é possível realizar uma busca refinada nos padrões com filtros de template</p>
-            <a href="/filteredpatternsearch" class="btn btn-success ">Busca refinada nos padrões</a>
         </form>
+        <br>
+        <h3>Pesquisa refinada  nos padrões</h3>
+        <h5>Apenas os campos selecionados serão analisados</h5>
+        <form method="POST" action="/filteredpatternsearch">
+            <input type="checkbox" name="Nome"> Nome
+            <input type="checkbox" name="Contexto"> Contexto
+            <input type="checkbox" name="Figura"> Figura
+            <input type="checkbox" name="Problema"> Problema
+            <input type="checkbox" name="Solucao"> Solução
+            <input type="checkbox" name="DiagramaDaSolucao"> Diagrama da Solução
+            <input type="checkbox" name="Descricao"> Descrição
+            <input type="checkbox" name="Alias"> Alias
+            <input type="checkbox" name="Forças"> Forças
+            <input type="checkbox" name="Exemplo"> Exemplo
+            <input type="checkbox" name="UsosConhecidos"> Usos conhecidos
+            <input type="checkbox" name="PadroesRelacionados"> Padrões relacionados
+            <input type="checkbox" name="ContextoResultante"> Contexto resultante
+            <input type="checkbox" name="Rationale"> Rationale
+            <br>
+            <br>
+            <input type="text" placeholder="Pesquisa refinada" name="keyword2">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-info btn-sm" type="submit">Pesquisar</button>
+        </form>
+
+        <h1>Resultados da pesquisa</h1>
         <div class="well">
             <% if (languages.length > 0) { %>
                 <h2>Linguagens</h2>

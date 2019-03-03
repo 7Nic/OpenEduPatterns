@@ -1,3 +1,8 @@
+const fs = require('fs');
+const pdf = require('html-pdf');
+const delay = require('delay');
+const options = { format: 'Letter' };
+
 const store = require('../storage/store');
 
 module.exports = {
@@ -154,7 +159,7 @@ module.exports = {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
         var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
         var templateId = await store.templateOfPattern(req.params.id);
-        
+
         var isAlexander = undefined;
         if (templateId === 1) {
             isAlexander = true;
@@ -210,4 +215,46 @@ module.exports = {
             res.redirect('/patterns/create');
         }
     },
+
+    async exportPdf (req, res) {
+        var assembledPattern = await store.assemblyPatternById(req.params.id);
+        console.log(assembledPattern);
+
+        //Create the new file
+        var stream = fs.createWriteStream("./public/Pdfs/temporary.html", {flags:'a'});
+        stream.write("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n");
+
+        // var vetor = ['oi', 'eu', 'sou', 'o', '(não o Goku)', 'Nicolau2'];
+
+        assembledPattern.forEach( function (item,index) {
+            stream.write("<h2 style='text-align: center;'>" + item.name + "</h2>" + "\n");
+            stream.write("<div style='text-align: center;'>" + item.content + "</div>" + "\n");
+        });
+
+        stream.write("</body>\n</html>");
+        stream.end(); 
+        
+
+        //Wait to save the file in disk
+        await delay(10);
+
+        fs.readFile('./public/Pdfs/temporary.html', 'utf8', function(err, data) {
+            pdf.create(data, options).toFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, result) {
+                if (err) return console.log(err);
+
+                // Delete the file
+                fs.unlink('./public/Pdfs/temporary.html');
+
+                fs.readFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, pdfFile) {
+                    if (err) return console.log(err);
+
+                    res.contentType("application/pdf");
+                    res.send(pdfFile);
+
+
+                    // res.redirect(`/patterns/${req.params.id}`);
+                });
+            });
+        });
+    }
 }
