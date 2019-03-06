@@ -89,10 +89,6 @@
         <h1>Exibição de Padrão</h1>
         <br>
         <% if (pattern) { %>
-            <!-- <form method="POST" action="/patterns/<%= pattern.padroes_id %>/exportpdf">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button style="text-align: center;" type="submit" class="btn btn-success" >Exportar PDF</button>
-            </form> -->
             <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-success" >Exportar PDF</button>
             <br>
             <br>
@@ -103,10 +99,7 @@
             <div class="well">
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>
-                    
-                    <% if (isAlexander && index === 0) { %>
-                        <h2><strong> <%= element.name %></strong></h2>
-                    <% } else if (!isAlexander) { %>
+                    <% if (!isAlexander) { %>
                         <h2><%= element.name %></h2>
                     <% } %>
 
@@ -116,6 +109,8 @@
                             <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
                         <% }); %>
                         </p>
+                    <% } else if (isAlexander && index === 0) { %>
+                        <h4><strong> <%- element.content %></strong></h4>
                     <% } else if (isAlexander && (index === 3 || index === 4)) { %> <!-- Problem and Solution of Alexander template has to be bold -->
                         <strong><%- element.content %></strong>
                     <% } else { %>

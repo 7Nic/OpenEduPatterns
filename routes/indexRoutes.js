@@ -13,6 +13,8 @@ router.get('/', indexController.homePageGet);
 
 router.get('/about', indexController.aboutGet);
 
+router.get('/setlang/:lang', indexController.setLanguage);
+
 router.post('/generalsearch', indexController.generalSearchPost);
 
 router.post('/filteredsearch', indexController.filteredSearchPost);

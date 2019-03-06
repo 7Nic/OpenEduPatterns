@@ -9,6 +9,11 @@ module.exports = {
         res.render('sobre.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
 
+    async setLanguage (req, res) {
+        res.cookie('lang', req.params.lang);
+        res.redirect('back');
+    },
+
     async generalSearchPost (req, res) {
         if (req.body.keyword === "") {
             req.body.keyword = undefined;

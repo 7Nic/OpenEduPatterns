@@ -27,7 +27,6 @@ router.post('/:id/edit', passportFunctions.isOwnerOfPattern, patternsController.
 
 router.post('/:id/delete', passportFunctions.isOwnerOfPattern, patternsController.patternsDeletePost);
 
-router.get('/:id/exportpdf', patternsController.exportPdf);
-router.post('/:id/exportpdf', patternsController.exportPdf);
+router.get('/:id/exportpdf', patternsController.exportPdfGet);
 
 module.exports = router;

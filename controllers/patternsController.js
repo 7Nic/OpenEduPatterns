@@ -216,45 +216,87 @@ module.exports = {
         }
     },
 
-    async exportPdf (req, res) {
+    async exportPdfGet (req, res) {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
-        console.log(assembledPattern);
+        var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
+        var patternVisibility = await store.patternVisibility(req.params.id);
+        var patternIsPublic = undefined;
+        if (patternVisibility.visibilidade === 1) {
+            patternIsPublic = false;
+        } else {
+            patternIsPublic = true;
+        }
 
-        //Create the new file
-        var stream = fs.createWriteStream("./public/Pdfs/temporary.html", {flags:'a'});
-        stream.write("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n");
+        var owner = await store.ownerOfPattern(req.params.id);
 
-        // var vetor = ['oi', 'eu', 'sou', 'o', '(não o Goku)', 'Nicolau2'];
+        if (patternIsPublic || (res.locals.loggedIn && owner.usuarios_id === req.user.usuarios_id)) {
+            var templateId = await store.templateOfPattern(req.params.id);
 
-        assembledPattern.forEach( function (item,index) {
-            stream.write("<h2 style='text-align: center;'>" + item.name + "</h2>" + "\n");
-            stream.write("<div style='text-align: center;'>" + item.content + "</div>" + "\n");
-        });
+            //Create the new file
+            var stream = fs.createWriteStream("./public/Pdfs/temporary.html", {flags:'a'});
+            stream.write(`<!DOCTYPE html>\n<html>\n<head>\n<title>Pdf</title>\n</head>\n<body>\n`);
 
-        stream.write("</body>\n</html>");
-        stream.end(); 
-        
 
-        //Wait to save the file in disk
-        await delay(10);
+            assembledPattern.forEach( function (item,index) {
+                if (templateId === 1) { //If it's Alexander
+                    if (index === 0) {
+                        stream.write("<div style='text-align: center;'><h2><strong>" + item.content + "</strong></h2></div>" + "\n");
+                    } else if (index === 3 || index === 4) {
+                        stream.write("<p style='font-style: italic; text-align: center;'>***</p>");
+                        stream.write("<div style='text-align: center;'><strong>" + item.content + "</strong></div>" + "\n");
+                    } else {
+                        stream.write("<p style='font-style: italic; text-align: center;'>***</p>");
+                        stream.write("<div style='text-align: center;'>" + item.content + "</div>" + "\n");
+                    }
+                } else {
+                    stream.write("<h2 style='text-align: center;'>" + item.name + "</h2>" + "\n");
 
-        fs.readFile('./public/Pdfs/temporary.html', 'utf8', function(err, data) {
-            pdf.create(data, options).toFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, result) {
-                if (err) return console.log(err);
+                    if (item.name === "Padrões relacionados" || item.name === "Padrões Relacionados" || item.name === "Padroes relacionados" || item.name === "Padroes Relacionados" || item.name === "padrões relacionados" || item.name === "padrões Relacionados" || item.name === "padroes relacionados" || item.name === "padroes Relacionados") {
+                        stream.write("<div style='text-align: center;'><p>|");
+                        relatedPatterns.forEach((relatedPattern) => { 
+                            stream.write(`<a href='/patterns/${relatedPattern.padroes_id}'>${relatedPattern.titulo}</a> |`);
+                        });
+                        stream.write("</p></div>");
+                    } else {
+                        stream.write("<div style='text-align: center;'>" + item.content + "</div>" + "\n");
+                    }
+                }
 
-                // Delete the file
-                fs.unlink('./public/Pdfs/temporary.html');
+            });
+            
+            
 
-                fs.readFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, pdfFile) {
+            stream.write("</body>\n</html>");
+            stream.end(); 
+            
+
+            //Wait to save the file in disk
+            await delay(10);
+
+            fs.readFile('./public/Pdfs/temporary.html', 'utf8', function(err, data) {
+                pdf.create(data, options).toFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, result) {
                     if (err) return console.log(err);
 
-                    res.contentType("application/pdf");
-                    res.send(pdfFile);
+                    // Delete the html file
+                    fs.unlink('./public/Pdfs/temporary.html');
 
+                    fs.readFile(`./public/Pdfs/pattern${req.params.id}.pdf`, function(err, pdfFile) {
+                        if (err) return console.log(err);
 
-                    // res.redirect(`/patterns/${req.params.id}`);
+                        res.contentType("application/pdf");
+                        res.send(pdfFile);
+
+                        //Delete the pdf file after sending to the browser
+                        fs.unlink(`./public/Pdfs/pattern${req.params.id}.pdf`);
+                    });
                 });
             });
-        });
+
+        } else {
+            
+            res.render('mensagem.ejs', {mensagem: "You're not allowed to access this pattern"});
+        }
     }
+
+
 }

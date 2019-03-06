@@ -6,6 +6,14 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const validator = require('express-validator');
+const i18n = require('i18n');
+
+i18n.configure({
+    locales: ['pt', 'en'],
+    defaultLocale: 'pt',
+    cookie: 'lang',
+    directory: __dirname + '/locales'
+});
 
 const app = express();
 
@@ -24,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // Middleware: We just use this function to be able to handle json files
 app.use(validator()); //Needs to be here because it uses the body already parsed to validate
 app.use(cookieParser());
+app.use(i18n.init);
 app.use(session({secret: 'EYSYAOWPB8DsuF04Ucsv', resave: false, saveUninitialized: false}));
 app.use(flash());
 app.use(passport.initialize());

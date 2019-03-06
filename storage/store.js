@@ -602,6 +602,14 @@ module.exports = {
             .where('e.name', element)
             .andWhere('ec.content', 'LIKE', '%'+word+'%')
             .andWhere('visibilidade', 0);
+    },
+    patternVisibility(patternId) {
+        return knex('padroes')
+            .select('visibilidade')
+            .where('padroes_id', patternId)
+            .then((result) => {
+                return result[0];
+            });
     }
 }
 
