@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns</title>
+    <title>OpenEduPatterns</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -27,73 +27,20 @@
 </head>
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="img/logoedu4.png"></a>
-                <!-- <a href=""><img src="img/logoLab.jpg"></a> -->
-                <!-- <a href=""><img src="img/logo.png"></a> -->
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li class="active"><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav0.ejs %>
     </nav>  
 
     <div class="corpo">
         <div class="container">
-            <h1>Linguagens populares</h1>           
+            <h1><%= __('Linguagens populares') %></h1>           
             <div class="col-md-8 col-md-offset-2 col-artigos">
                 <div class="row artigo">
-                    <h2><a href="/languages/create">Criar nova Linguagem</a><h2>
+                    <h2><a href="/languages/create"><%= __('Criar nova Linguagem') %></a><h2>
                 </div>
                 <div class="row artigo">
-                    <h2><a href="">Linguagem un</a></h2>
+                    <h2><a href=""><%= __('Linguagem um') %></a></h2>
                     <p>
-                        Aqui teremos a descrição da linguagem, duis aute irure dolor in reprehenderit in voluptate velit esse
+                        Lorem, duis aute irure dolor in reprehenderit in voluptate velit esse
                         cillum dolore eu fugiat nulla. 
                         <!-- <a href="" class="read-more">Acessar</a> -->
                     </p>

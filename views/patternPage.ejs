@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns!</title>
+    <title>OpenEduPatterns</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -28,71 +28,20 @@
 
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li><a href="/languages">Linguagens</a></li>
-                    <li class="active"><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav1.ejs %>
     </nav>  
 
 
     <div class="container">
         <br>
         <br>
-        <h1>Exibição de Padrão</h1>
+        <h1><%= __('Exibição de Padrão') %></h1>
         <br>
         <% if (pattern) { %>
-            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-success" >Exportar PDF</button>
+            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-success" ><%= __('Exportar PDF') %></button>
             <br>
             <br>
-            <a class="btn btn-info" href="/patterns/<%= pattern.padroes_id %>/edit">Editar Padrão</a>
+            <a class="btn btn-info" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
             <h4>Autor: <%= owner.name %></h4>
             <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
             <h4>Visibilidade: <%= pattern.visibilidade %></h4>
@@ -124,7 +73,7 @@
                 <% }); %>
                 <!-- END LOOP -->
             </div>
-            <h3>Comentários</h3>
+            <h3><%= __('Comentários') %></h3>
             <br>
 
             <!-- Add comment -->
@@ -137,7 +86,7 @@
                     <button type="submit" class="btn btn-info">Enviar</button>
                 </form>
             <% } else { %>
-                <h4>Você não está logado, para comentar efetue o <a href="/users/login">Login</a>.</h4>
+                <h4><%= __('Você não está logado, para comentar efetue o') %> <a href='/users/login'><%= __('Login') %></a>.</h4>
                 <br>
             <% } %>
 
@@ -152,7 +101,7 @@
 
         <% } else { %>
             <div class="well">
-                <h2>Este Padrão não existe</h2>
+                <h2><%= __('Este Padrão não existe') %></h2>
             </div>
         <% } %>
         <br>

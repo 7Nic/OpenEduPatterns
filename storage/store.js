@@ -346,7 +346,7 @@ module.exports = {
     },
     addElementsInDB(elementsNamesArray) {
         //The promisse.all already returns the array, so we just return the promise itself
-        return Promise.all(elementsNamesArray.map((elementName, index) => {
+        return Promise.all (elementsNamesArray.map((elementName, index) => {
             return knex('elements')
                 .insert({
                     name: elementName,
@@ -610,7 +610,8 @@ module.exports = {
             .then((result) => {
                 return result[0];
             });
-    }
+    },
+
 }
 
 

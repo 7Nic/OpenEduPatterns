@@ -1,62 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% include partials/head.ejs %>
+    <% include partials/head1.ejs %>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li><a href="/languages">Linguagens</a></li>
-                    <li class="active"><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav1.ejs %>
     </nav>  
 
 
@@ -72,20 +21,20 @@
         <!-- End display errors -->
     	<form onsubmit="sortElements()" method="POST" action="/patterns/chosetemplate">
     	  <div class="form-group">
-            <h1>Escolha um Template já existente</h1>
+            <h1><%= __('Escolha um Template já existente') %></h1>
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
-                <p>| Nome | Contexto | Figura | Problema | Solução | Diagrama da solução |</p>    
+                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p>    
             </div>
             
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
-                <p>| Nome | Contexto | Descrição | Solução |</p>
+                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Descrição') %> | <%= __('Solução') %> |</p>
             </div>
             
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
-                <p>| Nome | Contexto | Problema | Solução | Alias | Forças | Exemplo | Usos conhecidos | Padrões relacionados | Contexto | Resultante | Rationale |</p>  
+                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Alias') %> | <%= __('Forças') %> | <%= __('Exemplo') %> | <%= __('Usos conhecidos') %> | <%= __('Padrões relacionados') %> | <%= __('Contexto') %> | <%= __('Resultante') %> | <%= __('Rationale') %> |</p>  
             </div>
             <!-- Loop -->
             <% templatesName.forEach((templateName, index) => { %>
@@ -102,42 +51,42 @@
     	  </div>
           <h3>ou...</h3>
     	  <div class="form-group">
-    	    <h1 for="">Crie um novo template</h1>
-            <input class="form-control" type="text" name="templateName" placeholder="Digite aqui o nome de seu novo template">
+    	    <h1 for=""><%= __('Crie um novo template') %></h1>
+            <input class="form-control" type="text" name="templateName" placeholder="<%= __('Digite aqui o nome de seu novo template') %>">
             <br>
             <div class="newTemplateElements">
                 <div class="element0">
-                    <input class="form-control" type="text" name="contentElement0" list="commonNames" placeholder="Digite aqui o título do elemento">
+                    <input class="form-control" type="text" name="contentElement0" list="commonNames" placeholder="<%= __('Digite aqui o título do elemento') %>">
                     <datalist id="commonNames">
-                        <option>Nome</option>
-                        <option>Classificação</option>
-                        <option>Contexto</option>
-                        <option>Motivação</option>
-                        <option>Figura</option>
-                        <option>Descrição</option>
-                        <option>Problema</option>
-                        <option>Solução</option>
-                        <option>Alias</option>
-                        <option>Diagrama da solução</option>
-                        <option>Forças</option>
-                        <option>Consequências</option>
-                        <option>Usos conhecidos</option>
-                        <option>Padrões relacionados</option>
-                        <option>Contexto resultante</option>
-                        <option>Justificativa</option>
-                        <option>Rationale</option>
+                        <option><%= __('Nome') %></option>
+                        <option><%= __('Classificação') %></option>
+                        <option><%= __('Contexto') %></option>
+                        <option><%= __('Motivação') %></option>
+                        <option><%= __('Figura') %></option>
+                        <option><%= __('Descrição') %></option>
+                        <option><%= __('Problema') %></option>
+                        <option><%= __('Solução') %></option>
+                        <option><%= __('Alias') %></option>
+                        <option><%= __('Diagrama da solução') %></option>
+                        <option><%= __('Forças') %></option>
+                        <option><%= __('Consequências') %></option>
+                        <option><%= __('Usos conhecidos') %></option>
+                        <option><%= __('Padrões relacionados') %></option>
+                        <option><%= __('Contexto resultante') %></option>
+                        <option><%= __('Justificativa') %></option>
+                        <option><%= __('Rationale') %></option>
                     </datalist>
                     <br>
                 </div>
-    	        <a class="btn btn-info" onclick="addElement(this)" id="addElement">Adicionar elemento</a>
+    	        <a class="btn btn-info" onclick="addElement(this)" id="addElement"><%= __('Adicionar elemento') %></a>
     	    </div>
             <!-- <a onclick="sortElements()" class="btn btn-default">Sort!</a> -->
           </div>
 
     	  <!-- <a href="" type="button" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</a> -->
     	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-success">Criar Padrão</button>
-    	  <a class="btn btn-danger" href="/patterns">Cancelar</a>   
+          <button type="submit" class="btn btn-success"><%= __('Criar Padrão') %></button>
+    	  <a class="btn btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
 		</form>
 
     </div>
@@ -157,10 +106,10 @@
         function addElement(obj) {
             counter += 1;
             var theHTML = "<div class='element"+counter+"'>"+
-                          "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'>Remover</a>"+
+                          "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'><%= __('Remover') %></a>"+
                           "<br>"+
                           "<br>"+
-                          "<input class='form-control' type='text' list='commonNames' name='contentElement"+counter+"' placeholder='Digite aqui o título do elemento'>"+
+                          "<input class='form-control' type='text' list='commonNames' name='contentElement"+counter+"' placeholder='<%= __('Digite aqui o título do elemento') %>'>"+
                           "<br>"+
                           "</div>";
             obj.insertAdjacentHTML('beforebegin', theHTML);

@@ -14,6 +14,10 @@ module.exports = {
         res.redirect('back');
     },
 
+    async generalSearchGet(req, res) {
+        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user})
+    },
+
     async generalSearchPost (req, res) {
         if (req.body.keyword === "") {
             req.body.keyword = undefined;
@@ -35,6 +39,10 @@ module.exports = {
             (t) => {return (t.padroes_id === elem.padroes_id && t.titulo === elem.titulo)}) === index)
 
         res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user})
+    },
+
+    async filteredSearchGet(req, res) {
+        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user})
     },
 
     async filteredSearchPost (req, res) { 

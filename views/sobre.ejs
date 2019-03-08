@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns!</title>
+    <title>OpenEduPatterns</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -28,60 +28,7 @@
 
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="img/logoedu4.png"></a>
-                <!-- <a href=""><img src="img/logoLab.jpg"></a> -->
-                <!-- <a href=""><img src="img/logo.png"></a> -->
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li class="active"><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav0.ejs %>
     </nav>  
 
 
@@ -90,17 +37,17 @@
         <br>
         <div class="well">
             <p>
-                Esta ferramenta está sendo desenvolvida por <a href="https://www.linkedin.com/in/gabriel-nicolau-07147b121/">Gabriel Santos Nicolau</a>, estudante do curso de Engenharia de Computação da Universidade de São Paulo, sob a orientação da professora Elen Francine e colaboração de <a href="https://www.linkedin.com/in/mlfioravanti/">Maria Lydia Fioravanti</a> (Doutoranda no ICMC/USP).
+                <%= __('Esta ferramenta está sendo desenvolvida por') %> <a href="https://www.linkedin.com/in/gabriel-nicolau-07147b121/">Gabriel Santos Nicolau</a>, <%= __('estudante do curso de Ciência da Computação da Universidade de São Paulo, sob a orientação da professora Elen Francine e colaboração de') %> <a href="https://www.linkedin.com/in/mlfioravanti/">Maria Lydia Fioravanti</a> (<%= __('Doutoranda no ICMC/USP') %>).
             </p>
-            <h3>Padrões e Linguagens de Padrões</h3>
+            <h3><%= __('Padrões e Linguagens de Padrões') %></h3>
             <br>
             <p>
-                A ideia de "padrão" surgiu a partir das investigações do professor arquiteto Christopher Alexander, da Universidade da Califórnia, em Berkeley, no seu livro “A Pattern Language”, no final da década de 70. Para Christopher, cada padrão descreve um problema que se repete, apresentando o núcleo da solução ou melhor forma para resolver tal problema. Dessa forma, o padrão pode ser usado por outras pessoas, em um contexto semelhante, mas que possuem o mesmo problema relacionado.
+                <%= __('A ideia de padrão surgiu a partir das investigações do professor arquiteto Christopher Alexander, da Universidade da Califórnia, em Berkeley, no seu livro “A Pattern Language”, no final da década de 70. Para Christopher, cada padrão descreve um problema que se repete, apresentando o núcleo da solução ou melhor forma para resolver tal problema. Dessa forma, o padrão pode ser usado por outras pessoas, em um contexto semelhante, mas que possuem o mesmo problema relacionado.') %>
             </p>
             <p>
-                De forma geral, um padrão possui um formato contendo geralmente nome, contexto, problema, solução.
-                Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.
-                Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.
+                <%= __('De forma geral, um padrão possui um formato contendo geralmente nome, contexto, problema, solução.') %>
+                <%= __('Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.') %>
+                <%= __('Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.') %>
             </p>
         </div>
         <br>

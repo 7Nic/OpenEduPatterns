@@ -15,7 +15,11 @@ router.get('/about', indexController.aboutGet);
 
 router.get('/setlang/:lang', indexController.setLanguage);
 
+router.get('/generalsearch', indexController.generalSearchGet);
+
 router.post('/generalsearch', indexController.generalSearchPost);
+
+router.get('/filteredsearch', indexController.filteredSearchGet);
 
 router.post('/filteredsearch', indexController.filteredSearchPost);
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns</title>
+    <title>OpenEduPatterns</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -27,58 +27,7 @@
 </head>
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li class="active"><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav2.ejs %>
     </nav>  
     <br>
     <br>
@@ -88,7 +37,7 @@
             <div class="col-md-8 col-md-offset-2 col-artigos">
 <!-- ==============================================-->
             <div class="editarLinguagem">
-                <h1>Edição de Linguagem</h1>
+                <h1><%= __('Edição de Linguagem') %></h1>
                 <!-- Display errors -->
                 <% if (messages.length > 0) { %>
                     <div class="alert alert-danger">
@@ -102,16 +51,16 @@
                 <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
                 <br>
                 <!-- ================================================ -->
-                <h2>Relacionamento entre Linguagens e Padrões</h2>
+                <h2><%= __('Relacionamento entre Linguagens e Padrões') %></h2>
                 <div class="row artigo">
-                    <label for="">Padrões relacionados a essa Linguagem</label>
+                    <label for=""><%= __('Padrões relacionados a essa Linguagem') %></label>
                     <% padroesRelacionados.forEach((padroesRelacionados) => { %>
                             <h4><a href="/building"><%- padroesRelacionados.titulo %></a></h4>
                     <% }); %>
                 </div>
 
                 <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/edit/unrelatepattern">
-                    <label for="">Remover padrões desta linguagem</label>
+                    <label for=""><%= __('Remover padrões desta linguagem') %></label>
                     <select class="form-control" id="tituloPadraoDesrelacionado"  name="tituloPadraoDesrelacionado">
                         <% padroesRelacionados.forEach((padroesRelacionados) => { %>
                           <option><%- padroesRelacionados.titulo %></option>
@@ -119,13 +68,13 @@
                     </select>
                     <br>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button class="btn btn-danger">Excluir relacionamento</button>
+                    <button class="btn btn-danger"><%= __('Excluir relacionamento') %></button>
                 </form>
 
                 <br>
                 <br>
                 <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/edit/relatepattern">
-                    <label for="">Adicionar outros padrões a essa Linguagem (aqui entrará uma ferramenta de busca)</label>  
+                    <label for=""><%= __('Adicionar outros padrões a essa Linguagem (aqui entrará uma ferramenta de busca)') %></label>  
                     <div class="form-group">
                         <select class="form-control" id="tituloPadraoRelacionado" name="tituloPadraoRelacionado">
                             <% todosPadroes.forEach((todosPadroes) => { %>
@@ -134,7 +83,7 @@
                         </select>
                         <br>
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="btn btn-success">Adicionar relacionamento</button>
+                        <button type="submit" class="btn btn-success"><%= __('Adicionar relacionamento') %></button>
                     </div>
                 </form>
                 <br>
@@ -149,48 +98,48 @@
                 
                 
                 <form method="POST" action="">
-                    <h2>Relacionamento entre Linguagens</h2>
+                    <h2><%= __('Relacionamento entre Linguagens') %></h2>
                     <% if (relatedLanguages.length > 0) { %>
-                        <label>Linguagens relacionadas antes da edição</label>
+                        <label><%= __('Linguagens relacionadas antes da edição') %></label>
                         <h4>|
                             <% relatedLanguages.forEach((relatedLanguage) => { %>
                                 <a href="/languages/<%= relatedLanguage.linguagens_id %>"><%= relatedLanguage.nome %></a> |
                             <% }); %>
                         </h4>
                     <% } %>
-                    <label>Novo relacionamento de Linguagens</label>
+                    <label><%= __('Novo relacionamento de Linguagens') %></label>
                     <% languages.forEach((language) => { %>
                         <p><input type="checkbox" name="languages2Relate" value="<%= language.linguagens_id %>"> <%= language.nome %></p>
                     <% }); %>
                     <br>
                     <br>  
-                    <h2>Propriedades da Linguagem</h2>
+                    <h2><%= __('Propriedades da Linguagem') %></h2>
                     <div class="form-group">
-                      <label for="nomeLinguagem">Nome da Linguagem</label>
+                      <label for="nomeLinguagem"><%= __('Nome da Linguagem') %></label>
                       <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" value="<%= linguagem.nome %>">
                     </div>
                     <div class="form-group">
-                      <label for="visibilidade">Visibilidade</label>
+                      <label for="visibilidade"><%= __('Visibilidade') %></label>
                       <select class="form-control" id="visibilidade"  name="visibilidade">
-                        <option>Público</option>
-                        <option>Privado</option>
+                        <option><%= __('Público') %></option>
+                        <option><%= __('Privado') %></option>
                       </select>
                     </div>
                     <div class="form-group">
-                      <label for="descricaoLinguagem">Descrição da Linguagem</label>
+                      <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %></label>
                       <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %></textarea>
                     </div>
                     <br>
                     <br>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-primary">Salvar propriedades</button>
-                    <button onclick="window.location.href='/linguagens'" class="btn btn-danger">Cancelar</button>    
+                    <button type="submit" class="btn btn-primary"><%= __('Salvar propriedades') %></button>
+                    <button onclick="window.location.href='/linguagens'" class="btn btn-danger"><%= __('Cancelar') %></button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-danger btn-lg">Deletar Linguagem</button>    
+                    <button type="submit" class="btn btn-danger btn-lg"><%= __('Deletar Linguagem') %></button>    
                 </form>
                 <br>
             </div>

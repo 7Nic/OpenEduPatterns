@@ -28,58 +28,7 @@
 
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav1.ejs %>
     </nav>  
 
 
@@ -96,11 +45,11 @@
                 <!-- End display errors -->
 
                 <div class="main-login main-center">
-                <h2>Faça seu Login</h2>
+                <h2><%= __('Faça seu Login') %></h2>
                 <br>
                     <form class="createUser" method="POST" action=""> <!-- Ao deixar action vazio, ele faz o post no endereço atual -->
                         <div class="form-group">
-                            <label for="email" class="cols-sm-2 control-label">Digite seu e-mail</label>
+                            <label for="email" class="cols-sm-2 control-label"><%= __('Digite seu e-mail') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -110,7 +59,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password" class="cols-sm-2 control-label">Digite sua senha</label>
+                            <label for="password" class="cols-sm-2 control-label"><%= __('Digite sua senha') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -121,9 +70,9 @@
 
                         <div class="form-group ">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button">Login</button>
+                            <button type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button"><%= __('Login2') %></button>
                         </div>
-                        <p>Não possui uma conta? <a href="/users/create">Cadastre-se agora</a></p>
+                        <p><%= __('Não possui uma conta?') %> <a href="/users/create"><%= __('Cadastre-se agora') %></a></p>
 
 
                         

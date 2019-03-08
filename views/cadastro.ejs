@@ -1,66 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% include partials/head.ejs %>
+    <% include partials/head1.ejs %>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav1.ejs %>
     </nav>  
 
     <div class="container">
-        <h1>Cadastro de usuário</h1>    
+        <h1><%= __('Cadastro de usuário') %></h1>    
     </div>
 
     <div class="container">
@@ -76,51 +25,51 @@
                 <!-- End display errors -->
 
                 <div class="main-login main-center">
-                <h5>Crie já sua conta e comece a utilizar a plataforma.</h5>
+                <h5><%= __('Crie já sua conta e comece a utilizar a plataforma.') %></h5>
                     <form class="createUser" method="POST" action=""> <!-- Ao deixar action vazio, ele faz o post no endereço atual -->
                         <div class="form-group">
-                            <label for="name" class="cols-sm-2 control-label">Seu nome</label>
+                            <label for="name" class="cols-sm-2 control-label"><%= __('Seu nome') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control input-cadastro" name="name" id="name"  placeholder="Digite seu nome"/>
+                                    <input type="text" class="form-control input-cadastro" name="name" id="name"  placeholder="<%= __('Digite seu nome') %>"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="email" class="cols-sm-2 control-label">Seu E-mail</label>
+                            <label for="email" class="cols-sm-2 control-label"><%= __('Seu E-mail') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control input-cadastro" name="email" id="email"  placeholder="Digite seu e-mail"/>
+                                    <input type="text" class="form-control input-cadastro" name="email" id="email"  placeholder="<%= __('Digite seu e-mail') %>"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="password" class="cols-sm-2 control-label">Senha</label>
+                            <label for="password" class="cols-sm-2 control-label"><%= __('Senha') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control input-cadastro" name="password" id="password"  placeholder="Digite sua senha (mínimo de 4 caracteres)"/>
+                                    <input type="password" class="form-control input-cadastro" name="password" id="password"  placeholder="<%= __('Digite sua senha (mínimo de 4 caracteres)') %>"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="confir\m" class="cols-sm-2 control-label">Confirme sua senha</label>
+                            <label for="confir\m" class="cols-sm-2 control-label"><%= __('Confirme sua senha') %></label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                                    <input type="password" class="form-control input-cadastro" name="confirm" id="confirm"  placeholder="Confirme sua senha"/>
+                                    <input type="password" class="form-control input-cadastro" name="confirm" id="confirm"  placeholder="<%= __('Confirme sua senha') %>"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group ">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                            <button type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button">Terminar Cadastro</button>
+                            <button type="button submit" id="button" class="btn btn-default btn-lg btn-block login-button"><%= __('Terminar Cadastro') %></button>
                         </div>
                         
                     </form>

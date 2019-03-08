@@ -1,66 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% include partials/head.ejs %>
+    <% include partials/head1.ejs %>
 </head>
 <body>
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <!-- Menu do navbar -->
-            <div class="collapse navbar-collapse" id="mynavbar">
-                <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
-                    <div class="input-group">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="Pesquisar">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">Página inicial</a></li>
-                    <li class="active"><a href="/languages">Linguagens</a></li>
-                    <li><a href="/patterns">Padrões</a></li>
-                    <li><a href="/about">Sobre</a></li>
-                    <% if (loggedIn) { %>
-                        <li>
-                          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                                Usuário
-                            <span class="caret"></span>
-                          </a>
-
-                          <!-- Dropdown menu -->
-                          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile">Perfil</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout">Sair</a></li>
-                          </ul>
-                          <!-- End dropdown menu -->
-
-                        </li>
-                    <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span>Entrar</a></li>
-                    <% } %>
-                </ul>
-
-            </div>
-        </div>
+        <%- include partials/nav1.ejs %>
     </nav>  
 
     <div class="container criarNovaLinguagem">
-        <h1>Criação de Nova Linguagem</h1>
+        <h1><%= __('Criação de Nova Linguagem') %></h1>
         <!-- Display errors -->
         <% if (messages.length > 0) { %>
             <div class="alert alert-danger">
@@ -72,23 +21,23 @@
         <!-- End display errors -->
         <form method="POST" action="">
           <div class="form-group">
-            <label for="nomeLinguagem">Nome da Linguagem</label>
-            <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" placeholder="Digite o nome da sua Linguagem">
+            <label for="nomeLinguagem"><%= __('Nome da Linguagem') %></label>
+            <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" placeholder="<%= __('Digite o nome da sua Linguagem') %>">
           </div>
           <div class="form-group">
-            <label for="visibilidade">Visibilidade</label>
+            <label for="visibilidade"><%= __('Visibilidade') %></label>
             <select class="form-control" id="visibilidade" name="visibilidade">
-              <option>Público</option>
-              <option>Privado</option>
+              <option><%= __('Público') %></option>
+              <option><%= __('Privado') %></option>
             </select>
           </div>
           <div class="form-group">
-            <label for="descricaoLinguagem">Descrição da Linguagem</label>
+            <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %></label>
             <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"></textarea>
           </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-primary">Criar Linguagem</button>
-          <a class="btn btn-danger" href="/languages">Cancelar</a>   
+          <button type="submit" class="btn btn-primary"><%= __('Criar Linguagem') %></button>
+          <a class="btn btn-danger" href="/languages"><%= __('Cancelar') %></a>   
         </form>
     </div>
 
