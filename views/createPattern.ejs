@@ -32,15 +32,22 @@
         <!-- End display errors -->
 
     	<form method="POST" action="" onsubmit="verifyNewTemplate()">
-    	   <% if (templateElements.length > 0) { %>
-              <div class="form-group">
+    	  <% if (templateElements.length > 0) { %>
+            <div class="form-group">
         	    <label for="visibilidade"><%= __('Visibilidade') %></label>
         	    <select class="form-control" id="visibilidade"  name="visibilidade">
         	      <option><%= __('Público') %></option>
         	      <option><%= __('Privado') %></option>
         	    </select>
         	  </div>
-          <% }; %>
+
+            <div class="form-group">
+              <label for="tags"><%= __('Tags') %></label>
+              <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
+            </div>
+
+        <% }; %>
+
           
           <!-- Loop -->
           <% templateElements.forEach((element, index) => { %>
@@ -105,6 +112,7 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-tagsinput.min.js"></script>
     <!-- Dynamic form -->
     <script type="text/javascript">
         var counter = 0;

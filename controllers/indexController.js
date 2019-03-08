@@ -19,6 +19,15 @@ module.exports = {
     },
 
     async generalSearchPost (req, res) {
+        // console.log('Começo');
+        // var stringBefore = req.body.times;
+        // console.log(stringBefore);
+
+        // var arrayAfter = stringBefore.split(",");
+        // console.log(arrayAfter[0]);
+
+        // console.log('fim');
+        
         if (req.body.keyword === "") {
             req.body.keyword = undefined;
         }
