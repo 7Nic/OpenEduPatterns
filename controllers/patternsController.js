@@ -88,18 +88,9 @@ module.exports = {
                 await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
             }
             console.log(tagsArray);
-            //We
-
-
-
             var tagsIdArray = await store.createPatternTag(tagsArray);
             console.log(tagsIdArray);
-            //When a tag already exists, 0 is returned, so we need to remove it from the array
-            var filteredTagsIdArray = array.filter(function(value, index, arr){
-                return value != 0;
-            });
-            console.log(filteredTagsIdArray);
-            await store.relatePattern2Tags(newPatternId, filteredTagsIdArray);
+            await store.relatePattern2Tags(newPatternId, tagsIdArray);
             res.redirect('/patterns');
         }
 
@@ -160,12 +151,6 @@ module.exports = {
             await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
-            //When a tag already exists, 0 is returned, so we need to remove it from the array
-            for(var i = 0; i < tagsIdArray.length; i++) { 
-                if ( tagsIdArray[i] === 0) {
-                    tagsIdArray.splice(i, 1); 
-                }
-            }
             await store.relatePattern2Tags(newPatternId, tagsIdArray);
             res.redirect(`/patterns/${req.params.id}`);
         }
@@ -204,7 +189,11 @@ module.exports = {
                 patternInfo.visibilidade = 'Privado';
             }
         }
-        res.render('patternPage.ejs', {isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
+
+        var tagsArray = await store.tagsOfPattern(req.params.id);
+        var tagsString = tagsArray.toString();
+
+        res.render('patternPage.ejs', {tagsString, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
     },
 
     async addCommentPattern (req, res) {

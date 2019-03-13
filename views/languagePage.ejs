@@ -66,6 +66,12 @@
 
                 <% } %>
             </div>
+
+            <% if (tagsString) { %>
+                <h3><strong>Tags: <%= tagsString %></strong></h3>
+                <br>
+            <% } %>
+            
             <h3><%= __('Comentários') %></h3>
             <br>
             <!-- Add comment -->

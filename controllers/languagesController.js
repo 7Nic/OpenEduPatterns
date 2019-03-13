@@ -63,12 +63,6 @@ module.exports = {
             await store.relateUserLanguage(req.user.usuarios_id, newLanguageId);
             await store.relateLanguage2Language(newLanguageId, languagesToRelateArray);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
-            //When a tag already exists, 0 is returned, so we need to remove it from the array
-            for(var i = 0; i < tagsIdArray.length; i++) { 
-                if ( tagsIdArray[i] === 0) {
-                    tagsIdArray.splice(i, 1); 
-                }
-            }
             await store.relateLanguage2Tags(newLanguageId, tagsIdArray);
             res.redirect('/languages');
         }
@@ -126,12 +120,6 @@ module.exports = {
             await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
             await store.deleteOldRelathionshipsLanguage2Tags(req.params.id);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
-            //When a tag already exists, 0 is returned, so we need to remove it from the array
-            for(var i = 0; i < tagsIdArray.length; i++) { 
-                if ( tagsIdArray[i] === 0) {
-                    tagsIdArray.splice(i, 1); 
-                }
-            }
             await store.relateLanguage2Tags(req.params.id, tagsIdArray);
             res.redirect(`/languages/${req.params.id}`);
         }
@@ -177,7 +165,11 @@ module.exports = {
                 language.visibilidade = 'Privado';
             }
         }
-        res.render('languagePage.ejs', {relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+
+        var tagsArray = await store.tagsOfLanguage(req.params.id);
+        var tagsString = tagsArray.toString();
+
+        res.render('languagePage.ejs', {tagsString, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
     },
 
     async addCommentLanguage (req, res) {

@@ -535,32 +535,42 @@ module.exports = {
     searchInPatterns(word) {
         // select distinct ec.patterns_id, p.titulo 
         // from elements_content as ec 
-        // inner join padroes as p on ec.patterns_id = p.padroes_id  
-        // where ec.content LIKE '%word%' or p.titulo LIKE '%word%';
-        return knex('elements_content as ec')
+        // inner join padroes as p on ec.patterns_id = p.padroes_id 
+        // left join patterns_tags_relation as ptr on p.padroes_id = ptr.patterns_id
+        // left join patterntags as pt on ptr.tags_id = pt.tags_id 
+        // where (ec.content LIKE '%word%' or p.titulo LIKE '%word%' or pt.tag_name LIKE '%word%') and p.visibilidade=0;
+        return knex('elements_content AS ec')
             .distinct('p.padroes_id')
             .select('p.padroes_id', 'p.titulo')
-            .innerJoin('padroes as p', 'ec.patterns_id', 'p.padroes_id')
+            .innerJoin('padroes AS p', 'ec.patterns_id', 'p.padroes_id')
+            .leftJoin('patterns_tags_relation AS ptr', 'p.padroes_id', 'ptr.patterns_id')
+            .leftJoin('patterntags AS pt', 'ptr.tags_id', 'pt.tags_id')
             .where('visibilidade', 0)
             .andWhere((query) => {
                 return query
                     .where('ec.content', 'LIKE', '%'+word+'%')
-                    .orWhere('p.titulo', 'LIKE', '%'+word+'%');
+                    .orWhere('p.titulo', 'LIKE', '%'+word+'%')
+                    .orWhere('pt.tag_name', 'LIKE', '%'+word+'%');
             });
             
     },
     searchInLanguages(word) {
-        // SELECT DISTINCT linguagens_id, nome
-        // FROM linguagens 
-        // WHERE (nome LIKE '%test%' OR descricao LIKE '%desc%') AND visibilidade=0; 
-        return knex('linguagens')
-            .distinct('linguagens_id')
-            .select('linguagens_id', 'nome')
-            .where('visibilidade', 0)
+        // SELECT DISTINCT l.linguagens_id, l.nome
+        // FROM linguagens AS l
+        // LEFT JOIN languages_tags_relation AS ltr ON l.linguagens_id = ltr.languages_id
+        // LEFT JOIN languagetags AS lt ON ltr.tags_id = lt.tags_id
+        // WHERE (l.nome LIKE '%test%' OR l.descricao LIKE '%desc%' OR lt.tag_name LIKE '%tag%') AND l.visibilidade=0; 
+        return knex('linguagens AS l')
+            .distinct('l.linguagens_id')
+            .select('l.linguagens_id', 'l.nome')
+            .leftJoin('languages_tags_relation AS ltr', 'l.linguagens_id', 'ltr.languages_id')
+            .leftJoin('languagetags AS lt', 'ltr.tags_id', 'lt.tags_id')
+            .where('l.visibilidade', 0)
             .andWhere((query) => {
                 return query
-                    .where('nome', 'LIKE', '%'+word+'%')
-                    .orWhere('descricao', 'LIKE', '%'+word+'%');
+                    .where('l.nome', 'LIKE', '%'+word+'%')
+                    .orWhere('l.descricao', 'LIKE', '%'+word+'%')
+                    .orWhere('lt.tag_name', 'LIKE', '%'+word+'%');
             });
     },
     searchByAuthorInPatterns(word) {
@@ -614,15 +624,11 @@ module.exports = {
     // Ps.: The tags tables has the column tag_name as unique index, so when we try to add a duplicate tag, it just doesn't add
     createLanguageTag(tagsNameArray) {
         return Promise.all(tagsNameArray.map((eachTagName, index) => {
-            return knex.raw(knex('languagetags').insert({
-                tag_name: eachTagName
+            return knex('languagetags')
+                .insert({
+                    tag_name: eachTagName
                 })
-                .toString()
-                .replace('insert', 'INSERT IGNORE'))
-                .then((insertedRow) => {
-                    console.log(insertedRow[0].insertId);
-                    return insertedRow[0].insertId;
-                });
+                .returning('tags_id');
         }));
     },
     deleteOldRelathionshipsLanguage2Tags(languageId) {
@@ -640,16 +646,11 @@ module.exports = {
     },
     createPatternTag(tagsNameArray) {
         return Promise.all(tagsNameArray.map((eachTagName, index) => {
-            return knex.raw(knex('patterntags')
-            .insert({
-                tag_name: eachTagName
+            return knex('patterntags')
+                .insert({
+                    tag_name: eachTagName
                 })
-                .toString()
-                .replace('insert', 'INSERT IGNORE'))
-                .then((insertedRow) => {
-                    console.log(insertedRow);
-                    return insertedRow[0].insertId;
-                });
+                .returning('tags_id');
         }));
     },
     deleteOldRelathionshipsPattern2Tags(patternId) {
@@ -664,8 +665,36 @@ module.exports = {
                 .toString()
                 .replace('insert', 'INSERT IGNORE'));
         }));
-    }
+    },
+    tagsOfPattern(patternId) {
+        // SELECT pt.tag_name
+        // FROM patterns_tags_relation AS ptr
+        // INNER JOIN patterntags AS pt ON ptr.tags_id = pt.tags_id
+        // WHERE ptr.patterns_id=201;
+        return knex('patterns_tags_relation AS ptr')
+            .select('pt.tag_name')
+            .innerJoin('patterntags AS pt', 'ptr.tags_id', 'pt.tags_id')
+            .where('ptr.patterns_id', patternId)
+            .then((result) => {
+                var tagNamesArray = result.map((eachTagName) => { //To return a clean array, not an array of objects
+                    return eachTagName.tag_name;
+                });
+                return tagNamesArray;
+            });
 
+    },
+    tagsOfLanguage(languageId) {
+        return knex('languages_tags_relation AS ltr')
+            .select('lt.tag_name')
+            .innerJoin('languagetags AS lt', 'ltr.tags_id', 'lt.tags_id')
+            .where('ltr.languages_id', languageId)
+            .then((result) => {
+                var tagNamesArray = result.map((eachTagName) => { //To return a clean array, not an array of objects
+                    return eachTagName.tag_name;
+                });
+                return tagNamesArray;
+            });
+    }
 }
 
 
