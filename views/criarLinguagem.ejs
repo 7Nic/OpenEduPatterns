@@ -35,6 +35,11 @@
             <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %></label>
             <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"></textarea>
           </div>
+          <div class="form-group">
+            <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+            <br>
+            <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
+          </div>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="btn btn-primary"><%= __('Criar Linguagem') %></button>
           <a class="btn btn-danger" href="/languages"><%= __('Cancelar') %></a>   

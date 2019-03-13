@@ -9,7 +9,6 @@
     <!-- Não colocar nenhuma tag meta acima deste comentário -->
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-tagsinput.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
     <!-- Tema opicional Bootstrap -->
     <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"> -->
@@ -42,13 +41,6 @@
     <div class="corpo">
         <div class="container">
             <h1><%= __('Padrões mais utilizados') %></h1>   
-            <h2>Teste</h2>
-            <form action="/generalsearch" method="POST">
-                <label>Times</label>
-                <input type="text" name="times" value="" data-role="tagsinput"><br><br>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button type="submit" class="btn btn-danger">Vai!</button>
-            </form>
             <div class="col-md-8 col-artigos">
                 <div class="row artigo">
                     <h2><a href=""><%= __('Padrão um') %></a></h2>
@@ -156,6 +148,5 @@
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-tagsinput.min.js"></script>
 </body>
 </html>

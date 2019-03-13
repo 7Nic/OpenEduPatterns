@@ -113,7 +113,7 @@
 	"Login": "Sign in",
 	"Esta linguagem não existe": "This Language does not exist",
 	"Linguagens populares": "Popular Languages",
-	"Criar nova Linguagem": "Create new Languages",
+	"Criar nova Linguagem": "Create new Language",
 	"Faça seu Login": "Sign in",
 	"Digite sua senha": "Type your password",
 	"Login2": "Sign in",
@@ -150,5 +150,6 @@
 	"Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.": "A Pattern can belong to a category. Thus, Patterns with similar properties are organized together.",
 	"Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.": "Another important concept is Language. A group of Patterns, its groupings in categories and the relationship between Patterns make a Language. The Language can be used to solve problems in a bigger context, for example, the design, ofert and validation of a classroom.",
 	"Tags": "Tags",
-	"tags": "tags"
+	"tags": "tags",
+	"Tags (separe-as pressionando Enter ou com uma vírgula)": "Tags (separate them pressing Enter or using commas)"
 }

@@ -31,14 +31,17 @@ module.exports = {
 
     async patternsCreatePost (req, res) {
         var visibilidadeNum = null;
-        if(req.body.visibilidade === 'Público'){
+        if(req.body.visibilidade === 'Público' || req.body.visibilidade === 'Public'){
             visibilidadeNum = 0;
-        } else if(req.body.visibilidade === 'Privado'){
+        } else if(req.body.visibilidade === 'Privado' || req.body.visibilidade === 'Private'){
             visibilidadeNum = 1;
         } else {
             visibilidadeNum = null;
         }
 
+        var tagsStringBefore = req.body.tags;
+        var tagsArray = tagsStringBefore.split(",");
+        
         var patternsToRelateArray = req.body.relatedPatterns;
         //If req.body.relatedPatterns is not an array, we'll create an array of one object in order to use .map function
         if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
@@ -73,7 +76,6 @@ module.exports = {
                 await store.relateUserPattern(req.user.usuarios_id, newPatternId);
                 await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
                 await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
-                res.redirect('/patterns');
             } else {
                 var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId});
                 await store.relateUserPattern(req.user.usuarios_id, newPatternId);
@@ -84,8 +86,21 @@ module.exports = {
                     return obj.elements_id;
                 });
                 await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
-                res.redirect('/patterns');
             }
+            console.log(tagsArray);
+            //We
+
+
+
+            var tagsIdArray = await store.createPatternTag(tagsArray);
+            console.log(tagsIdArray);
+            //When a tag already exists, 0 is returned, so we need to remove it from the array
+            var filteredTagsIdArray = array.filter(function(value, index, arr){
+                return value != 0;
+            });
+            console.log(filteredTagsIdArray);
+            await store.relatePattern2Tags(newPatternId, filteredTagsIdArray);
+            res.redirect('/patterns');
         }
 
     },
@@ -104,14 +119,17 @@ module.exports = {
 
     async patternsEditPost (req, res) {
         var data = req.body;
-        if(data.visibilidade === 'Público'){
+        if(data.visibilidade === 'Público' || req.body.visibilidade === 'Public'){
             data.visibilidade = 0;
-        } else if(data.visibilidade === 'Privado'){
+        } else if(data.visibilidade === 'Privado' || req.body.visibilidade === 'Private'){
             data.visibilidade = 1;
         } else {
             data.visibilidade = null;
         }
 
+        var tagsStringBefore = req.body.tags;
+        var tagsArrayAfter = tagsStringBefore.split(",");
+        
         var patternsToRelateArray = req.body.patterns2Relate;
         //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
         if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
@@ -140,6 +158,15 @@ module.exports = {
             await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
             await store.deletePatternsInPatternsPatterns(req.params.id);
             await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
+            await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
+            var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
+            //When a tag already exists, 0 is returned, so we need to remove it from the array
+            for(var i = 0; i < tagsIdArray.length; i++) { 
+                if ( tagsIdArray[i] === 0) {
+                    tagsIdArray.splice(i, 1); 
+                }
+            }
+            await store.relatePattern2Tags(newPatternId, tagsIdArray);
             res.redirect(`/patterns/${req.params.id}`);
         }
     },

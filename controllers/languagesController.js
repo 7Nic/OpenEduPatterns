@@ -22,9 +22,9 @@ module.exports = {
 
     async languagesCreatePost (req, res) {
         var visibilidadeNum = null;
-        if(req.body.visibilidade === 'Público'){
+        if(req.body.visibilidade === 'Público' || req.body.visibilidade === 'Public'){
             visibilidadeNum = 0;                                                       
-        } else if(req.body.visibilidade === 'Privado'){
+        } else if(req.body.visibilidade === 'Privado' || req.body.visibilidade === 'Private'){
             visibilidadeNum = 1;
         } else {
             visibilidadeNum = null;
@@ -40,6 +40,9 @@ module.exports = {
         var nomeLinguagem = req.body.nomeLinguagem;
         var visibilidade = visibilidadeNum;
         var descricaoLinguagem = req.body.descricaoLinguagem;
+        
+        var tagsStringBefore = req.body.tags;
+        var tagsArrayAfter = tagsStringBefore.split(",");
 
         req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
         req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
@@ -59,6 +62,14 @@ module.exports = {
             var newLanguageId = await store.criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem});
             await store.relateUserLanguage(req.user.usuarios_id, newLanguageId);
             await store.relateLanguage2Language(newLanguageId, languagesToRelateArray);
+            var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
+            //When a tag already exists, 0 is returned, so we need to remove it from the array
+            for(var i = 0; i < tagsIdArray.length; i++) { 
+                if ( tagsIdArray[i] === 0) {
+                    tagsIdArray.splice(i, 1); 
+                }
+            }
+            await store.relateLanguage2Tags(newLanguageId, tagsIdArray);
             res.redirect('/languages');
         }
     },
@@ -74,9 +85,9 @@ module.exports = {
 
     async languagesEditPost (req, res) {
         var data = req.body;
-        if(data.visibilidade === 'Público'){
+        if(data.visibilidade === 'Público' || req.body.visibilidade === 'Public'){
             data.visibilidade = 0;
-        } else if(data.visibilidade === 'Privado'){
+        } else if(data.visibilidade === 'Privado' || req.body.visibilidade === 'Private'){
             data.visibilidade = 1;
         } else {
             data.visibilidade = null;
@@ -89,6 +100,10 @@ module.exports = {
             languagesToRelateArray.push(req.body.languages2Relate);
         } 
 
+        //The tags are stored in a string separated by commas, we'll split this string to create an array
+        var tagsStringBefore = req.body.tags;
+        var tagsArrayAfter = tagsStringBefore.split(",");
+        
         var nomeLinguagem = req.body.nomeLinguagem;
         var descricaoLinguagem = req.body.descricaoLinguagem;
 
@@ -109,6 +124,15 @@ module.exports = {
             await store.editarLinguagem({data, Id: req.params.id});
             await store.deleteLanguageInLanguagesLanguages(req.params.id);
             await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
+            await store.deleteOldRelathionshipsLanguage2Tags(req.params.id);
+            var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
+            //When a tag already exists, 0 is returned, so we need to remove it from the array
+            for(var i = 0; i < tagsIdArray.length; i++) { 
+                if ( tagsIdArray[i] === 0) {
+                    tagsIdArray.splice(i, 1); 
+                }
+            }
+            await store.relateLanguage2Tags(req.params.id, tagsIdArray);
             res.redirect(`/languages/${req.params.id}`);
         }
     },

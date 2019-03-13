@@ -40,12 +40,6 @@
         	      <option><%= __('Privado') %></option>
         	    </select>
         	  </div>
-
-            <div class="form-group">
-              <label for="tags"><%= __('Tags') %></label>
-              <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
-            </div>
-
         <% }; %>
 
           
@@ -72,6 +66,13 @@
             <br>
           <% }); %>
           <!-- End Loop -->
+
+          <br>
+          <div class="form-group">
+            <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+            <br>
+            <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
+          </div>
 
           <datalist id="commonNames">
                         <option><%= __('Nome') %></option>

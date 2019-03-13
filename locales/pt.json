@@ -150,5 +150,6 @@
 	"Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.": "Um padrão também pode pertencer a uma categoria. Dessa forma, padrões com características comuns estão organizados.",
 	"Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.": "Outro conceito importante é o de Linguagem. Um conjunto de padrões, seus agrupamentos em categorias e o relacionamento entre padrões formam uma Linguagem de Padrões. A Linguagem de Padrões pode ser usada para resolver problemas em um contexto maior, por exemplo, o design, oferta e validação de uma aula ou um curso.",
 	"Tags": "Tags",
-	"tags": "tags"
+	"tags": "tags",
+	"Tags (separe-as pressionando Enter ou com uma vírgula)": "Tags (separe-as pressionando Enter ou com uma vírgula)"
 }

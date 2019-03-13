@@ -346,7 +346,7 @@ module.exports = {
     },
     addElementsInDB(elementsNamesArray) {
         //The promisse.all already returns the array, so we just return the promise itself
-        return Promise.all (elementsNamesArray.map((elementName, index) => {
+        return Promise.all(elementsNamesArray.map((elementName, index) => {
             return knex('elements')
                 .insert({
                     name: elementName,
@@ -611,6 +611,60 @@ module.exports = {
                 return result[0];
             });
     },
+    // Ps.: The tags tables has the column tag_name as unique index, so when we try to add a duplicate tag, it just doesn't add
+    createLanguageTag(tagsNameArray) {
+        return Promise.all(tagsNameArray.map((eachTagName, index) => {
+            return knex.raw(knex('languagetags').insert({
+                tag_name: eachTagName
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'))
+                .then((insertedRow) => {
+                    console.log(insertedRow[0].insertId);
+                    return insertedRow[0].insertId;
+                });
+        }));
+    },
+    deleteOldRelathionshipsLanguage2Tags(languageId) {
+        return knex('languages_tags_relation').where('languages_id', languageId).del();
+    },
+    relateLanguage2Tags(languageId, tagsIdArray) {
+        return Promise.all(tagsIdArray.map((eachTagId, index) => {
+            return knex.raw(knex('languages_tags_relation').insert({
+                languages_id: languageId,
+                tags_id: eachTagId
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
+    },
+    createPatternTag(tagsNameArray) {
+        return Promise.all(tagsNameArray.map((eachTagName, index) => {
+            return knex.raw(knex('patterntags')
+            .insert({
+                tag_name: eachTagName
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'))
+                .then((insertedRow) => {
+                    console.log(insertedRow);
+                    return insertedRow[0].insertId;
+                });
+        }));
+    },
+    deleteOldRelathionshipsPattern2Tags(patternId) {
+        return knex('patterns_tags_relation').where('patterns_id', patternId).del();
+    },
+    relatePattern2Tags(patternId, tagsIdArray) {
+        return Promise.all(tagsIdArray.map((content, index) => {
+            return knex.raw(knex('patterns_tags_relation').insert({
+                patterns_id: patternId,
+                tags_id: content
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
+    }
 
 }
 
