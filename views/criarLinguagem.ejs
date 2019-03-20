@@ -2,6 +2,7 @@
 <html>
 <head>
     <% include partials/head1.ejs %>
+    <link rel="stylesheet" type="text/css" href="../css/style_criarLinguagem.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -21,22 +22,44 @@
         <!-- End display errors -->
         <form method="POST" action="">
           <div class="form-group">
-            <label for="nomeLinguagem"><%= __('Nome da Linguagem') %></label>
+            <div class="tooltipInfo">
+              <label for="nomeLinguagem"><%= __('Nome da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+              <span class="tooltiptext">
+                <%= __('Digite o nome da Linguagem que será exibida nas buscas') %>
+              </span>
+            </div>
             <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" placeholder="<%= __('Digite o nome da sua Linguagem') %>">
           </div>
           <div class="form-group">
-            <label for="visibilidade"><%= __('Visibilidade') %></label>
+            <div class="tooltipInfo">
+              <label for="visibilidade"><%= __('Visibilidade') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                <span class="tooltiptext">
+                    <%= __('Caso escolha privado apenas você poderá visualizar') %>
+                </span>
+            </div>
             <select class="form-control" id="visibilidade" name="visibilidade">
               <option><%= __('Público') %></option>
               <option><%= __('Privado') %></option>
             </select>
           </div>
           <div class="form-group">
-            <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %></label>
+            <div class="tooltipInfo">
+              <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                <span class="tooltiptext">
+                    <%= __('A descrição facilitará a compreensão da Linguagem por outros usuários') %>
+                </span>
+            </div>
+
             <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"></textarea>
           </div>
           <div class="form-group">
-            <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+            <div class="tooltipInfo">
+              <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                <span class="tooltiptext">
+                    <%= __('Adicione tags que relacionem o assunto para facilitar as buscas') %>
+                </span>
+            </div>
+
             <br>
             <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
           </div>

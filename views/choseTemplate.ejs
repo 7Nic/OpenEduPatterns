@@ -6,6 +6,7 @@
 <body>
     <nav class="navbar navbar-inverse">
         <%- include partials/nav1.ejs %>
+        <link rel="stylesheet" type="text/css" href="../css/style_choosetemplate.css">
     </nav>  
 
 
@@ -21,7 +22,12 @@
         <!-- End display errors -->
     	<form onsubmit="sortElements()" method="POST" action="/patterns/chosetemplate">
     	  <div class="form-group">
-            <h1><%= __('Escolha um Template já existente') %></h1>
+            <div class="tooltipInfo">
+                <h1><%= __('Escolha um Template já existente') %> <span class="glyphicon glyphicon-question-sign"></span></h1>
+                <span class="tooltiptext">
+                    <%= __('O template definirá quais campos o seu padrão possuirá') %>
+                </span>
+            </div>
             <div class="well">
                 <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
                 <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p>    
@@ -51,7 +57,12 @@
     	  </div>
           <h3>ou...</h3>
     	  <div class="form-group">
-    	    <h1 for=""><%= __('Crie um novo template') %></h1>
+            <div class="tooltipInfo">
+                <h1 for=""><%= __('Crie um novo template') %> <span class="glyphicon glyphicon-question-sign"></span></h1>
+                <span class="tooltiptext">
+                    <%= __('Este template criado ficará disponível para você na próxima criação de um padrão') %>
+                </span>
+            </div>
             <input class="form-control" type="text" name="templateName" placeholder="<%= __('Digite aqui o nome de seu novo template') %>">
             <br>
             <div class="newTemplateElements">

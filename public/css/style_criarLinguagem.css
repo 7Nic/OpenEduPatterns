@@ -159,12 +159,7 @@ p, a, h1, h2, h3, h4 {
 ************/		
 
 footer {
-	/*background-color: #5e4485;*/
-	/*background-color: #01959e;*/
-	/*background-color: #363636; o preto claro*/
 	background-color: #2B263D;
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
 	color: #fff;
 	padding: 0.1%;
 }
@@ -208,4 +203,53 @@ footer a:hover, footer a:focus {
 .fa-copyright {
 	font-size: 12px;
 	padding: 3px;
+}
+
+/************
+-tooltip
+************/		
+/* Tooltip container */
+.tooltipInfo {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltipInfo .tooltiptext {
+  visibility: hidden;
+  /*width: 120px;*/
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 90%;
+  left: 50%;
+  margin-left: -60px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+/*.tooltipInfo .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}*/
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipInfo:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

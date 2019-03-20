@@ -105,7 +105,10 @@ module.exports = {
         if (patternsOfTheSameLanguage.length === 0) {
             patternsOfTheSameLanguage = undefined;
         }
-        res.render('editarPadroes.ejs', {patternsOfTheSameLanguage, patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        var tagsArray = await store.tagsOfPattern(req.params.id);
+        var tagsString = tagsArray.toString();
+        console.log(tagsString);
+        res.render('editarPadroes.ejs', {tagsString, patternsOfTheSameLanguage, patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async patternsEditPost (req, res) {
@@ -151,7 +154,7 @@ module.exports = {
             await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
-            await store.relatePattern2Tags(newPatternId, tagsIdArray);
+            await store.relatePattern2Tags(req.params.id, tagsIdArray);
             res.redirect(`/patterns/${req.params.id}`);
         }
     },
@@ -206,13 +209,9 @@ module.exports = {
     },
 
     async choseTemplateGet (req, res) {
-        console.log('1');
         var templatesId = await store.templatesIdOfUser(req.user.usuarios_id);
-        console.log('2');
         var templatesElements = await store.multipleTemplateElements(templatesId);
-        console.log('3');
         var templatesName = await store.templatesNameOfUser(req.user.usuarios_id);
-        console.log('4');
         res.render('choseTemplate.ejs', {templatesId: templatesId ,templatesElements: templatesElements, templatesName: templatesName, csrfToken: req.csrfToken(), messages: req.flash('error')});
     },
 

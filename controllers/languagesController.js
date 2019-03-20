@@ -74,7 +74,10 @@ module.exports = {
 		var resultadoListarPadroes = await store.listarPadroesPublicos();
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
         var languages = await store.listarLinguagensPublicas();
-        res.render('editarLinguagens.ejs', {languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+        var tagsArray = await store.tagsOfLanguage(req.params.id);
+        var tagsString = tagsArray.toString();
+        console.log(tagsString);
+        res.render('editarLinguagens.ejs', {tagsString, languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesEditPost (req, res) {

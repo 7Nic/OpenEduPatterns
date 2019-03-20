@@ -21,7 +21,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../../css/style_linguagens.css">
+    <link rel="stylesheet" type="text/css" href="../../css/style_editarPadroes.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -53,7 +53,12 @@
                 <form method="POST" action="">
                     
                     <div class="form-group">
-                        <label for="visibilidade">Visibilidade</label>
+                        <div class="tooltipInfo" id="visibilidadeId">
+                            <label for="visibilidade"><%= __('Visibilidade') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                            <span class="tooltiptext">
+                                <%= __('Caso escolha privado apenas você poderá visualizar') %>
+                            </span>
+                        </div>
                         <select class="form-control" id="visibilidade" name="visibilidade">
                         <option>Público</option>
                             <option>Privado</option>
@@ -99,9 +104,14 @@
                     <!-- End Loop -->
 
                     <div class="form-group">
-                        <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+                        <div class="tooltipInfo">
+                          <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                          <span class="tooltiptext">
+                              <%= __('Adicione tags que relacionem o assunto para facilitar as buscas') %>
+                          </span>
+                        </div>
                         <br>
-                        <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
+                        <input type="text" id="tags" name="tags" value="<%= tagsString %>" data-role="tagsinput">
                     </div>
                     <br>
                   

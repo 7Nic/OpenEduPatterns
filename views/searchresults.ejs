@@ -20,7 +20,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="css/style_sobre.css">
+    <link rel="stylesheet" type="text/css" href="css/style_searchResults.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -34,7 +34,12 @@
     <div class="container">
         <br>
         <br>
-        <h3><%= __('Pesquisa geral') %></h3>
+        <div class="tooltipInfo">
+            <h3><%= __('Pesquisa geral') %> <span class="glyphicon glyphicon-question-sign"></span></h3>
+            <span class="tooltiptext">
+                <%= __('Ajuda Busca Geral') %>
+            </span>
+        </div>
         <h5><%= __('Nomes e conteúdos serão analisados') %></h5>
         <form method="POST" action="/filteredsearch">
             <input type="checkbox" name="pattern" checked> <%= __('Padrão') %>
@@ -46,7 +51,12 @@
             <button class="btn btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
         </form>
         <br>
-        <h3><%= __('Pesquisa refinada  nos padrões') %></h3>
+        <div class="tooltipInfo">
+            <h3><%= __('Pesquisa refinada  nos padrões') %> <span class="glyphicon glyphicon-question-sign"></span></h3>
+            <span class="tooltiptext">
+                <%= __('Ajuda Busca Refinada') %>
+            </span>
+        </div>
         <h5><%= __('Apenas os campos selecionados serão analisados') %></h5>
         <form method="POST" action="/filteredpatternsearch">
             <input type="checkbox" name="Nome"> <%= __('Nome') %>

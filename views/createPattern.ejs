@@ -3,6 +3,7 @@
 <head>
     <% include partials/head1.ejs %>
     <script type="text/javascript" src="../ckeditor5/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/style_criarPadrao.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -34,7 +35,12 @@
     	<form method="POST" action="" onsubmit="verifyNewTemplate()">
     	  <% if (templateElements.length > 0) { %>
             <div class="form-group">
-        	    <label for="visibilidade"><%= __('Visibilidade') %></label>
+              <div class="tooltipInfo" id="visibilidadeId">
+                <label for="visibilidade"><%= __('Visibilidade') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                <span class="tooltiptext">
+                    <%= __('Caso escolha privado apenas você poderá visualizar') %>
+                </span>
+              </div>
         	    <select class="form-control" id="visibilidade"  name="visibilidade">
         	      <option><%= __('Público') %></option>
         	      <option><%= __('Privado') %></option>
@@ -69,7 +75,12 @@
 
           <br>
           <div class="form-group">
-            <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+            <div class="tooltipInfo">
+              <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+              <span class="tooltiptext">
+                  <%= __('Adicione tags que relacionem o assunto para facilitar as buscas') %>
+              </span>
+            </div>
             <br>
             <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
           </div>
@@ -201,27 +212,7 @@
               console.error( error );
             });
           });
-
-          //Print the names of all plugins on the console
-          // ClassicEditor.builtinPlugins.map( plugin => console.log(plugin.pluginName));
         }
-
-        // function checkEmptyName() {
-        //   // var str = $("#elementContent[1] p").text();
-        //   // alert(str);
-        //   alert('bora');
-          
-        //   // var values = $("textarea[name='elementContent[]']")
-        //   //     .map(function(){return $(this).text();}).get();
-
-        //   var arr = $('input[name="pname[]"]').map(function () {
-        //     return this.value; // $(this).val()
-        //   }).get();
-
-        //   console.log(arr);
-        //   alert([1]);
-
-        // }
     </script>
 </body>
 </html>
