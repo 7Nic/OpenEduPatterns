@@ -17,7 +17,9 @@ module.exports = {
     },
 
     async languagesCreateGet (req, res) {
-        res.render('criarLinguagem.ejs', {csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        var languages = await store.listarLinguagensPublicas();
+        var patterns = await store.listarPadroesPublicos();
+        res.render('criarLinguagem.ejs', {patterns, languages ,csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async languagesCreatePost (req, res) {
@@ -30,11 +32,28 @@ module.exports = {
             visibilidadeNum = null;
         }
 
-        var languagesToRelateArray = req.body.relatedLanguages;
-        //If req.body.relatedLanguages is not an array, we'll create an array of one object in order to use .map function
+        //Getting languages to relate and handling errors
+        var languagesToRelateArray = req.body.languages2Relate;
+        //If req.body.languages2Relate is not an array, we'll create an array of one object in order to use .map function
         if (typeof languagesToRelateArray === 'string') { //If languagesToRelateArray is a string, it is just an element, and we'll create an array
             languagesToRelateArray = [];
-            languagesToRelateArray.push(req.body.relatedLanguages);
+            languagesToRelateArray.push(req.body.languages2Relate);
+        }
+        //With undefined the .map (in store.js) cannot execute
+        if (languagesToRelateArray === undefined) {
+            languagesToRelateArray = [];
+        }
+
+        //Getting patterns to relate and handling errors
+        var patternsToRelateArray = req.body.patterns2Relate;
+        //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
+        if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
+            patternsToRelateArray = [];
+            patternsToRelateArray.push(req.body.patterns2Relate);
+        }
+        //With undefined the .map (in store.js) cannot execute
+        if (patternsToRelateArray === undefined) {
+            patternsToRelateArray = [];
         }
 
         var nomeLinguagem = req.body.nomeLinguagem;
@@ -62,6 +81,7 @@ module.exports = {
             var newLanguageId = await store.criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem});
             await store.relateUserLanguage(req.user.usuarios_id, newLanguageId);
             await store.relateLanguage2Language(newLanguageId, languagesToRelateArray);
+            await store.relatePattern2LanguageWithArray(newLanguageId, patternsToRelateArray);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(newLanguageId, tagsIdArray);
             res.redirect('/languages');
@@ -73,11 +93,10 @@ module.exports = {
 		var resultadoJoin = await store.padroesDeUmaLinguagem(req.params.id);
 		var resultadoListarPadroes = await store.listarPadroesPublicos();
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
-        var languages = await store.listarLinguagensPublicas();
+        var languages = await store.listarLinguagensPublicas(); //esse
         var tagsArray = await store.tagsOfLanguage(req.params.id);
         var tagsString = tagsArray.toString();
-        console.log(tagsString);
-        res.render('editarLinguagens.ejs', {tagsString, languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, todosPadroes: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+        res.render('editarLinguagens.ejs', {tagsString, languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, patterns: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesEditPost (req, res) {
@@ -91,18 +110,34 @@ module.exports = {
         }
 
         var languagesToRelateArray = req.body.languages2Relate;
-        //If req.body.languages2Relate is not an array, we'll create an array of one object in order to use .map function
+        //If req.body.languages2Relate is not an array, we'll create an array of one object to use .map function
         if (typeof languagesToRelateArray === 'string') { //If is a string, it is just an element, and we'll create an array
             languagesToRelateArray = [];
             languagesToRelateArray.push(req.body.languages2Relate);
         } 
+        //With undefined the .map (in store.js) cannot execute
+        if (languagesToRelateArray === undefined) {
+            languagesToRelateArray = [];
+        }
+
+        //Getting patterns to relate and handling errors
+        var patternsToRelateArray = req.body.patterns2Relate;
+        //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
+        if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
+            patternsToRelateArray = [];
+            patternsToRelateArray.push(req.body.patterns2Relate);
+        }
+        //With undefined the .map (in store.js) cannot execute
+        if (patternsToRelateArray === undefined) {
+            patternsToRelateArray = [];
+        }
 
         //The tags are stored in a string separated by commas, we'll split this string to create an array
         var tagsStringBefore = req.body.tags;
         var tagsArrayAfter = tagsStringBefore.split(",");
         
-        var nomeLinguagem = req.body.nomeLinguagem;
-        var descricaoLinguagem = req.body.descricaoLinguagem;
+        // var nomeLinguagem = req.body.nomeLinguagem; ==============================!!!!================
+        // var descricaoLinguagem = req.body.descricaoLinguagem;
 
         req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
         req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
@@ -121,6 +156,8 @@ module.exports = {
             await store.editarLinguagem({data, Id: req.params.id});
             await store.deleteLanguageInLanguagesLanguages(req.params.id);
             await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
+            await store.deleteOldRelathionshipsPattern2Language(req.params.id);
+            await store.relatePattern2LanguageWithArray(req.params.id, patternsToRelateArray);
             await store.deleteOldRelathionshipsLanguage2Tags(req.params.id);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(req.params.id, tagsIdArray);
@@ -132,24 +169,6 @@ module.exports = {
         await store.deletarLinguagem(req.params.id);
         await store.deleteLanguageInLanguagesLanguages(req.params.id);
         res.redirect('/languages');
-    },
-
-    async relatePatternPost (req, res) {
-        var idLinguagem = req.params.id;
-        var tituloPadrao = req.body.tituloPadraoRelacionado;
-        var resultadoBusca = await store.pegarIdPadraoPorTitulo(tituloPadrao);
-        var idPadrao = resultadoBusca.padroes_id;
-        await store.relacionarPadraoLinguagem(idLinguagem, idPadrao);
-        res.redirect(`/languages/${idLinguagem}/edit`);
-    },
-
-    async unrelatePatternPost (req, res) {
-        var idLinguagem = req.params.id;
-        var tituloPadrao = req.body.tituloPadraoDesrelacionado;
-        var resultadoBusca = await store.pegarIdPadraoPorTitulo(tituloPadrao);
-        var idPadrao = resultadoBusca.padroes_id;
-        await store.desrelacionarPadraoLinguagem(idLinguagem, idPadrao);
-        res.redirect(`/languages/${idLinguagem}/edit`);
     },
 
     async languagePageGet (req, res) {

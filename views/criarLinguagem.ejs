@@ -59,10 +59,23 @@
                     <%= __('Adicione tags que relacionem o assunto para facilitar as buscas') %>
                 </span>
             </div>
-
             <br>
             <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
           </div>
+          <div class="form-group">
+            <label><%= __("Relacionamento de padrões") %> (INSERIR UM SEARCH AQUI)</label>
+            <% patterns.forEach((eachPattern) => { %>
+                <p><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %></p>
+            <% }); %>  
+          </div>
+          <div class="form-group">
+            <label><%= __('Relacionamento de Linguagens') %> (INSERIR UM SEARCH AQUI)</label>
+            <% languages.forEach((language) => { %>
+                <p><input type="checkbox" name="languages2Relate" value="<%= language.linguagens_id %>"> <%= language.nome %></p>
+            <% }); %>  
+          </div>
+          
+          <br>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button type="submit" class="btn btn-primary"><%= __('Criar Linguagem') %></button>
           <a class="btn btn-danger" href="/languages"><%= __('Cancelar') %></a>   

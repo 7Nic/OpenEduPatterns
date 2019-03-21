@@ -196,8 +196,7 @@ module.exports = {
     deletarLinguagem(Id) {
         return knex('linguagens').where('linguagens_id', Id).del();
     },
-    padroesDeUmaLinguagem(Id) { //Retorna os padroes da linguagem que tem o Id que passamos
-        //Não usamos SELECT * pois evitamos busca e download de dados desnecessários 
+    padroesDeUmaLinguagem(Id) {
         return knex
             .select('titulo', 'padroes.padroes_id')
             .from('padroes')
@@ -223,6 +222,20 @@ module.exports = {
             })
             .toString()
             .replace('insert', 'INSERT IGNORE'));
+    },
+    deleteOldRelathionshipsPattern2Language(languageId) {
+        return knex('linguagens_padroes').where('linguagens_id', languageId).del();
+    },
+    relatePattern2LanguageWithArray(languageId, patternsToRelateArray) {
+        return Promise.all(patternsToRelateArray.map(eachPatternId => {
+            //This raw function substitutes INSERT for INSERT IGNORE
+            return knex.raw(knex('linguagens_padroes').insert({
+                linguagens_id: languageId,
+                padroes_id: eachPatternId
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
     },
     relateUserLanguage(userId, languageId) {
         return knex.raw(knex('usuarios_linguagens').insert({

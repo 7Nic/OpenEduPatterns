@@ -53,52 +53,28 @@
                 <br>
                 <!-- ================================================ -->
                 <h2><%= __('Relacionamento entre Linguagens e Padrões') %></h2>
-                <div class="row artigo">
-                    <label for=""><%= __('Padrões relacionados a essa Linguagem') %></label>
-                    <% padroesRelacionados.forEach((padroesRelacionados) => { %>
-                            <h4><a href="/building"><%- padroesRelacionados.titulo %></a></h4>
-                    <% }); %>
-                </div>
-
-                <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/edit/unrelatepattern">
-                    <label for=""><%= __('Remover padrões desta linguagem') %></label>
-                    <select class="form-control" id="tituloPadraoDesrelacionado"  name="tituloPadraoDesrelacionado">
-                        <% padroesRelacionados.forEach((padroesRelacionados) => { %>
-                          <option><%- padroesRelacionados.titulo %></option>
-                        <% }); %>    
-                    </select>
-                    <br>
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button class="btn btn-danger"><%= __('Excluir relacionamento') %></button>
-                </form>
-
-                <br>
-                <br>
-                <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/edit/relatepattern">
-                    <label for=""><%= __('Adicionar outros padrões a essa Linguagem (aqui entrará uma ferramenta de busca)') %></label>  
+                <% if (padroesRelacionados.length > 0) { %>
                     <div class="form-group">
-                        <select class="form-control" id="tituloPadraoRelacionado" name="tituloPadraoRelacionado">
-                            <% todosPadroes.forEach((todosPadroes) => { %>
-                                <option><%- todosPadroes.titulo %></option>
-                            <% }); %>
-                        </select>
-                        <br>
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="btn btn-success"><%= __('Adicionar relacionamento') %></button>
+                        <label for=""><%= __('Padrões relacionados a essa Linguagem') %></label>
+                        <% padroesRelacionados.forEach((padraoRelacionado) => { %>
+                                <h4><a href="/patterns/<%= padraoRelacionado.padroes_id %>"><%- padraoRelacionado.titulo %></a></h4>
+                        <% }); %>
                     </div>
-                </form>
-                <br>
-                <br>
+                <% } %>
+                
+                <!-- COLE INICIANDO AQUI -->
+
+                <!-- E TERMINANDO AQUI -->
                 <!-- ================================================ -->
                 
-
-
-
-
-
-                
-                
                 <form method="POST" action="">
+                    <div class="form-group">
+                        <h4><%= __("Relacionamento de padrões") %> (INSERIR UM SEARCH AQUI)</h4>
+                        <% patterns.forEach((eachPattern) => { %>
+                            <p><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %></p>
+                        <% }); %>  
+                    </div>
+
                     <h2><%= __('Relacionamento entre Linguagens') %></h2>
                     <% if (relatedLanguages.length > 0) { %>
                         <label><%= __('Linguagens relacionadas antes da edição') %></label>

@@ -24,8 +24,4 @@ router.post('/:id/edit', passportFunctions.isOwnerOfLanguage, languagesControlle
 
 router.post('/:id/delete',  passportFunctions.isOwnerOfLanguage,languagesController.languagesDeletePost);
 
-router.post('/:id/edit/relatepattern', passportFunctions.isOwnerOfLanguage, languagesController.relatePatternPost);
-
-router.post('/:id/edit/unrelatepattern', passportFunctions.isOwnerOfLanguage, languagesController.unrelatePatternPost);
-
 module.exports = router;

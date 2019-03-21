@@ -151,7 +151,7 @@ module.exports = {
             await store.editPatternInPadroes({data, Id: req.params.id});
             await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
             await store.deletePatternsInPatternsPatterns(req.params.id);
-            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray);
+            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray); //esse
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
             await store.relatePattern2Tags(req.params.id, tagsIdArray);
