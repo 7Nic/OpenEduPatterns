@@ -38,12 +38,15 @@
                     <h2><a href="/languages/create"><%= __('Criar nova Linguagem') %></a><h2>
                 </div>
 <!-- =====================LOOP=========================-->
-            <% linguagens.forEach((linguagens) => { %>
-                <div class="row artigo">
+            <% linguagens.forEach((linguagens, index) => { %>
+                <div class="row artigo" id="language<%= index %>"> 
+                    <p hidden id="languageIdHidden<%= index %>"><%=linguagens.linguagens_id%></p>
                     <h2><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h2>
-                    <p>
-                       <%= linguagens.descricao %>
-                    </p>
+                    <div class="languagesText" id="languageText<%= index %>">
+                        <p>
+                           <%= linguagens.descricao %>
+                        </p>
+                    </div>
                     <p> 
                                                                                       <!-- Username -->
                         <a href=""><span class="glyphicon glyphicon-user"></span> <%= linguagens.name %></a>
@@ -82,15 +85,31 @@
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        //Limit the size of title
+        var languagesTitleArray = $(".artigo h2 a").toArray();
+        languagesTitleArray.forEach((eachTitle, index) => {
+            if(eachTitle.text.length > 50) {
+                var selectedTitle = $(`#language${index-1} h2 a`);
+                selectedTitle.text(selectedTitle.text().substring(0,50) + "...");
+            }
+        });
+
+        //Limit the size of the description
+        var languagesArticleArray = $(".languagesText p").toArray();
+        languagesArticleArray.forEach((eachLanguage, index) => {
+            console.log(eachLanguage.innerText.length); //For some reason, this is not jQeury, this is DOM
+            if (eachLanguage.innerText.length > 100) {
+                console.log('entrei no 2');
+                var languageObject = $(`#languageIdHidden${index}`);
+                var languageId = languageObject[0].innerText;
+                eachLanguage.innerHTML = eachLanguage.innerText.substring(0, 100) + `... <a href='/languages/${languageId}'> <%= __('Continuar lendo') %> </a>`;
+            }
+        });
+
+
+        
+
+    </script>
 </body>
 </html>
-
-
-<!-- ANOTAÇÕES/IDEIAS -->
-<!-- Tentar colocar o fundo da navbar como a continuação da foto, e quando rolar para baixo, mudar para a cor roxa atual -->
-
-<!-- TO DO LIST -->
-<!-- Trocar o banner, deverá ser uma foto no fundo com o texto html na frente-->
-<!-- Colocar melhores icones de calendario e comentários -->
-<!-- Colocar o botao do banner de criar conta -->
-<!-- Consertar o pagination para ficar no centro e mudar as cores -->

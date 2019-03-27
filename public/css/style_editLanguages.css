@@ -62,24 +62,6 @@ p, a, h1, h2, h3, h4 {
 	background-color: #171421;
 }
 
-/************
--banner
-************/		
-.banner img {
-	/*max-width: 200px;*/
-}
-
-.banner .btn {
-	position: absolute;
-	top: 10px;
-	left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%)
-}
-
-/*cor de botao #325b8f*/
-
-
 
 /************
 -corpo
@@ -130,6 +112,7 @@ p, a, h1, h2, h3, h4 {
 }
 
 .artigo h2 a:hover, .artigo h2 a:focus {
+	/*color: #fb284c;*/
 	color: #fb284c;
 	text-decoration: none;
 }
@@ -153,13 +136,27 @@ p, a, h1, h2, h3, h4 {
 	text-decoration-style: none;
 	list-style: none;	
 }
+ /************
+ -Pagination
+ ************/		
+.corpo .container .controle-pagina .pagination li {
+	align-items: center;
+	color: red; !important
+}
+
+
 
 /************
 -footer
 ************/		
 
 footer {
+	/*background-color: #5e4485;*/
+	/*background-color: #01959e;*/
+	/*background-color: #363636; o preto claro*/
 	background-color: #2B263D;
+	/*background-color: black;*/
+	/*background-color: #5F00FE;*/
 	color: #fff;
 	padding: 0.1%;
 }
@@ -240,4 +237,8 @@ footer a:hover, footer a:focus {
 .tooltipInfo:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+.tooltipInfo h2 span {
+	font-size: 20px;
 }

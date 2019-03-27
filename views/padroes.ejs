@@ -69,14 +69,10 @@
 
                 </div>
 <!-- ===========================LOOP============================================ -->
- 
-
                 <% padroes.forEach((padroes) => { %>
                     <div class="row artigo">
                         <h2><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h2>
-                        
-                        <p>
-                                                                                        <!-- Username -->
+                        <p>                                         <!-- Username -->
                             <a href=""><span class="glyphicon glyphicon-user"></span> <%= padroes.name %> </a>
                             <a href="" class="glyphicon glyphicon-comment"> 3</a>
                             <span class="glyphicon glyphicon-calendar"><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></span>
@@ -84,8 +80,6 @@
 
                     </div>    
                 <% }); %>            
-
-
 <!-- ============================================== -->
             </div>
         </div>
@@ -113,15 +107,15 @@
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        //Limit the size of title
+        var languagesTitleArray = $(".artigo h2 a").toArray();
+        languagesTitleArray.forEach((eachTitle, index) => {
+            if(eachTitle.innerHTML.length > 50) {
+                console.log(eachTitle.innerHTML);
+                eachTitle.innerHTML = eachTitle.innerHTML.substring(0,50) + "...";
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-<!-- ANOTAÇÕES/IDEIAS -->
-<!-- Tentar colocar o fundo da navbar como a continuação da foto, e quando rolar para baixo, mudar para a cor roxa atual -->
-
-<!-- TO DO LIST -->
-<!-- Trocar o banner, deverá ser uma foto no fundo com o texto html na frente-->
-<!-- Colocar melhores icones de calendario e comentários -->
-<!-- Colocar o botao do banner de criar conta -->
-<!-- Consertar o pagination para ficar no centro e mudar as cores -->

@@ -21,7 +21,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../../css/style_linguagens.css">
+    <link rel="stylesheet" type="text/css" href="../../css/style_editLanguages.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -52,10 +52,15 @@
                 <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
                 <br>
                 <!-- ================================================ -->
-                <h2><%= __('Relacionamento entre Linguagens e Padrões') %></h2>
+                <div class="tooltipInfo">
+                    <h2><%= __('Relacionamento entre Linguagens e Padrões') %> <span class="glyphicon glyphicon-question-sign"></h2>
+                    <span class="tooltiptext">
+                        <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
+                      </span>
+                </div>
                 <% if (padroesRelacionados.length > 0) { %>
                     <div class="form-group">
-                        <label for=""><%= __('Padrões relacionados a essa Linguagem') %></label>
+                        <label for=""><%= __('Padrões relacionados a essa Linguagem') %> ADICIONAR UM BOTÃO PARA RETIRAR AS RELAÇÕES EM VEZ DE APAGAR TUDO TODA VEZ</label>
                         <% padroesRelacionados.forEach((padraoRelacionado) => { %>
                                 <h4><a href="/patterns/<%= padraoRelacionado.padroes_id %>"><%- padraoRelacionado.titulo %></a></h4>
                         <% }); %>
@@ -75,9 +80,16 @@
                         <% }); %>  
                     </div>
 
-                    <h2><%= __('Relacionamento entre Linguagens') %></h2>
+
+                    <div class="tooltipInfo">
+                        <h2><%= __('Relacionamento entre Linguagens') %> <span class="glyphicon glyphicon-question-sign"></h2>
+                        <span class="tooltiptext">
+                            <%= __("Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação") %>
+                          </span>
+                    </div>
+
                     <% if (relatedLanguages.length > 0) { %>
-                        <label><%= __('Linguagens relacionadas antes da edição') %></label>
+                        <label><%= __('Linguagens relacionadas antes da edição') %> ADICIONAR UM BOTÃO PARA RETIRAR AS RELAÇÕES EM VEZ DE APAGAR TUDO TODA VEZ</label>
                         <h4>|
                             <% relatedLanguages.forEach((relatedLanguage) => { %>
                                 <a href="/languages/<%= relatedLanguage.linguagens_id %>"><%= relatedLanguage.nome %></a> |
@@ -90,7 +102,12 @@
                     <% }); %>
                     <br>
                     <br>  
-                    <h2><%= __('Propriedades da Linguagem') %></h2>
+                    <div class="tooltipInfo">
+                        <h2><%= __('Propriedades da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></h2>
+                        <span class="tooltiptext">
+                            <%= __("Edite aqui as informações básicas da Linguagem") %>
+                          </span>
+                    </div>
                     <div class="form-group">
                       <label for="nomeLinguagem"><%= __('Nome da Linguagem') %></label>
                       <input type="text" class="form-control" id="nomeLinguagem" name="nomeLinguagem" value="<%= linguagem.nome %>">
@@ -107,7 +124,12 @@
                       <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"><%= linguagem.descricao %></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %></label>
+                        <div class="tooltipInfo">
+                          <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+                          <span class="tooltiptext">
+                              <%= __('Adicione tags que relacionem o assunto para facilitar as buscas') %>
+                          </span>
+                        </div>
                         <br>
                         <input type="text" id="tags" name="tags" value="<%= tagsString %>" data-role="tagsinput">
                     </div>

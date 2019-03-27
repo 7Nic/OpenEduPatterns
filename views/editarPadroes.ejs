@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home - OpenEduPatterns</title>
+    <title>OpenEduPatterns</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Criar a responsividade da página para telas menores -->
@@ -78,8 +78,13 @@
                                 </h4>
                             <% } %>
 
-
-                            <h3>Faça aqui seu novo relacionamento de Padrões</h3>
+                            <div class="tooltipInfo">
+                                <h3><%= __("Faça aqui seu novo relacionamento de Padrões") %> <span class="glyphicon glyphicon-question-sign"></h3>
+                                <span class="tooltiptext">
+                                    <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
+                                  </span>
+                            </div>
+                            
                             <% if (patternsOfTheSameLanguage) { %>
                                 <label>Padrões pertencentes à mesma linguagem</label>  
                                 <% patternsOfTheSameLanguage.forEach((eachPattern) => { %>
@@ -87,6 +92,7 @@
                                 <% }); %>
                             <% } %>
 
+                            <br>
                             <label>Padrões públicos</label>
                             <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
                             <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
