@@ -13,8 +13,8 @@ module.exports = {
             language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
             language.yearCreation = language.created_at.getFullYear();
         });
-        // res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
-        res.render('table.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
+        res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
+        // res.render('table2.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesCreateGet (req, res) {

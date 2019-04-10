@@ -24,6 +24,8 @@
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="css/style_datatable.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -40,64 +42,39 @@
             </div>
 
             <h1><%= __('Padrões populares') %></h1>
-            <div class="col-md-10 col-md-offset-1 col-artigos">
                 <div class="row artigo">
                     <h2><a href="/patterns/chosetemplate"><%= __('Criar novo Padrão') %></a><h2>
                 </div>
-                <div class="row artigo">
-                    <h2><a href=""><%= __('Padrão um') %></a></h2>
-                    <!-- INICIO FORMATAÇÃO DO USUARIO -->
-                    <!-- AQUI ENTRARÁ A FORMATAÇÃO EM HTML DIGITADA PELO USUARIO ATE UMA CERTA QUANTIDADE DE LINHAS -->
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. 
-                    </p>
-                    <h4><%= __('Aplicação') %></h4>
-                    <p>    
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Duis aute irure dolor in reprehenderit in 
-                        cillum dolore nulla... <a href="" class="read-more"> <%= __('Continuar lendo') %></a>
-                    </p>
-                    <!-- FIM DA FORMATAÇÃO DO USUARIO -->
-                    <p>
-                        <a href=""><span class="glyphicon glyphicon-user"></span>  Gabriel Nicolau</a>
-                        <a href="" class="glyphicon glyphicon-comment"> 3</a>
-                        <span class="glyphicon glyphicon-calendar"> 20/08/2018</span>
-                    </p>    
-
-                </div>
+                
 <!-- ===========================LOOP============================================ -->
-                <% padroes.forEach((padroes) => { %>
-                    <div class="row artigo">
-                        <h2><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h2>
-                        <p>                                         <!-- Username -->
-                            <a href=""><span class="glyphicon glyphicon-user"></span> <%= padroes.name %> </a>
-                            <a href="" class="glyphicon glyphicon-comment"> 3</a>
-                            <span class="glyphicon glyphicon-calendar"><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></span>
-                        </p>    
-
-                    </div>    
-                <% }); %>            
+                
+                <div class="row artigo">
+                    <table id="patternTable" class="display">
+                        <thead>
+                            <tr>
+                                <th><%= __('Usuário') %></th>
+                                <th><%= __('Noma da Linguagem') %></th>
+                                <th><%= __('Comentário') %></th>
+                                <th><%= __('Data') %></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- =====================LOOP=========================-->
+                            <% padroes.forEach((padroes, index) => { %>
+                                <tr>
+                                    <td><%= padroes.name %></a></td>
+                                    <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
+                                    <td>3</td>
+                                    <td><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></td>
+                                </tr>
+                            <% }); %>
+                            <!-- =================================== -->
+                        </tbody>
+                    </table>       
+                </div>       
 <!-- ============================================== -->
-            </div>
         </div>
     </div>
-
-    <!-- CONTROLE DE PÁGINA -->
-        <div class="container">
-            <nav aria-label="Controle de página" class="col-md-offset-1 controle-pagina">
-                <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1"><span aria-hidden="true">&laquo;</span></a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1<span class="sr-only">(current)</span></a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">7</a></li>
-                    <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
-                </ul>
-            </nav>
-        </div>
-
     <br>
     <br>
     <br>
@@ -116,6 +93,46 @@
                 eachTitle.innerHTML = eachTitle.innerHTML.substring(0,50) + "...";
             }
         });
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#patternTable').DataTable( {
+                "pageLength": 5,
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
     </script>
 </body>
 </html>

@@ -27,6 +27,8 @@
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- CkEditor -->
     <script type="text/javascript" src="../../ckeditor5/ckeditor.js"></script>
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../../css/style_datatable.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -82,7 +84,7 @@
                                 <h3><%= __("Faça aqui seu novo relacionamento de Padrões") %> <span class="glyphicon glyphicon-question-sign"></h3>
                                 <span class="tooltiptext">
                                     <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
-                                  </span>
+                                </span>
                             </div>
                             
                             <% if (patternsOfTheSameLanguage) { %>
@@ -96,9 +98,26 @@
                             <label>Padrões públicos</label>
                             <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
                             <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
-                            <% patterns.forEach((pattern) => { %>
-                                <p><input type='checkbox' name='patterns2Relate' value='<%= pattern.padroes_id %>'> <%- pattern.titulo %></p>
-                            <% }) %>
+                            
+
+                            <table id="patternTable" class="display">
+                                <thead>
+                                  <tr>
+                                      <th><%= __('Nome do Padrão') %></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <!-- =====================LOOP=========================-->
+                                  <% patterns.forEach((eachPattern, index) => { %>
+                                      <tr>  
+                                        <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                                      </tr>
+                                  <% }); %>
+                                  <!-- ================================================= -->
+                                </tbody>
+                            </table>    
+
+
                             <br>
                         <% } else { %>
                             <label><%= element.name %></label>
@@ -153,6 +172,10 @@
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
+    <!-- Data tables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
     <script type="text/javascript">
         window.onload = function() {
           var editorsArray = document.querySelectorAll( '.ckeditor' );
@@ -168,15 +191,45 @@
           });
         }
     </script>
+    
+    <!-- Data tables -->
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#patternTable').DataTable( {
+                "pageLength": 4,
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
 </body>
 </html>
-
-
-<!-- ANOTAÇÕES/IDEIAS -->
-<!-- Tentar colocar o fundo da navbar como a continuação da foto, e quando rolar para baixo, mudar para a cor roxa atual -->
-
-<!-- TO DO LIST -->
-<!-- Trocar o banner, deverá ser uma foto no fundo com o texto html na frente-->
-<!-- Colocar melhores icones de calendario e comentários -->
-<!-- Colocar o botao do banner de criar conta -->
-<!-- Consertar o pagination para ficar no centro e mudar as cores -->

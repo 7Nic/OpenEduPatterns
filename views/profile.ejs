@@ -162,6 +162,9 @@
 
             $('#patternTable').DataTable( {
                 "pageLength": 4,
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
                 language: {
                     "decimal":        "",
                     "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",

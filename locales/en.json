@@ -186,5 +186,6 @@
 	"Data": "Date",
 	"Ordenar colunas em ordem crescente": "Activate to sort column ascending",
 	"Ordenar colunas em ordem decrescente": "Activate to sort column descending",
-	"Nome do Padrão": "Pattern name"
+	"Nome do Padrão": "Pattern name",
+	"Você não pode adicionar mais campos de relacionamento": "You can't add more relationship elements"
 }

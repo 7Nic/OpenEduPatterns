@@ -4,6 +4,8 @@
     <% include partials/head1.ejs %>
     <script type="text/javascript" src="../ckeditor5/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/style_criarPadrao.css">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -52,14 +54,24 @@
           <!-- Loop -->
           <% templateElements.forEach((element, index) => { %>
           <div class="form-group">
-              <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
-                <label>Padrões relacionados</label>
-                <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
-                <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
-              <% patterns.forEach((pattern) => { %>
-                  <p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%- pattern.titulo %></p>
-              <% }) %>
-
+            <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
+                <label><%= __("Relacionamento de padrões") %></label>
+                <table id="patternTable" class="display">
+                    <thead>
+                      <tr>
+                          <th><%= __('Nome do Padrão') %></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- =====================LOOP=========================-->
+                      <% patterns.forEach((eachPattern, index) => { %>
+                          <tr>  
+                            <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                          </tr>
+                      <% }); %>
+                      <!-- ================================================= -->
+                    </tbody>
+                </table>    
             <% } else { %>
                 <label><%= element.name %></label>
                 <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
@@ -67,7 +79,8 @@
             <% } %>
 
             </div>
-            <a class="btn btn-info" onclick="addElement(this)"><%= __('Adicionar campo aqui') %></a>
+            <a class="btn btn-info" onclick="addElement(this)"><%= __('Adicionar campo aqui') %></a>  
+            
             <br>
             <br>
           <% }); %>
@@ -125,6 +138,9 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-tagsinput.min.js"></script>
+    <!-- Data tables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <!-- Dynamic form -->
     <script type="text/javascript">
         var counter = 0;
@@ -191,13 +207,65 @@
                           "<br>"+
                           "<br>"+
                           "<div class='form-group'>"+
-                            "<label><%= __('Padrões relacionados') %></label>"+
-                            "<input class='form-control' type='hidden' name='elementName[]' value='<%= __('Padrões relacionados') %>'>"+
-                            "<% patterns.forEach((pattern) => { %>"+
-                                "<p><input type='checkbox' name='relatedPatterns' value='<%= pattern.padroes_id %>' > <%- pattern.titulo %></p>"+
-                            "<% }) %>"+
+                            "<label><%= __('Relacionamento de padrões') %></label>"+
+                            "<table id='patternTable' class='display'>"+
+                                "<thead>"+
+                                  "<tr>"+
+                                      "<th><%= __('Nome do Padrão') %></th>"+
+                                  "</tr>"+
+                                "</thead>"+
+                                "<tbody>"+
+                                  "<% patterns.forEach((eachPattern, index) => { %>"+
+                                      "<tr>"+
+                                        "<td><input type='checkbox' name='patterns2Relate' value='<%= eachPattern.padroes_id %>'><h4><%- eachPattern.titulo %></h4></td>"+
+                                      "</tr>"+
+                                  "<% }); %>"+
+                                "</tbody>"+
+                            "</table>"+
                           "</div>";                        
             $("."+obj.id+"Div").html(theHTML);
+
+            //After adding the table, create the data table
+            $.fn.dataTable.ext.errMode = 'throw'; //To throw the error
+
+            try{
+              $('#patternTable').DataTable( {
+                  "pageLength": 4,
+                  "scrollY": 400,
+                  "scrollCollapse": true,
+                  "paging": false,
+                  language: {
+                      "decimal":        "",
+                      "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                      "info":           "",
+                      "infoEmpty":      "",
+                      "infoFiltered":   "",
+                      "infoPostFix":    "",
+                      "thousands":      ",",
+                      "lengthMenu":     "",
+                      "loadingRecords": "<%= __('Carregando...') %>",
+                      "processing":     "<%= __('Processando...') %>",
+                      "search":         "<%= __('Pesquisa') %>",
+                      "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                      "paginate": {
+                          "first":      "<%= __('Primeiro') %>",
+                          "last":       "<%= __('Último') %>",
+                          "next":       "<%= __('Próximo') %>",
+                          "previous":   "<%= __('Anterior') %>"
+                      },
+                      "aria": {
+                          "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                          "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                      }
+                  }
+              } );
+            } catch (err) {
+              alert("<%= __('Você não pode adicionar mais campos de relacionamento') %>");
+            }
+
+
+            
+            
         }
 
         window.onload = function() {
@@ -213,6 +281,48 @@
             });
           });
         }
+    </script>
+    <!-- Data tables -->
+    <script type="text/javascript">
+        $(document).ready( function () {
+          $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+              $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+          } );
+
+          $.fn.dataTable.ext.errMode = 'throw'; //To throw the error
+
+          $('#patternTable').DataTable( {
+              "pageLength": 4,
+              "scrollY": 400,
+              "scrollCollapse": true,
+              "paging": false,
+              language: {
+                  "decimal":        "",
+                  "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                  "info":           "",
+                  "infoEmpty":      "",
+                  "infoFiltered":   "",
+                  "infoPostFix":    "",
+                  "thousands":      ",",
+                  "lengthMenu":     "",
+                  "loadingRecords": "<%= __('Carregando...') %>",
+                  "processing":     "<%= __('Processando...') %>",
+                  "search":         "<%= __('Pesquisa') %>",
+                  "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                  "paginate": {
+                      "first":      "<%= __('Primeiro') %>",
+                      "last":       "<%= __('Último') %>",
+                      "next":       "<%= __('Próximo') %>",
+                      "previous":   "<%= __('Anterior') %>"
+                  },
+                  "aria": {
+                      "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                      "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                  }
+              }
+          } );
+
+        } );
     </script>
 </body>
 </html>
