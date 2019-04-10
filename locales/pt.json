@@ -167,5 +167,22 @@
 	"Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação": "Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação",
 	"Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação": "Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação",
 	"Edite aqui as informações básicas da Linguagem": "Edite aqui as informações básicas da Linguagem",
-	"Faça aqui seu novo relacionamento de Padrões": "Faça aqui seu novo relacionamento de Padrões"
+	"Faça aqui seu novo relacionamento de Padrões": "Faça aqui seu novo relacionamento de Padrões",
+	"Sem linguagem": "Nenhum elemento disponível",
+	"Carregando...": "Carregando...",
+	"Processando...": "Processando...",
+	"Pesquisa": "Pesquisa",
+	"Nenhuma linguagem encontrada": "Nenhum elemento encontrado",
+	"Primeiro": "Primeiro",
+	"Último": "Último",
+	"Próximo": "Próximo",
+	"Anterior": "Anterior",
+	"Ative para ordenar em ordem crescente": "Ative para ordenar em ordem crescente",
+	"Ative para ordenar em ordem decrescente": "Ative para ordenar em ordem decrescente",
+	"Noma da Linguagem": "Nome da Linguagem",
+	"Comentário": "Comentário",
+	"Data": "Data",
+	"Ordenar colunas em ordem crescente": "Ordenar colunas em ordem crescente",
+	"Ordenar colunas em ordem decrescente": "Ordenar colunas em ordem decrescente",
+	"Nome do Padrão": "Nome do Padrão"
 }

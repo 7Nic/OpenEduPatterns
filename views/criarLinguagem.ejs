@@ -3,6 +3,8 @@
 <head>
     <% include partials/head1.ejs %>
     <link rel="stylesheet" type="text/css" href="../css/style_criarLinguagem.css">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -63,16 +65,43 @@
             <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
           </div>
           <div class="form-group">
-            <label><%= __("Relacionamento de padrões") %> (INSERIR UM SEARCH AQUI)</label>
-            <% patterns.forEach((eachPattern) => { %>
-                <p><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %></p>
-            <% }); %>  
+            <h2><%= __("Relacionamento de padrões") %></h2>
+            <table id="patternTable" class="display">
+                <thead>
+                  <tr>
+                      <th><%= __('Nome do Padrão') %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- =====================LOOP=========================-->
+                  <% patterns.forEach((eachPattern, index) => { %>
+                      <tr>  
+                        <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                      </tr>
+                  <% }); %>
+                  <!-- ================================================= -->
+                </tbody>
+            </table>    
           </div>
           <div class="form-group">
-            <label><%= __('Relacionamento de Linguagens') %> (INSERIR UM SEARCH AQUI)</label>
-            <% languages.forEach((language) => { %>
-                <p><input type="checkbox" name="languages2Relate" value="<%= language.linguagens_id %>"> <%= language.nome %></p>
-            <% }); %>  
+            <h2><%= __('Relacionamento de Linguagens') %></h2>
+            <table id="languageTable" class="display">
+                <thead>
+                    <tr>
+                        <th><%= __('Noma da Linguagem') %></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- =====================LOOP=========================-->
+                    <% languages.forEach((eachLanguage, index) => { %>
+                        <tr>
+                            
+                            <td><input type="checkbox" name="languages2Relate" value="<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %></td>
+                        </tr>
+                    <% }); %>
+                    <!-- ================================================= -->
+                </tbody>
+            </table>     
           </div>
           
           <br>
@@ -92,5 +121,70 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#patternTable').DataTable( {
+                "pageLength": 4,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            $('#languageTable').DataTable( {
+                "pageLength": 6,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
 </body>
 </html>

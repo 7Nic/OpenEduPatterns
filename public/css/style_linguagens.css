@@ -112,11 +112,20 @@ p, a, h1, h2, h3, h4 {
 }
 
 .artigo h2 a:hover, .artigo h2 a:focus {
-	/*color: #fb284c;*/
 	color: #fb284c;
 	text-decoration: none;
 }
 
+.artigo h4 a {
+	color: black;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.artigo h4 a:hover, .artigo h4 a:focus {
+	color: #fb284c;
+	text-decoration: none;
+}
 
 .artigo .read-more {
 	/*color: #5e4485;*/

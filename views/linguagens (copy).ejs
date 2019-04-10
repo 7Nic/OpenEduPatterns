@@ -25,6 +25,7 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Datatables -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="css/style_datatable.css">
 </head>
 <body>
@@ -40,7 +41,29 @@
                 <h2><a href="/languages/create"><%= __('Criar nova Linguagem') %></a><h2>
             </div>
             <div class="row artigo">
-                <table id="languageTable" class="display">
+                <table id="languageTable1" class="display table table-striped">
+                    <thead>
+                        <tr>
+                            <th><%= __('Usuário') %></th>
+                            <th><%= __('Noma da Linguagem') %></th>
+                            <th><%= __('Comentário') %></th>
+                            <th><%= __('Data') %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- =====================LOOP=========================-->
+                        <% linguagens.forEach((linguagens, index) => { %>
+                            <tr>
+                                <td><%= linguagens.name %></a></td>
+                                <td><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
+                                <td>3</td>
+                                <td><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></td>
+                            </tr>
+                        <% }); %>
+                        <!-- =================================== -->
+                    </tbody>
+                </table>   
+                <table id="languageTable2" class="display table table-striped">
                     <thead>
                         <tr>
                             <th><%= __('Usuário') %></th>
@@ -105,7 +128,7 @@
             } );
 
             $('#languageTable').DataTable( {
-                "pageLength": 15,
+                "pageLength": 20,
                 language: {
                     "decimal":        "",
                     "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",

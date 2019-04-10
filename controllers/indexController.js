@@ -146,5 +146,9 @@ module.exports = {
         }
         
         res.render('searchresults.ejs', {languages: [], patterns, csrfToken: req.csrfToken(), user: req.user});
+    },
+
+    async table(req, res) {
+        res.render('table.ejs');
     }
 }

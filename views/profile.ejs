@@ -24,6 +24,8 @@
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
 </head>
 
 <body>
@@ -58,20 +60,52 @@
         <div class="well">
             <div class="row">
                 <h1><%= __('Minhas Linguagens') %></h1>
-                <div class="artigo">
-                    <% languages.forEach((language) => { %>
-                        <h2><a href="/languages/<%= language.linguagens_id %>"> <%= language.nome %> </a></h2>
-                    <% }); %>
+                <div class="row artigo">
+                    <table id="languageTable" class="display">
+                        <thead>
+                            <tr>
+                                <th><%= __('Usuário') %></th>
+                                <th><%= __('Noma da Linguagem') %></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- =====================LOOP=========================-->
+                            <% languages.forEach((eachLanguage, index) => { %>
+                                <tr>
+                                    <td><%= eachLanguage.name %></a></td>
+                                    <td><h4><a href="/languages/<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %> </a></h4></td>
+                                </tr>
+                            <% }); %>
+                            <!-- ================================================= -->
+                        </tbody>
+                    </table>       
                 </div>
 
                 <br>
                 <br>
 
                 <h1><%= __('Meus Padrões') %></h1>
-                <div class="artigo">
-                    <% patterns.forEach((pattern) => { %>
-                        <h2><a href="/patterns/<%= pattern.padroes_id %>"> <%- pattern.titulo %> </a></h2>
-                    <% }); %>
+                <div class="row artigo">
+                    
+                    <!-- ======= -->
+                    <table id="patternTable" class="display">
+                        <thead>
+                            <tr>
+                                <th><%= __('Usuário') %></th>
+                                <th><%= __('Noma da Linguagem') %></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- =====================LOOP=========================-->
+                            <% patterns.forEach((eachPattern, index) => { %>
+                                <tr>
+                                    <td><%= eachPattern.name %></a></td>
+                                    <td><h4><a href="/patterns/<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %> </a></h4></td>
+                                </tr>
+                            <% }); %>
+                            <!-- ================================================= -->
+                        </tbody>
+                    </table>    
                 </div>                
             </div>
 
@@ -90,6 +124,71 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#languageTable').DataTable( {
+                "pageLength": 6,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            $('#patternTable').DataTable( {
+                "pageLength": 4,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
 </body>
 </html>
 

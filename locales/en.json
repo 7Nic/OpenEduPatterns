@@ -169,5 +169,22 @@
 	"Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação": "Select new patterns to relate or click on the X to remove a relationship",
 	"Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação": "Select new languages to relate or click on the X to remove a relationship",
 	"Edite aqui as informações básicas da Linguagem": "Edit the basic information of your language",
-	"Faça aqui seu novo relacionamento de Padrões": "Make your new pattern relationship"
+	"Faça aqui seu novo relacionamento de Padrões": "Make your new pattern relationship",
+	"Sem linguagem": "No language available",
+	"Carregando...": "Loading...",
+	"Processando...": "Processing...",
+	"Pesquisa": "Search",
+	"Nenhuma linguagem encontrada": "No matching records found",
+	"Primeiro": "First",
+	"Último": "Last",
+	"Próximo": "Next",
+	"Anterior": "Previous",
+	"Ative para ordenar em ordem crescente": "Activate to sort column ascending",
+	"Ative para ordenar em ordem decrescente": "Activate to sort column descending",
+	"Noma da Linguagem": "Language name",
+	"Comentário": "Comments",
+	"Data": "Date",
+	"Ordenar colunas em ordem crescente": "Activate to sort column ascending",
+	"Ordenar colunas em ordem decrescente": "Activate to sort column descending",
+	"Nome do Padrão": "Pattern name"
 }

@@ -27,4 +27,6 @@ router.get('/filteredpatternsearch', indexController.filteredPatternSearchGet);
 
 router.post('/filteredpatternsearch', indexController.filteredPatternSearchPost);
 
+router.get('/table', indexController.table);
+
 module.exports = router;
