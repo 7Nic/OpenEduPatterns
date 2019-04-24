@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../css/style_patternPage.css">
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -31,21 +32,20 @@
         <%- include partials/nav1.ejs %>
     </nav>  
 
-
-    <div class="container">
-        <br>
-        <br>
+    <br>
+    <br>
+    <div class="container well">
         <h1><%= __('Exibição de Padrão') %></h1>
         <br>
         <% if (pattern) { %>
-            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-success" ><%= __('Exportar PDF') %></button>
+            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success" ><%= __('Exportar PDF') %></button>
             <br>
             <br>
-            <a class="btn btn-info" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
+            <a class="btn btn-rounded btn-info" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
             <h4>Autor: <%= owner.name %></h4>
             <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
             <h4>Visibilidade: <%= pattern.visibilidade %></h4>
-            <div class="well">
+            <div class="well innerWell">
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>
                     <% if (!isAlexander) { %>
@@ -89,7 +89,7 @@
                         <textarea class="form-control" rows="3" id="patternComment" name="patternComment"></textarea>
                     </div>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-info">Enviar</button>
+                    <button type="submit" class="btn btn-rounded btn-info"><%= __('Comentar') %></button>
                 </form>
             <% } else { %>
                 <h4><%= __('Você não está logado, para comentar efetue o') %> <a href='/users/login'><%= __('Login') %></a>.</h4>

@@ -3,6 +3,7 @@
 <head>
     <% include partials/head1.ejs %>
     <link rel="stylesheet" type="text/css" href="../css/style_criarLinguagem.css">
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
 </head>
@@ -10,8 +11,9 @@
     <nav class="navbar navbar-inverse">
         <%- include partials/nav1.ejs %>
     </nav>  
-
-    <div class="container criarNovaLinguagem">
+    <br>
+    <br>
+    <div class="container well criarNovaLinguagem">
         <h1><%= __('Criação de Nova Linguagem') %></h1>
         <!-- Display errors -->
         <% if (messages.length > 0) { %>
@@ -102,11 +104,11 @@
                 </tbody>
             </table>     
           </div>
-          
-          <br>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-primary"><%= __('Criar Linguagem') %></button>
-          <a class="btn btn-danger" href="/languages"><%= __('Cancelar') %></a>   
+          <button type="submit" class="btn btn-rounded btn-lg btn-primary"><%= __('Criar Linguagem') %></button>
+          <a class="btn btn-rounded btn-lg btn-danger" href="/languages"><%= __('Cancelar') %></a>  
+          <br>
+          <br>
         </form>
     </div>
 

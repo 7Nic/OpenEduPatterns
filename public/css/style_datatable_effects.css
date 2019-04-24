@@ -1,0 +1,19 @@
+/*** Table Styles **/
+tr:hover td {
+  background:#4E5066; 
+  /*color:#FFFFFF; */
+  border-top: 1px solid #22262e;
+}
+
+tr:hover td h4 a, tr:hover td h4 p {
+  background:#4E5066; 
+  color:#FFFFFF; /*aqui*/
+  font-size: 15px;
+  transition: all 0.3s ease 0s;
+}
+
+tr:hover td h4 a:hover, tr:hover td h4 p:hover {
+  font-size: 25px;
+  background:#4E5066; 
+  color:#FFFFFF; /*aqui*/
+}

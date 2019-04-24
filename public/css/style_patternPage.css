@@ -15,7 +15,6 @@ p, a {
 ************/		
 .navbar-inverse {
 	background-color: #2B263D;
-
 	margin-bottom: 0;
 	border-radius: 0;
 	border: 0;
@@ -70,7 +69,7 @@ p, a {
 }
 
 /*Highlight links*/
-.well a {
+.innerWell a {
 	color: #5a3fbf;
 	font-weight: bold;
 }

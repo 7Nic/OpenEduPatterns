@@ -52,7 +52,7 @@ p, a, h1, h2, h3, h4 {
 /************
 -Criar linguagem button
 ************/		
-.btn-default {
+.well .btn-default {
   font-family: 'Work Sans', serif;
   font-weight: bold;
   font-size: 25px;
@@ -65,7 +65,7 @@ p, a, h1, h2, h3, h4 {
   transition: all 0.3s ease 0s;
 }
 
-.btn-default:hover {
+.well .btn-default:hover {
   font-size: 30px;
   color: #FFF;
   background: rgba(43, 38, 61, 0.75);

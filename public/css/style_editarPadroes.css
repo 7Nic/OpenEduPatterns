@@ -16,8 +16,7 @@ p, a, h1, h2, h3, h4 {
 ************/		
 .navbar-inverse {
 	background-color: #2B263D;
-
-	margin-bottom: 0;
+	margin-bottom: 0;''
 	border-radius: 0;
 	border: 0;
 	padding: 0.3%;
@@ -35,9 +34,6 @@ p, a, h1, h2, h3, h4 {
 }
 
 .navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
-	/*background-color: #5e4485;*/
 	background-color: #2B263D;
 }
 
@@ -85,6 +81,16 @@ p, a, h1, h2, h3, h4 {
 /************
 -corpo
 ************/		
+.well {
+	border-radius: 80px;
+}
+
+#pageTitle {
+	text-shadow:#888 1px 1px 6px;
+	font-weight: bold;
+	font-size: 40px;
+}
+
 .artigo {
 	margin: 25px 10px;
 	padding: 5px;
@@ -153,6 +159,22 @@ p, a, h1, h2, h3, h4 {
 	padding: 5px;
 	text-decoration-style: none;
 	list-style: none;	
+}
+
+.btn-primary {
+	background-color: #3e3759;
+	border-color: #171421;
+}
+
+.btn-primary:hover {
+	/*background-color: #171421;*/
+	background-color: #2b263d;
+	border-color: #171421;	
+}
+
+.btn-rounded {
+	border-radius: 10em;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
 }
 
 /************

@@ -608,30 +608,37 @@ th:last-child {
 tr {
   border-top: 1px solid #C1C3D1;
   border-bottom-: 1px solid #C1C3D1;
-  /*color:#666B85;*/
   color: #959abc;
   font-size:16px;
   font-weight:normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
  
-tr:hover td {
+/*tr:hover td {
   background:#4E5066; 
-  /*color:#FFFFFF; */
   border-top: 1px solid #22262e;
-}
+}*/
 
-tr:hover td h4 a, tr:hover td h4 p {
+/*tr:hover td h4 a, tr:hover td h4 p {
   background:#4E5066; 
-  color:#FFFFFF; /*aqui*/
+  color:#FFFFFF; 
   font-size: 15px;
   transition: all 0.3s ease 0s;
-}
+}*/
 
-tr:hover td h4 a:hover, tr:hover td h4 p:hover {
+/*tr:hover td h4 a:hover, tr:hover td h4 p:hover {
   font-size: 25px;
   background:#4E5066; 
-  color:#FFFFFF; /*aqui*/
+  color:#FFFFFF; 
+}*/
+
+td {
+  color: black;
+}
+
+td p, td h4 {
+  display: inline;
+  padding-left: 0.3em;
 }
  
 tr:first-child {
@@ -647,7 +654,7 @@ tr:nth-child(odd) td {
 }
  
 tr:nth-child(odd):hover td {
-  background:#4E5066; /*aqui*/
+  background:#4E5066;
 }
 
 tr:last-child td:first-child {
@@ -668,10 +675,6 @@ td {
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
 }
-
-/*.userName:hover {
-  color: #4E5066;
-}*/
 
 td:last-child {
   border-right: 0px;

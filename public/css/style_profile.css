@@ -111,7 +111,7 @@ h1 {
     position: absolute;
     right: 0;
     text-align: center;
-    transition:0.2s all;
+    transition:0.1s all;
     font-size: 25px;
     height: 20%;
 }

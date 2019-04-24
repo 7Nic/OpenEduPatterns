@@ -4,6 +4,7 @@
     <% include partials/head1.ejs %>
     <script type="text/javascript" src="../ckeditor5/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../css/style_criarPadrao.css">
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
 </head>
@@ -11,8 +12,9 @@
     <nav class="navbar navbar-inverse">
         <%- include partials/nav1.ejs %>
     </nav>  
-
-    <div class="container criarNovoPadrao">
+    <br>
+    <br>
+    <div class="container well criarNovoPadrao">
     	<h1><%= __('Criação de Novo Padrão') %></h1>
       <br>
       <h4><%= __('Observações') %>:</h4>
@@ -21,7 +23,7 @@
         <!-- Handle error -->
           <% if (templateElements.length === 0) { %>
             <p><%= __('Você reiniciou a página. Por favor volte à página anterior e escolha novamente seu template.') %></p>
-            <a href="/patterns/chosetemplate" class="btn btn-info"><%= __('Clique aqui') %></a>
+            <a href="/patterns/chosetemplate" class="btn btn-rounded btn-info"><%= __('Clique aqui') %></a>
           <% } %>
 
         <!-- Display errors -->
@@ -66,7 +68,7 @@
                       <!-- =====================LOOP=========================-->
                       <% patterns.forEach((eachPattern, index) => { %>
                           <tr>  
-                            <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                            <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"> <h4><%- eachPattern.titulo %></h4></td>
                           </tr>
                       <% }); %>
                       <!-- ================================================= -->
@@ -79,7 +81,7 @@
             <% } %>
 
             </div>
-            <a class="btn btn-info" onclick="addElement(this)"><%= __('Adicionar campo aqui') %></a>  
+            <a class="btn btn-rounded btn-info" onclick="addElement(this)"><%= __('Adicionar campo aqui') %></a>  
             
             <br>
             <br>
@@ -121,8 +123,8 @@
           <% if (templateElements.length > 0) { %>
               <input type="hidden" name="createNewTemplate" id="createNewTemplate" value="">
         	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              <button type="submit" class="btn btn-success"><%= __('Criar Padrão') %></button>
-        	  <a class="btn btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
+              <button type="submit" class="btn btn-rounded btn-success"><%= __('Criar Padrão') %></button>
+        	  <a class="btn btn-rounded btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
           <% }; %>
 		</form>
 
@@ -154,12 +156,12 @@
                 $("#explanation").after(inputForTemplate);
             }
             counter += 1;
-            var theHTML = "<a class='btn btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><%= __('Adicionar campo aqui') %></a>"+
+            var theHTML = "<a class='btn btn-rounded btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><%= __('Adicionar campo aqui') %></a>"+
                           "<div class='element"+counter+"Div newElement' id='element"+counter+"'>"+
                           "<br>"+
                           "<br>"+
-                          "<a id='element"+counter+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'><%= __('Remover') %></a>"+
-                          "<a id='element"+counter+"' class='btn btn-success btn-xs' onclick='relatePatterns(this)'><%= __('Relacionar Padrões') %></a>"+
+                          "<a id='element"+counter+"' class='btn btn-rounded btn-danger btn-xs' onclick='removeElement(this)'><%= __('Remover') %></a>"+
+                          "<a id='element"+counter+"' class='btn btn-rounded btn-success btn-xs' onclick='relatePatterns(this)'><%= __('Relacionar Padrões') %></a>"+
                           "<br>"+
                           "<br>"+
                           "<div class='form-group'>"+
@@ -203,7 +205,7 @@
         function relatePatterns(obj) {
             var theHTML = "<br>"+
                           "<br>"+
-                          "<a id='"+obj.id+"' class='btn btn-danger btn-xs' onclick='removeElement(this)'><%= __('Remover') %></a>"+
+                          "<a id='"+obj.id+"' class='btn btn-rounded btn-danger btn-xs' onclick='removeElement(this)'><%= __('Remover') %></a>"+
                           "<br>"+
                           "<br>"+
                           "<div class='form-group'>"+

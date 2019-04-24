@@ -34,14 +34,16 @@
     <nav class="navbar navbar-inverse">
         <%- include partials/nav2.ejs %>
     </nav>  
-
+    <br>
+    <br>
+    <br>
     <div class="corpo">
-        <div class="container">           
+        <div class="container well">           
             <div class="col-md-8 col-md-offset-2 col-artigos">
 <!-- ==============================================-->
             <div class="criarNovaLinguagem">
-                <h1>Edição de Padrão</h1>
-
+                <h1 id="pageTitle">Edição de Padrão</h1>
+                <br>
                 <!-- Display errors -->
                 <% if (messages.length > 0) { %>
                     <div class="alert alert-danger">
@@ -143,16 +145,17 @@
 
 
                     <a href="javascript:window.location.reload(true)">
-                      <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                      <button type="submit" class="btn btn-rounded btn-primary">Salvar alterações</button>
+
                     </a>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button onclick="window.location.href='/padroes'" class="btn btn-danger">Cancelar</button>    
+                    <button onclick="window.location.href='/padroes'" class="btn btn-rounded btn-danger">Cancelar</button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/patterns/<%= patternId %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-danger btn-lg">Deletar Padrão</button>    
+                    <button type="submit" class="btn btn-rounded btn-danger btn-lg">Deletar Padrão</button>    
                 </form>
             </div>
 
