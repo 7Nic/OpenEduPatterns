@@ -35,37 +35,64 @@ p, a, h1, h2, h3, h4 {
 }
 
 .navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
-	/*background-color: #5e4485;*/
 	background-color: #2B263D;
 }
-
-/*arrumar esse aqui
-.navbar-collapse ul a:hover {
-	color: #fb284c;
-	background-color: red;
-}*/
 
 .logo {
 	float left;
 }
 
 .navbar .navbar-header button:focus {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
 	background-color: #2B263D;
-	/*roxo antes 5e4485*/
 }
 
 .navbar .navbar-header button:hover {
 	background-color: #171421;
 }
 
+/************
+-Criar padrão button
+************/		
+.btn-default {
+  font-family: 'Work Sans', serif;
+  font-weight: bold;
+  font-size: 25px;
+  color: rgba(43, 38, 61, 0.75);
+  background: transparent;
+  letter-spacing: 3px;
+  line-height: 35px;
+  border: 1.1px solid rgba(43, 38, 61, 0.75);
+  border-radius: 40px;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-default:hover {
+  font-size: 30px;
+  color: #FFF;
+  background: rgba(43, 38, 61, 0.75);
+  border: 4.5px solid rgba(43, 38, 61, 0.75);
+}
+
+.buttonCreateLanguage {
+	margin: 25px 10px;
+	padding: 5px;
+}
+
+
 
 /************
 -corpo
-************/		
+************/	
+.wrapper {
+	background-color: #f4f5f7;
+	border-radius: 90px;	
+}
+
+.artigo {
+	margin: 25px 10px;
+	padding: 5px;
+}
+
 .gerenciamento h3 {
 	color: black;
 	font-weight: bold;
@@ -101,14 +128,12 @@ p, a, h1, h2, h3, h4 {
 }
 
 .artigo a {
-	/*background-color: red;	*/
 	margin-right: 10px;
 	padding: 0px;
 	font-size: 17px;
 }
 
 .artigo p a:hover, .artigo p a:focus {
-	/*color: #5e4485;*/
 	color: #fb284c;
 	text-decoration: none;
 }
@@ -130,14 +155,12 @@ p, a, h1, h2, h3, h4 {
 
 
 .artigo .read-more {
-	/*color: #5e4485;*/
 	color: black;
 	font-weight: bold;
 	font-size: 15px;
 }
 
 .artigo .read-more:hover {
-	/*color: #5e4485;*/
 	color: #fb284c;
 }
 

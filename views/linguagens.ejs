@@ -19,10 +19,10 @@
     <!-- <link rel="stylesheet" type="text/css" href=""> -->
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Meu CSS -->  
+    <!-- Meu CSS --> 
+    <link rel="stylesheet" type="text/css" href="css/style_padroes.css"> 
     <link rel="stylesheet" type="text/css" href="css/style_linguagens.css">
     <!-- Fonte da página -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="css/style_datatable.css">
@@ -33,30 +33,32 @@
     </nav>  
 
     <div class="corpo">
-        <div class="container">
-            <h1><%= __('Linguagens populares') %></h1>     
+        <br>
+        <br>
+        <div class="container well wrapper">
             <br>
-            <div class="row artigo">
-                <h2><a href="/languages/create"><%= __('Criar nova Linguagem') %></a><h2>
+            <div class="row buttonCreateLanguage">
+                <a type="button" href="/languages/create" class="btn btn-default"><%= __('Criar nova Linguagem') %></a>
             </div>
             <div class="row artigo">
-                <table id="languageTable" class="display">
+                <table id="languageTable" class="display table-fill">
                     <thead>
                         <tr>
-                            <th><%= __('Usuário') %></th>
-                            <th><%= __('Noma da Linguagem') %></th>
-                            <th><%= __('Comentário') %></th>
-                            <th><%= __('Data') %></th>
+                            <th class="text-left"><%= __('Usuário') %></th>
+                            <th class="text-left"><%= __('Noma da Linguagem') %></th>
+                            <th class="text-left"><%= __('Comentário') %></th>
+                            <th class="text-left"><%= __('Data') %></th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- =====================LOOP=========================-->
                         <% linguagens.forEach((linguagens, index) => { %>
                             <tr>
-                                <td><%= linguagens.name %></a></td>
-                                <td><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
-                                <td>3</td>
-                                <td><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></td>
+                                <td class="text-left userName"><%= linguagens.name %></a></td>
+                                <td class="text-left"><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
+                                <!-- <td class="text-left"><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td> -->
+                                <td class="text-left">3</td>
+                                <td class="text-left"><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></td>
                             </tr>
                         <% }); %>
                         <!-- =================================== -->

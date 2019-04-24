@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="css/style_padroes.css">
+    <link rel="stylesheet" type="text/css" href="css/style_linguagens.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -36,43 +37,37 @@
 
 
     <div class="corpo">
-        <div class="container">
-            <div class="col-md-10 col-md-offset-1 gerenciamento">
-                <!-- <h3><a href="/gerenciamentoPadroes">Gerenciar meus padrões</a></h3> -->
+        <br>
+        <br>
+        <div class="container well wrapper">
+            <br>            
+            <div class="row buttonCreatePattern">
+                <a type="button" href="/patterns/chosetemplate" class="btn btn-default"><%= __('Criar novo Padrão') %></a>
             </div>
-
-            <h1><%= __('Padrões populares') %></h1>
-                <div class="row artigo">
-                    <h2><a href="/patterns/chosetemplate"><%= __('Criar novo Padrão') %></a><h2>
-                </div>
-                
-<!-- ===========================LOOP============================================ -->
-                
-                <div class="row artigo">
-                    <table id="patternTable" class="display">
-                        <thead>
+            <div class="row artigo">
+                <table id="patternTable" class="display">
+                    <thead>
+                        <tr>
+                            <th><%= __('Usuário') %></th>
+                            <th><%= __('Noma da Linguagem') %></th>
+                            <th><%= __('Comentário') %></th>
+                            <th><%= __('Data') %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- =====================LOOP=========================-->
+                        <% padroes.forEach((padroes, index) => { %>
                             <tr>
-                                <th><%= __('Usuário') %></th>
-                                <th><%= __('Noma da Linguagem') %></th>
-                                <th><%= __('Comentário') %></th>
-                                <th><%= __('Data') %></th>
+                                <td><%= padroes.name %></a></td>
+                                <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
+                                <td>3</td>
+                                <td><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <!-- =====================LOOP=========================-->
-                            <% padroes.forEach((padroes, index) => { %>
-                                <tr>
-                                    <td><%= padroes.name %></a></td>
-                                    <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
-                                    <td>3</td>
-                                    <td><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></td>
-                                </tr>
-                            <% }); %>
-                            <!-- =================================== -->
-                        </tbody>
-                    </table>       
-                </div>       
-<!-- ============================================== -->
+                        <% }); %>
+                        <!-- =================================== -->
+                    </tbody>
+                </table>       
+            </div>       
         </div>
     </div>
     <br>

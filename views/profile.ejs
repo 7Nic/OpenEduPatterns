@@ -22,7 +22,6 @@
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../css/style_profile.css">
     <!-- Fonte da página -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
@@ -35,31 +34,62 @@
 
     <div class="container">
         <br>
-        <br>
-        <h1><%= __('Bem vindo') %>, <%= user.name %></h1> 
-        <div class="profilePhoto">
-            <% if (profilePhoto) { %>
-                <img src="../uploads/profilePhotos/<%= profilePhoto %>">
-            <% } else { %>
-                <img src="../uploads/profilePhotos/profilePhotoDefault2.png">
-        <% } %>
+        <div class="photoArea well wrapper">
+            <h1 class="greetings"><%= __('Bem vindo') %>, <%= user.name %></h1> 
+            <br>
+            <div class="profilePhoto">
+                <% if (profilePhoto) { %>
+                    <img src="../uploads/profilePhotos/<%= profilePhoto %>">
+                <% } else { %>
+                    <img src="../uploads/profilePhotos/profilePhotoDefault2.png">
+            <% } %>
+            </div>
+            <br>
+            <br>
+            <div class="col-md-6 profileInfo">
+                <p><%= __('Linguagens') %> </p> 
+                <p><%=languages.length%></p>
+            </div>
+
+            <div class="col-md-6 profileInfo">
+                <p><%= __('Padrões') %> </p> 
+                <p><%=patterns.length%></p>
+            </div>
+
+
+<!--             <br>
+            <br>
+            <br>
+            <br>
+ -->            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h4><%= __('Faça upload de sua foto de perfil') %></h4>
+            <!-- Explanation: we use multipart/form-data for the multer(NodeJS), but we also need to send the csrf token, as we cannot just add an input hidden, because the enctype is different from original, we add ?_csrf=<TOKEN> -->
+            <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
+                <input type="file" name="profilePhoto" id="profilePhoto">   
+                <button type="submit" class="btn btn-success"><%= __('Alterar foto de perfil') %></button>
+            </form>
+            <br>
+            <form method="POST" action="/users/deleteprofilephoto">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="btn btn-danger"><%= __('Apagar foto de perfil') %></button>
+            </form>
+            <br>    
         </div>
         <br>
-        <h4><%= __('Faça upload de sua foto de perfil') %></h4>
-        <!-- Explanation: we use multipart/form-data for the multer(NodeJS), but we also need to send the csrf token, as we cannot just add an input hidden, because the enctype is different from original, we add ?_csrf=<TOKEN> -->
-        <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
-            <input type="file" name="profilePhoto" id="profilePhoto">   
-            <button type="submit" class="btn btn-success"><%= __('Alterar foto de perfil') %></button>
-        </form>
         <br>
-        <form method="POST" action="/users/deleteprofilephoto">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button type="submit" class="btn btn-danger"><%= __('Apagar foto de perfil') %></button>
-        </form>
-        <br>
-        <div class="well">
+        <div class="well wrapper">
             <div class="row">
-                <h1><%= __('Minhas Linguagens') %></h1>
+                <div class="artigo">
+                    <h1><%= __('Minhas Linguagens') %></h1>    
+                </div>
+                
                 <div class="row artigo">
                     <table id="languageTable" class="display">
                         <thead>
@@ -83,8 +113,10 @@
 
                 <br>
                 <br>
-
-                <h1><%= __('Meus Padrões') %></h1>
+                <div class="artigo">
+                    <h1><%= __('Meus Padrões') %></h1>    
+                </div>
+                
                 <div class="row artigo">
                     
                     <!-- ======= -->
@@ -108,10 +140,6 @@
                     </table>    
                 </div>                
             </div>
-
-            
-
-
         </div>
         <br>
         <br>
