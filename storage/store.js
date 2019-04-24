@@ -17,6 +17,7 @@ module.exports = {
         //when the user creates them
         //Recebe o objeto retornado pela salthashpassword
         const {salt, hash} = this.saltHashPassword({password});
+        
         return knex('usuarios').insert({
             name,
             email,
