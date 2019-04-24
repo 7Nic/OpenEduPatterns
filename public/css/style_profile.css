@@ -77,6 +77,11 @@ h1 {
 	border-radius: 90px;	
 }
 
+#profilePhotoInput {
+	height:0px;
+	overflow:hidden;
+}
+
 .profilePhoto img {
 	width: 350px;
 	height: auto;
@@ -86,17 +91,46 @@ h1 {
 	border-radius: 50%;
 }
 
+.profilePhoto {
+    overflow: hidden;
+    position: relative;
+    width: 350px;
+	height: auto;
+	margin-left: auto;
+  	margin-right: auto;
+  	display: block;
+	border-radius: 50%;
+}
+
+.label {
+    background: rgba(0, 0, 0, 0.8) none repeat scroll 0 0;
+    bottom: -10000000px;
+    color: #fff;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    transition:0.2s all;
+    font-size: 25px;
+    height: 20%;
+}
+
+.profilePhoto:hover .label {
+  top: 80%;
+}
+
 .photoArea, .photoArea h4, .photoArea form {
 	margin: auto;
 	display: block;
 	width: 50%;
 	text-align: center;
-	/*background: green;*/
 }
 
 .photoArea {
 	background-color: rgba(43,38,61,0.05);
 	border-radius: 20px;
+	/*background: green;*/
 }
 
 .profileInfo p {
@@ -150,7 +184,6 @@ h1 {
 }
 
 .artigo h2 a:hover, .artigo h2 a:focus {
-	/*color: #fb284c;*/
 	color: #fb284c;
 	text-decoration: none;
 }

@@ -42,7 +42,41 @@
                     <img src="../uploads/profilePhotos/<%= profilePhoto %>">
                 <% } else { %>
                     <img src="../uploads/profilePhotos/profilePhotoDefault2.png">
-            <% } %>
+                <% } %>
+                <a class="label" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
+                <!-- Modal uploadPhoto -->
+                <div class="modal fade" id="modal-uploadPhoto">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                             <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title"><%= __('Faça upload de sua foto de perfil') %></h3>
+                             </div>
+                             <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-xs-10 col-xs-offset-1">
+                                        <div class="well">
+                                            <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
+                                                <!-- Tentativa frustrada de mudar o botão de upload, problema com o multer(NodeJS) -->
+                                                <!-- <input type="file" name="profilePhotoInput" id="profilePhotoInput">   
+                                                <button type="button" onclick="chooseFile();" class="btn btn-info">choose fille</button> -->
+                                                <input type="file" name="profilePhoto" id="profilePhoto">
+                                                <br>
+                                                <button type="submit" class="btn btn-success"><%= __('Upload') %></button>
+                                            </form>
+                                            <br>
+                                            <form method="POST" action="/users/deleteprofilephoto">
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                <button type="submit" class="btn btn-danger"><%= __('Apagar foto de perfil') %></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal uploadPhoto -->
             </div>
             <br>
             <br>
@@ -55,32 +89,11 @@
                 <p><%= __('Padrões') %> </p> 
                 <p><%=patterns.length%></p>
             </div>
-
-
-<!--             <br>
-            <br>
-            <br>
-            <br>
- -->            <br>
             <br>
             <br>
             <br>
             <br>
             <br>
-            <br>
-            <br>
-            <h4><%= __('Faça upload de sua foto de perfil') %></h4>
-            <!-- Explanation: we use multipart/form-data for the multer(NodeJS), but we also need to send the csrf token, as we cannot just add an input hidden, because the enctype is different from original, we add ?_csrf=<TOKEN> -->
-            <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
-                <input type="file" name="profilePhoto" id="profilePhoto">   
-                <button type="submit" class="btn btn-success"><%= __('Alterar foto de perfil') %></button>
-            </form>
-            <br>
-            <form method="POST" action="/users/deleteprofilephoto">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button type="submit" class="btn btn-danger"><%= __('Apagar foto de perfil') %></button>
-            </form>
-            <br>    
         </div>
         <br>
         <br>
@@ -124,7 +137,7 @@
                         <thead>
                             <tr>
                                 <th><%= __('Usuário') %></th>
-                                <th><%= __('Noma da Linguagem') %></th>
+                                <th><%= __('Nome do Padrão') %></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,6 +168,12 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+        //Upload photo
+        function chooseFile() {
+            $("#profilePhotoInput").click();
+        }
+
+        //Data tables
         $(document).ready( function () {
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
