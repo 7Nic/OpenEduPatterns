@@ -35,20 +35,27 @@
     <br>
     <br>
     <div class="container well">
-        <h1><%= __('Exibição de Padrão') %></h1>
+        <br>
+        <br>
+        <div class="title">
+            <h1><%= __('Exibição de Padrão') %></h1>    
+        </div>
         <br>
         <% if (pattern) { %>
             <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success btn-md" ><%= __('Exportar PDF') %></button>
             <a class="btn btn-rounded btn-info btn-md" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
             <br>
             <br>
+            <br>
             <div class="patternInfo">
-                <h3>Autor</h3><h4>: <%= owner.name %></h4>
+                <h3><%= __('Autor') %></h3><h4>: <%= owner.name %></h4>
                 <br>
-                <h3>Data de criação</h3><h4>: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
+                <h3><%= __('Data de criação') %></h3><h4>: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
                 <br>
-                <h3>Visibilidade</h3><h4>: <%= pattern.visibilidade %></h4>                
+                <h3><%= __('Visibilidade') %></h3><h4>: <%= pattern.visibilidade %></h4>                
             </div>
+            <br>
+            <br>
             <div class="well innerWell">
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>

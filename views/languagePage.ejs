@@ -21,60 +21,106 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../css/style_languagePage.css">
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Fonte da página -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style_datatable_effects.css"> -->
 </head>
 
 <body>
     <nav class="navbar navbar-inverse">
         <%- include partials/nav1.ejs %>
     </nav>  
-
-    <div class="container">
-        <br>
-        <br>
+    <br>
+    <br>
+    <div class="container well">
         <div class="title">
-            <h1 class="title"><%= __('Exibição de Linguagem') %></h1>    
+            <h1><%= __('Exibição de Linguagem') %></h1>    
         </div>
         <br>
         <% if (language) { %>
-            <a class="btn btn-info" href="/languages/<%= language.linguagens_id %>/edit"><%= __('Editar Linguagem') %></a>
+            <a class="btn btn-rounded btn-info" href="/languages/<%= language.linguagens_id %>/edit"><%= __('Editar Linguagem') %></a>
             <br>
             <br>
-            <h4><%= __('Autor') %>: <%= owner.name %></h4>
-            <h4><%= __('Data de criação') %>: <%= language.dayCreation %>/<%= language.monthCreation %>/<%= language.yearCreation %></h4>
-            <h4><%= __('Visibilidade') %>: <%= language.visibilidade %></h4>
-            <div class="well">
+            <br>
+            <div class="patternInfo">
+                <h3><%= __('Autor') %></h3><h4>: <%= owner.name %></h4>
+                <br>
+                <h3><%= __('Data de criação') %></h3><h4>: <%= language.dayCreation %>/<%= language.monthCreation %>/<%= language.yearCreation %></h4>
+                <br>
+                <h3><%= __('Visibilidade') %></h3><h4>: <%= language.visibilidade %></h4>                
+            </div>
+            <br>
+            <br>
+            <div class="container well">
                 <h2><%= language.nome %></h2>
                 <br>
                 <p><%= language.descricao %></p>
                 <br>
-                <h1><%= __('Padrões relacionados') %></h1>
+                <h2><%= __('Padrões relacionados') %></h2>
                 <% if (padroesRelacionados.length > 0) { %>
-                    <% padroesRelacionados.forEach((padrao) => { %>
-                        <h3><a href="/patterns/<%= padrao.padroes_id %>"><%- padrao.titulo %></a></h3>
-                    <% }); %>
+                    <!-- Datatable 2 -->
+                    <div class="row artigo">
+                        <table id="patternTable" class="display table-fill">
+                            <thead>
+                                <tr>
+                                    <th class="text-left"><%= __('Nome do Padrão') %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- =====================LOOP=========================-->
+                                <% padroesRelacionados.forEach((eachPattern, index) => { %>
+                                    <tr>
+                                        <td class="text-left"><h4><a href="/languages/<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %> </a></h4></td>
+                                    </tr>
+                                <% }); %>
+                                <!-- =================================== -->
+                            </tbody>
+                        </table>       
+                    </div>
                 <% } else { %>
                     <p><%= __('Esta linguagem não possui padrões relacionados') %></p>
                 <% } %>
 
+                <h2><%= __('Linguagens relacionadas') %></h2>
                 <% if (relatedLanguages.length > 0) { %>
-                    <h1><%= __('Linguagens relacionadas') %></h1>
-                    <% relatedLanguages.forEach((relatedLanguage) => { %>
-                        <h3><a href="/languages/<%= relatedLanguage.linguagens_id %>"><%= relatedLanguage.nome %></a></h3>
-                    <% }); %>
-
+                    <!-- Datatable 1 -->
+                    <div class="row artigo">
+                        <table id="languageTable" class="display table-fill">
+                            <thead>
+                                <tr>
+                                    <th class="text-left"><%= __('Noma da Linguagem') %></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- =====================LOOP=========================-->
+                                <% relatedLanguages.forEach((eachLanguage, index) => { %>
+                                    <tr>
+                                        <td class="text-left"><h4><a href="/languages/<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %> </a></h4></td>
+                                    </tr>
+                                <% }); %>
+                                <!-- =================================== -->
+                            </tbody>
+                        </table>       
+                    </div>
+                <% } else {%>
+                    <%= __('Não há relacionamentos') %>
+                    <br>
+                    <br>
                 <% } %>
             </div>
 
-            <% if (tagsArray[0] != "") { %>
-                <p style="display: inline;">Tags: </p>
-                <% tagsArray.forEach((eachTag, index) => { %>
-                    <button class="btn btn-info"><%= eachTag %></button>
-                <% }); %>
-                <br>
-            <% } %>
+            <div class="tags">
+                <% if (tagsArray[0] != "") { %>
+                    <p>Tags: </p>
+                    <% tagsArray.forEach((eachTag, index) => { %>
+                        <button class="btn btn-info"><%= eachTag %></button>
+                    <% }); %>
+                    <br>
+                <% } %>    
+            </div>
             
             <h3><%= __('Comentários') %></h3>
             <br>
@@ -85,7 +131,7 @@
                         <textarea class="form-control" rows="3" id="languageComment" name="languageComment"></textarea>
                     </div>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-info">Enviar</button>
+                    <button type="submit" class="btn btn-rounded btn-info"><%= __('Comentar') %></button>
                 </form>
             <% } else { %>
                 <h4><%= __('Você não está logado, para comentar efetue o') %> <a href='/users/login'><%= __('Login') %></a>.</h4>
@@ -116,6 +162,78 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <!-- Datatables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#patternTable').DataTable( {
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 4,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            $('#languageTable').DataTable( {
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 10,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
 </body>
 </html>
 

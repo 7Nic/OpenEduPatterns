@@ -159,14 +159,6 @@ p, a, h1, h2, h3, h4 {
 	text-decoration-style: none;
 	list-style: none;	
 }
- /************
- -Pagination
- ************/		
-.corpo .container .controle-pagina .pagination li {
-	align-items: center;
-	color: red; !important
-}
-
 
 
 /************

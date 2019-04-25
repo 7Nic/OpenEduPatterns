@@ -10,6 +10,12 @@ p, a, h1, h2, h3, h4 {
 	font-family: 'Work Sans', serif;	
 }
 
+.title h1 {
+	text-shadow:#888 1px 1px 6px;
+	font-weight: bold;
+	font-size: 40px;
+}
+
 /************
 -navbar
 ************/		
@@ -57,12 +63,6 @@ p, a, h1, h2, h3, h4 {
 /************
 -corpo
 ************/		
-.tags p {
-	display: inline;
-	font-weight: bold;
-	font-size: 20px;
-}
-
 .patternInfo h3, h4 {
 	display: inline;
 }
@@ -75,6 +75,12 @@ p, a, h1, h2, h3, h4 {
 .relatedPatterns p, .relatedPatterns h1, .relatedPatterns h2, .relatedPatterns h3, .relatedPatterns h4
 .relatedPatterns li {
 	display: inline;
+}
+
+.tags p {
+	display: inline;
+	font-weight: bold;
+	font-size: 20px;
 }
 
 /************

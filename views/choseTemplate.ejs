@@ -2,6 +2,9 @@
 <html>
 <head>
     <% include partials/head1.ejs %>
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_datatable_effects.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -23,38 +26,56 @@
     	<form onsubmit="sortElements()" method="POST" action="/patterns/chosetemplate">
     	  <div class="form-group">
             <div class="tooltipInfo">
-                <h1><%= __('Escolha um Template já existente') %> (Colocar um search aqui) <span class="glyphicon glyphicon-question-sign"></span></h1>
+                <h1><%= __('Escolha um Template já existente') %> <span class="glyphicon glyphicon-question-sign"></span></h1>
                 <span class="tooltiptext">
                     <%= __('O template definirá quais campos o seu padrão possuirá') %>
                 </span>
             </div>
-            <div class="well">
-                <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
-                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p>    
-            </div>
-            
-            <div class="well">
-                <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
-                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Descrição') %> | <%= __('Solução') %> |</p>
-            </div>
-            
-            <div class="well">
-                <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
-                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Alias') %> | <%= __('Forças') %> | <%= __('Exemplo') %> | <%= __('Usos conhecidos') %> | <%= __('Padrões relacionados') %> | <%= __('Contexto') %> | <%= __('Resultante') %> | <%= __('Rationale') %> |</p>  
-            </div>
-            <!-- Loop -->
-            <% templatesName.forEach((templateName, index) => { %>
-            <div class="well"> 
-                    <h3><input type="radio" name="templateChosenId" value="<%= templatesId[index] %>">  <%= templateName %></h3>
-                    <p>|<%  templatesElements[index].forEach((elementName) => { %>
-                            <%= elementName %> |
-                        <% }); %>
-                    </p>
-            </div>
-            <% }); %>
-            <!-- End loop -->
 
-    	  </div>
+            <div class="row artigo">
+                <table id="templateTable" class="display table-fill">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Templates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left">
+                                <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
+                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p>    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
+                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Descrição') %> | <%= __('Solução') %> |</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">
+                                <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
+                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Alias') %> | <%= __('Forças') %> | <%= __('Exemplo') %> | <%= __('Usos conhecidos') %> | <%= __('Padrões relacionados') %> | <%= __('Contexto') %> | <%= __('Resultante') %> | <%= __('Rationale') %> |</p>  
+                            </td>
+
+                        </tr>
+                        <!-- Loop -->
+                        <% templatesName.forEach((templateName, index) => { %>
+                        <tr>
+                            <td class="text-left">
+                                <h3><input type="radio" name="templateChosenId" value="<%= templatesId[index] %>">  <%= templateName %></h3>
+                                <p>|<%  templatesElements[index].forEach((elementName) => { %>
+                                        <%= elementName %> |
+                                    <% }); %>
+                                </p>
+                            </td>
+                        </tr>
+                        <% }); %>
+                        <!-- End loop -->
+                    </tbody>
+                </table>       
+            </div>
+
           <h3>ou...</h3>
     	  <div class="form-group">
             <div class="tooltipInfo">
@@ -111,6 +132,47 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <!-- Datatables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#templateTable').DataTable( {
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 10,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
     <!-- Dynamic form -->
     <script type="text/javascript">
         var counter = 0;
@@ -147,6 +209,6 @@
             });
         }
     </script>
-    <!-- Explanation: whe rename the id's classes and names for referencing in the remove function. When the form is submitted another function is called to rename the name of inputs for converting them to array-type -->
+    <!-- Explanation: whe rename the id's classes and names for referencing on remove function. When the form is submitted another function is called to rename the name of inputs for converting them to array-type -->
 </body>
 </html>

@@ -72,6 +72,15 @@ p, a, h1, h2, h3, h4 {
 	font-size: 50px;
 }
 
+.patternInfo h3, h4 {
+	display: inline;
+}
+
+.patternInfo h3 {
+	font-weight: bold;
+	font-size: 23px;
+}
+
 .wrapper {
 	background-color: #f4f5f7;
 	border-radius: 90px;	
@@ -195,14 +204,12 @@ p, a, h1, h2, h3, h4 {
 }
 
 .artigo .read-more {
-	/*color: #5e4485;*/
 	color: black;
 	font-weight: bold;
 	font-size: 15px;
 }
 
 .artigo .read-more:hover {
-	/*color: #5e4485;*/
 	color: #fb284c;
 }
 
@@ -212,27 +219,19 @@ p, a, h1, h2, h3, h4 {
 	text-decoration-style: none;
 	list-style: none;	
 }
- /************
- -Pagination
- ************/		
-.corpo .container .controle-pagina .pagination li {
-	align-items: center;
-	color: red; !important
+
+.tags p {
+	display: inline;
+	font-weight: bold;
+	font-size: 20px;
 }
-
-
 
 /************
 -footer
 ************/		
 
 footer {
-	/*background-color: #5e4485;*/
-	/*background-color: #01959e;*/
-	/*background-color: #363636; o preto claro*/
 	background-color: #2B263D;
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
 	color: #fff;
 	padding: 0.1%;
 }
