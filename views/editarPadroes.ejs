@@ -29,6 +29,8 @@
     <script type="text/javascript" src="../../ckeditor5/ckeditor.js"></script>
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="../../css/style_datatable.css">
+    <!-- Dual-listbox -->
+    <link rel="stylesheet" type="text/css" href="../../css/dual-listbox.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -39,7 +41,7 @@
     <br>
     <div class="corpo">
         <div class="container well">           
-            <div class="col-md-8 col-md-offset-2 col-artigos">
+            <div class="col-artigos">
 <!-- ==============================================-->
             <div class="criarNovaLinguagem">
                 <h1 id="pageTitle">Edição de Padrão</h1>
@@ -73,52 +75,34 @@
                     <% patternContent.forEach((element) => { %>
                         <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
                             
-                            <% if(relatedPatterns.length > 0) { %>
-                                <label>Padrões relacionados antes da edição do padrão</label>
-                                <h4>|
-                                    <% relatedPatterns.forEach((relatedPattern) => { %>
-                                        <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
-                                    <% }); %>
-                                </h4>
-                            <% } %>
-
                             <div class="tooltipInfo">
                                 <h3><%= __("Faça aqui seu novo relacionamento de Padrões") %> <span class="glyphicon glyphicon-question-sign"></h3>
                                 <span class="tooltiptext">
                                     <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
                                 </span>
                             </div>
-                            
-                            <% if (patternsOfTheSameLanguage) { %>
-                                <label>Padrões pertencentes à mesma linguagem</label>  
-                                <% patternsOfTheSameLanguage.forEach((eachPattern) => { %>
-                                    <p><input type='checkbox' name='patterns2Relate' value='<%= eachPattern.padroes_id %>'> <%- eachPattern.titulo %></p>
-                                <% }); %>
-                            <% } %>
 
                             <br>
-                            <label>Padrões públicos</label>
                             <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
                             <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
-                            
 
-                            <table id="patternTable" class="display">
-                                <thead>
-                                  <tr>
-                                      <th><%= __('Nome do Padrão') %></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <!-- =====================LOOP=========================-->
-                                  <% patterns.forEach((eachPattern, index) => { %>
-                                      <tr>  
-                                        <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
-                                      </tr>
-                                  <% }); %>
-                                  <!-- ================================================= -->
-                                </tbody>
-                            </table>    
+                            <!-- Dual-listbox1 -->
+                            <p><%= __('Digite para pesquisar') %></p>
+                            <select class="patterns2Relate" name="patterns2Relate" multiple="multiple">
+                                <!-- Not related -->
+                                <!-- =====================LOOP=========================-->
+                                <% notRelatedPatterns.forEach((eachPattern, index) => { %>
+                                    <option value="<%= eachPattern.padroes_id %>"><%- eachPattern.titulo %></option>
+                                <% }); %>
+                                <!-- ================================================= -->
 
+                                <!-- Related -->
+                                <!-- =====================LOOP=========================-->
+                                <% relatedPatterns.forEach((eachPattern, index) => { %>
+                                    <option value="<%= eachPattern.padroes_id %>" selected="selected"><%- eachPattern.titulo %></option>
+                                <% }); %>   
+                                <!-- ================================================= -->                         
+                            </select>
 
                             <br>
                         <% } else { %>
@@ -175,11 +159,42 @@
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
+    <script src="../../js/dual-listbox.js"></script>
     <!-- Data tables -->
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 
     <script type="text/javascript">
+        //Dual-listbox for patterns
+        var dualListbox1 = new DualListbox('.patterns2Relate', {
+            addEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            removeEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            availableTitle: 'Padrões não relacionados',
+            selectedTitle: 'Padrões relacionados',
+            addButtonText: ' >',
+            removeButtonText: '<',
+            addAllButtonText: '>>',
+            removeAllButtonText: '<<',
+
+            options: [
+                // {text:"Option 1", value: "OPTION1"},
+                // {text:"Selected option", value: "OPTION3", selected:true}
+            ]
+        });
+
+        dualListbox1.addEventListener('added', function(event){
+            console.log(event);
+            console.log(event.addedElement);
+        });
+        dualListbox1.addEventListener('removed', function(event){
+            console.log(event);
+            console.log(event.removedElement);
+        });
+
         window.onload = function() {
           var editorsArray = document.querySelectorAll( '.ckeditor' );
 

@@ -17,7 +17,6 @@ module.exports = {
         //when the user creates them
         //Recebe o objeto retornado pela salthashpassword
         const {salt, hash} = this.saltHashPassword({password});
-        
         return knex('usuarios').insert({
             name,
             email,
@@ -82,6 +81,15 @@ module.exports = {
             return resultado;
         });
     },
+    lisPublicPatternsMinimized() { //Minimized: Just name and id
+        return knex
+        .select('padroes_id',  'titulo')
+        .from('padroes')
+        .where('visibilidade', 0)
+        .then((result) => {
+            return result;
+        });
+    },
     listarTodasLinguagens() {
         return knex.select('*').from('linguagens').then((resultado) => {
             return resultado;
@@ -94,6 +102,15 @@ module.exports = {
         .where('visibilidade', 0)
         .then((resultado) => {
             return resultado;
+        });
+    },
+    listPublicLanguagesMinimized() { //Minimized: Just name and id
+        return knex
+        .select('linguagens_id', 'nome')
+        .from('linguagens')
+        .where('visibilidade', 0)
+        .then((result) => {
+            return result;
         });
     },
     listPublicLanguagesWithOwner() {

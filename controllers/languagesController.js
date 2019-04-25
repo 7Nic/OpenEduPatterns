@@ -1,3 +1,5 @@
+const _ = require('underscore');
+
 const store = require('../storage/store');
 
 module.exports = {
@@ -91,13 +93,20 @@ module.exports = {
 
     async languagesEditGet (req, res) {
         var resultadoLinguagem = await store.pegarLinguagemPorId(req.params.id);
-		var resultadoJoin = await store.padroesDeUmaLinguagem(req.params.id);
-		var resultadoListarPadroes = await store.listarPadroesPublicos();
+		var relatedPatterns = await store.padroesDeUmaLinguagem(req.params.id);
+		var allPatterns = await store.lisPublicPatternsMinimized(); //Minimized: Just name and id
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
-        var languages = await store.listarLinguagensPublicas(); //esse
+        var allLanguages = await store.listPublicLanguagesMinimized(); //Minimized: Just name and id
         var tagsArray = await store.tagsOfLanguage(req.params.id);
         var tagsString = tagsArray.toString();
-        res.render('editarLinguagens.ejs', {tagsString, languages: languages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, padroesRelacionados: resultadoJoin, patterns: resultadoListarPadroes, csrfToken: req.csrfToken(), user: req.user});
+
+        //Returns an array of not related patterns
+        var notRelatedPatterns = _.filter(allPatterns, function(obj){ return !_.findWhere(relatedPatterns, obj); });
+
+        //Returns an array of not related languages
+        var notRelatedLanguages = _.filter(allLanguages, function(obj){ return !_.findWhere(relatedLanguages, obj); });
+
+        res.render('editarLinguagens.ejs', {tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesEditPost (req, res) {
@@ -116,7 +125,7 @@ module.exports = {
             languagesToRelateArray = [];
             languagesToRelateArray.push(req.body.languages2Relate);
         } 
-        //With undefined the .map (in store.js) cannot execute
+        //With undefined the .map (in store.js) cannot be executed
         if (languagesToRelateArray === undefined) {
             languagesToRelateArray = [];
         }
@@ -190,9 +199,9 @@ module.exports = {
         }
 
         var tagsArray = await store.tagsOfLanguage(req.params.id);
-        var tagsString = tagsArray.toString();
+        // var tagsString = tagsArray.toString();
 
-        res.render('languagePage.ejs', {tagsString, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+        res.render('languagePage.ejs', {tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
     },
 
     async addCommentLanguage (req, res) {

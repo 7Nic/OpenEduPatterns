@@ -6,10 +6,24 @@ a {
 	color: black;
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 p, a, h1, h2, h3, h4 {
-	/*font-family: 'Frank Ruhl Libre', serif;*/
 	font-family: 'Work Sans', serif;	
 }
+
+.title h1 {
+	text-shadow:#888 1px 1px 6px;
+	font-weight: bold;
+	font-size: 40px;
+}
+
+/*h1 {
+	color: #fff; text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135; 
+	font: 50px 'ChunkFiveRegular';
+}*/
 
 /************
 -navbar
@@ -35,27 +49,15 @@ p, a, h1, h2, h3, h4 {
 }
 
 .navbar-collapse .nav .active a, .navbar-collapse .nav .active a:hover, .navbar-collapse .nav .active a:focus {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
-	/*background-color: #5e4485;*/
 	background-color: #2B263D;
 }
-
-/*arrumar esse aqui
-.navbar-collapse ul a:hover {
-	color: #fb284c;
-	background-color: red;
-}*/
 
 .logo {
 	float left;
 }
 
 .navbar .navbar-header button:focus {
-	/*background-color: black;*/
-	/*background-color: #5F00FE;*/
 	background-color: #2B263D;
-	/*roxo antes 5e4485*/
 }
 
 .navbar .navbar-header button:hover {
@@ -66,10 +68,80 @@ p, a, h1, h2, h3, h4 {
 /************
 -corpo
 ************/		
+.greetings {
+	font-size: 50px;
+}
+
+.wrapper {
+	background-color: #f4f5f7;
+	border-radius: 90px;	
+}
+
+#profilePhotoInput {
+	height:0px;
+	overflow:hidden;
+}
+
+.profilePhoto img {
+	width: 350px;
+	height: auto;
+	margin-left: auto;
+  	margin-right: auto;
+  	display: block;
+	border-radius: 50%;
+}
+
+.profilePhoto {
+    overflow: hidden;
+    position: relative;
+    width: 350px;
+	height: auto;
+	margin-left: auto;
+  	margin-right: auto;
+  	display: block;
+	border-radius: 50%;
+}
+
+.label {
+    background: rgba(0, 0, 0, 0.8) none repeat scroll 0 0;
+    bottom: -10000000px;
+    color: #fff;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    transition:0.1s all;
+    font-size: 25px;
+    height: 20%;
+}
+
+.profilePhoto:hover .label {
+  top: 80%;
+}
+
+.photoArea, .photoArea h4, .photoArea form {
+	margin: auto;
+	display: block;
+	width: 50%;
+	text-align: center;
+}
+
+.photoArea {
+	background-color: rgba(43,38,61,0.05);
+	border-radius: 20px;
+	/*background: green;*/
+}
+
+.profileInfo p {
+	font-size: 30px;
+	font-weight: bold;
+	font-family: 'Nunito', sans-serif;
+} 
+
 .artigo {
 	margin: 25px 10px;
 	padding: 5px;
-	/*background-color: rgba(89, 91, 109, 0.2);*/
 }
 
 .col-artigos {
@@ -112,11 +184,15 @@ p, a, h1, h2, h3, h4 {
 }
 
 .artigo h2 a:hover, .artigo h2 a:focus {
-	/*color: #fb284c;*/
 	color: #fb284c;
 	text-decoration: none;
 }
 
+.artigo h4 a {
+	color: black;
+	font-weight: bold;
+	font-size: 15px;
+}
 
 .artigo .read-more {
 	/*color: #5e4485;*/
@@ -136,16 +212,14 @@ p, a, h1, h2, h3, h4 {
 	text-decoration-style: none;
 	list-style: none;	
 }
- 
-/************
--Dual-listbox
-************/		 
-.dual-listbox .dual-listbox__available,
-.dual-listbox .dual-listbox__selected {
-	height: 40%;
-	overflow-y: auto;
-	width: 40%;
+ /************
+ -Pagination
+ ************/		
+.corpo .container .controle-pagina .pagination li {
+	align-items: center;
+	color: red; !important
 }
+
 
 
 /************
@@ -202,45 +276,4 @@ footer a:hover, footer a:focus {
 .fa-copyright {
 	font-size: 12px;
 	padding: 3px;
-}
-
-/************
--tooltip
-************/		
-/* Tooltip container */
-.tooltipInfo {
-  position: relative;
-  display: inline-block;
-}
-
-/* Tooltip text */
-.tooltipInfo .tooltiptext {
-  visibility: hidden;
-  /*width: 120px;*/
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
-  /* Position the tooltip text */
-  position: absolute;
-  z-index: 1;
-  bottom: 90%;
-  left: 50%;
-  margin-left: -60px;
-
-  /* Fade in tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltipInfo:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
-
-.tooltipInfo h2 span {
-	font-size: 20px;
 }

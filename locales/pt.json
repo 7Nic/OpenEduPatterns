@@ -164,8 +164,8 @@
 	"Esta ferramenta foi desenvolvida por <a href='https://www.linkedin.com/in/gabriel-nicolau-07147b121/'>Gabriel Santos Nicolau</a>, estudante do curso de Ciência da Computação da Universidade de São Paulo, sob a orientação da Profa. Dra. Ellen Francine Barbosa e da doutoranda <a href='https://www.linkedin.com/in/mlfioravanti/'>Maria Lydia Fioravanti</a>.": "Esta ferramenta foi desenvolvida por <a href='https://www.linkedin.com/in/gabriel-nicolau-07147b121/'>Gabriel Santos Nicolau</a>, estudante do curso de Ciência da Computação da Universidade de São Paulo, sob a orientação da Profa. Dra. Ellen Francine Barbosa e da doutoranda <a href='https://www.linkedin.com/in/mlfioravanti/'>Maria Lydia Fioravanti</a>.",
 	"Relacionamento de Linguagens": "Relacionamento de Linguagens",
 	"Relacionamento de padrões": "Relacionamento de padrões",
-	"Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação": "Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação",
-	"Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação": "Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação",
+	"Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação": "Mova elementos para a direita para relacionar. Mova para a esquerda para desfazer um relacionamento",
+	"Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação": "Mova elementos para a direita para relacionar. Mova para a esquerda para desfazer um relacionamento",
 	"Edite aqui as informações básicas da Linguagem": "Edite aqui as informações básicas da Linguagem",
 	"Faça aqui seu novo relacionamento de Padrões": "Faça aqui seu novo relacionamento de Padrões",
 	"Sem linguagem": "Nenhum elemento disponível",
@@ -189,5 +189,6 @@
 	"Noma do Padrão": "Noma do Padrão",
 	"Alterar foto": "Alterar foto",
 	"Upload": "Upload",
-	"Comentar": "Comentar"
+	"Comentar": "Comentar",
+	"Digite para pesquisar": "Digite para pesquisar"
 }

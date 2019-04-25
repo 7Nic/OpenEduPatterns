@@ -22,11 +22,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../../css/style_editLanguages.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common_styles.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
-    <!-- Datatables -->
-    <link rel="stylesheet" type="text/css" href="../../css/style_datatable.css">
+    <!-- Dual-listbox -->
+    <link rel="stylesheet" type="text/css" href="../../css/dual-listbox.css">
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -34,10 +35,8 @@
     </nav>  
     <br>
     <br>
-
     <div class="corpo">
-        <div class="container">
-            
+        <div class="container well">
 <!-- ==============================================-->
             <div class="editarLinguagem">
                 <h1><%= __('Edição de Linguagem') %></h1>
@@ -51,7 +50,6 @@
                 <% } %>
                 <!-- End Display errors -->
 
-                <!-- LOOPS DA RELAÇÃO ENTRE LINGUAGEM-PADRÃO-->
                 <br>
                 <!-- ================================================ -->
                 <div class="tooltipInfo">
@@ -60,35 +58,28 @@
                         <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
                       </span>
                 </div>
-                <% if (padroesRelacionados.length > 0) { %>
-                    <div class="form-group">
-                        <label for=""><%= __('Padrões relacionados a essa Linguagem') %> ADICIONAR UM BOTÃO PARA RETIRAR AS RELAÇÕES EM VEZ DE APAGAR TUDO TODA VEZ</label>
-                        <% padroesRelacionados.forEach((padraoRelacionado) => { %>
-                                <h4><a href="/patterns/<%= padraoRelacionado.padroes_id %>"><%- padraoRelacionado.titulo %></a></h4>
-                        <% }); %>
-                    </div>
-                <% } %>
-                
+                <br>
+                <br>
                 <!-- ================================================ -->
-                
                 <form method="POST" action="">
-                    <h4><%= __("Relacionamento de padrões") %></h4>
-                    <table id="patternTable" class="display">
-                        <thead>
-                          <tr>
-                              <th><%= __('Nome do Padrão') %></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- =====================LOOP=========================-->
-                          <% patterns.forEach((eachPattern, index) => { %>
-                              <tr>  
-                                <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
-                              </tr>
-                          <% }); %>
-                          <!-- ================================================= -->
-                        </tbody>
-                    </table>    
+                    <!-- Dual-listbox1 -->
+                    <p><%= __('Digite para pesquisar') %></p>
+                    <select class="patterns2Relate" name="patterns2Relate" multiple="multiple">
+                        <!-- Not related -->
+                        <!-- =====================LOOP=========================-->
+                        <% notRelatedPatterns.forEach((eachPattern, index) => { %>
+                            <option value="<%= eachPattern.padroes_id %>"><%- eachPattern.titulo %></option>
+                        <% }); %>
+                        <!-- ================================================= -->
+
+                        <!-- Related -->
+                        <!-- =====================LOOP=========================-->
+                        <% relatedPatterns.forEach((eachPattern, index) => { %>
+                            <option value="<%= eachPattern.padroes_id %>" selected="selected"><%- eachPattern.titulo %></option>
+                        <% }); %>   
+                        <!-- ================================================= -->                         
+                    </select>
+
 
                     <div class="tooltipInfo">
                         <h2><%= __('Relacionamento entre Linguagens') %> <span class="glyphicon glyphicon-question-sign"></h2>
@@ -96,32 +87,26 @@
                             <%= __("Selecione as novas linguagens a serem relacionados e clique no X para remover uma relação") %>
                           </span>
                     </div>
+                    <br>
+                    <br>
+                    <!-- Dual-listbox2 -->
+                    <p><%= __('Digite para pesquisar') %></p>
+                    <select class="languages2Relate" name="languages2Relate" multiple="multiple">
+                        <!-- Not related -->
+                        <!-- =====================LOOP=========================-->
+                        <% notRelatedLanguages.forEach((eachLanguage, index) => { %>
+                            <option value="<%= eachLanguage.linguagens_id %>"><%- eachLanguage.nome %></option>
+                        <% }); %>
+                        <!-- ================================================= -->
 
-                    <% if (relatedLanguages.length > 0) { %>
-                        <label><%= __('Linguagens relacionadas antes da edição') %> ADICIONAR UM BOTÃO PARA RETIRAR AS RELAÇÕES EM VEZ DE APAGAR TUDO TODA VEZ</label>
-                        <h4>|
-                            <% relatedLanguages.forEach((relatedLanguage) => { %>
-                                <a href="/languages/<%= relatedLanguage.linguagens_id %>"><%= relatedLanguage.nome %></a> |
-                            <% }); %>
-                        </h4>
-                    <% } %>
-                    <label><%= __('Novo relacionamento de Linguagens') %></label>
-                    <table id="languageTable" class="display">
-                        <thead>
-                            <tr>
-                                <th><%= __('Noma da Linguagem') %></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- =====================LOOP=========================-->
-                            <% languages.forEach((eachLanguage, index) => { %>
-                                <tr>
-                                    <td><input type="checkbox" name="languages2Relate" value="<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %></td>
-                                </tr>
-                            <% }); %>
-                            <!-- ================================================= -->
-                        </tbody>
-                    </table>       
+                        <!-- Related -->
+                        <!-- =====================LOOP=========================-->
+                        <% relatedLanguages.forEach((eachLanguage, index) => { %>
+                            <option value="<%= eachLanguage.linguagens_id %>" selected="selected"><%- eachLanguage.nome %></option>
+                        <% }); %>   
+                        <!-- ================================================= -->                         
+                    </select>
+
                     <div class="tooltipInfo">
                         <h2><%= __('Propriedades da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></h2>
                         <span class="tooltiptext">
@@ -156,21 +141,19 @@
                     <br>
                     <br>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-primary"><%= __('Salvar propriedades') %></button>
-                    <button onclick="window.location.href='/linguagens'" class="btn btn-danger"><%= __('Cancelar') %></button>    
+                    <button type="submit" class="btn btn-rounded btn-primary"><%= __('Salvar propriedades') %></button>
+                    <button onclick="window.location.href='/linguagens'" class="btn btn-rounded btn-danger"><%= __('Cancelar') %></button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-danger btn-lg"><%= __('Deletar Linguagem') %></button>    
+                    <button type="submit" class="btn btn-rounded btn-danger btn-lg"><%= __('Deletar Linguagem') %></button>    
                 </form>
                 <br>
             </div>
 
 <!-- =================================== -->
-
-            
         </div>
     </div>
 
@@ -185,76 +168,69 @@
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
+    <script src="../../js/dual-listbox.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(document).ready( function () {
-            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-            } );
+        //Dual-listbox for patterns
+        var dualListbox1 = new DualListbox('.patterns2Relate', {
+            addEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            removeEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            availableTitle: 'Padrões não relacionados',
+            selectedTitle: 'Padrões relacionados',
+            addButtonText: ' >',
+            removeButtonText: '<',
+            addAllButtonText: '>>',
+            removeAllButtonText: '<<',
 
-            $('#patternTable').DataTable( {
-                "pageLength": 4,
-                "scrollY": 500,
-                "scrollCollapse": true,
-                "paging": false,
-                language: {
-                    "decimal":        "",
-                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
-                    "info":           "",
-                    "infoEmpty":      "",
-                    "infoFiltered":   "",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "",
-                    "loadingRecords": "<%= __('Carregando...') %>",
-                    "processing":     "<%= __('Processando...') %>",
-                    "search":         "<%= __('Pesquisa') %>",
-                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
-                    "paginate": {
-                        "first":      "<%= __('Primeiro') %>",
-                        "last":       "<%= __('Último') %>",
-                        "next":       "<%= __('Próximo') %>",
-                        "previous":   "<%= __('Anterior') %>"
-                    },
-                    "aria": {
-                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
-                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
-                    }
-                }
-            } );
+            options: [
+                // {text:"Option 1", value: "OPTION1"},
+                // {text:"Selected option", value: "OPTION3", selected:true}
+            ]
+        });
 
-            $('#languageTable').DataTable( {
-                "pageLength": 6,
-                "scrollY": 300,
-                "scrollCollapse": true,
-                "paging": false,
-                language: {
-                    "decimal":        "",
-                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
-                    "info":           "",
-                    "infoEmpty":      "",
-                    "infoFiltered":   "",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "",
-                    "loadingRecords": "<%= __('Carregando...') %>",
-                    "processing":     "<%= __('Processando...') %>",
-                    "search":         "<%= __('Pesquisa') %>",
-                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
-                    "paginate": {
-                        "first":      "<%= __('Primeiro') %>",
-                        "last":       "<%= __('Último') %>",
-                        "next":       "<%= __('Próximo') %>",
-                        "previous":   "<%= __('Anterior') %>"
-                    },
-                    "aria": {
-                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
-                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
-                    }
-                }
-            } );
-        } );
+        dualListbox1.addEventListener('added', function(event){
+            console.log(event);
+            console.log(event.addedElement);
+        });
+        dualListbox1.addEventListener('removed', function(event){
+            console.log(event);
+            console.log(event.removedElement);
+        });
+
+        //Dual-listbox for languages
+        var dualListbox2 = new DualListbox('.languages2Relate', {
+            addEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            removeEvent: function(value) { // Should use the event listeners
+                console.log(value);
+            },
+            availableTitle: 'Linguagens não relacionadas',
+            selectedTitle: 'Linguagens relacionadas',
+            addButtonText: ' >',
+            removeButtonText: '<',
+            addAllButtonText: '>>',
+            removeAllButtonText: '<<',
+
+            options: [
+                // {text:"Option 1", value: "OPTION1"},
+                // {text:"Selected option", value: "OPTION3", selected:true}
+            ]
+        });
+
+        dualListbox2.addEventListener('added', function(event){
+            console.log(event);
+            console.log(event.addedElement);
+        });
+        dualListbox2.addEventListener('removed', function(event){
+            console.log(event);
+            console.log(event.removedElement);
+        });
     </script>
 </body>
 </html>

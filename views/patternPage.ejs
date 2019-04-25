@@ -38,13 +38,17 @@
         <h1><%= __('Exibição de Padrão') %></h1>
         <br>
         <% if (pattern) { %>
-            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success" ><%= __('Exportar PDF') %></button>
+            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success btn-md" ><%= __('Exportar PDF') %></button>
+            <a class="btn btn-rounded btn-info btn-md" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
             <br>
             <br>
-            <a class="btn btn-rounded btn-info" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
-            <h4>Autor: <%= owner.name %></h4>
-            <h4>Data de criação: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
-            <h4>Visibilidade: <%= pattern.visibilidade %></h4>
+            <div class="patternInfo">
+                <h3>Autor</h3><h4>: <%= owner.name %></h4>
+                <br>
+                <h3>Data de criação</h3><h4>: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
+                <br>
+                <h3>Visibilidade</h3><h4>: <%= pattern.visibilidade %></h4>                
+            </div>
             <div class="well innerWell">
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>
@@ -53,11 +57,13 @@
                     <% } %>
 
                     <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
-                        <p>|
-                        <% relatedPatterns.forEach((relatedPattern) => { %>
-                            <a href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a> |
-                        <% }); %>
-                        </p>
+                        <div class="relatedPatterns">
+                            <!-- <p>| -->
+                            <% relatedPatterns.forEach((relatedPattern) => { %>
+                                <a class="btn btn-primary btn-sm" href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a>
+                            <% }); %>
+                            <!-- </p>     -->
+                        </div>
                     <% } else if (isAlexander && index === 0) { %>
                         <h4><strong> <%- element.content %></strong></h4>
                     <% } else if (isAlexander && (index === 3 || index === 4)) { %> <!-- Problem and Solution of Alexander template has to be bold -->
@@ -73,15 +79,19 @@
                 <% }); %>
                 <!-- END LOOP -->
             </div>
-    
-            <% if (tagsString) { %>
-                <h3><strong>Tags: <%= tagsString %></strong></h3>
-                <br>
-            <% } %>
-            
+            <br>
+            <div class="tags">
+                <% if (tagsArray[0] != "") { %>
+                    <p>Tags: </p>
+                    <% tagsArray.forEach((eachTag, index) => { %>
+                        <button class="btn btn-info"><%= eachTag %></button>
+                    <% }); %>
+                    <br>
+                <% } %>    
+            </div>
+            <br>
             <h3><%= __('Comentários') %></h3>
             <br>
-
             <!-- Add comment -->
             <% if (isLoggedIn) { %>
                 <form method="POST" action="/patterns/<%= pattern.padroes_id %>/addcomment">

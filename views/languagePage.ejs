@@ -20,7 +20,7 @@
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Meu CSS -->  
-    <link rel="stylesheet" type="text/css" href="../css/style_sobre.css">
+    <link rel="stylesheet" type="text/css" href="../css/style_languagePage.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -31,11 +31,12 @@
         <%- include partials/nav1.ejs %>
     </nav>  
 
-
     <div class="container">
         <br>
         <br>
-        <h1><%= __('Exibição de Linguagem') %></h1>
+        <div class="title">
+            <h1 class="title"><%= __('Exibição de Linguagem') %></h1>    
+        </div>
         <br>
         <% if (language) { %>
             <a class="btn btn-info" href="/languages/<%= language.linguagens_id %>/edit"><%= __('Editar Linguagem') %></a>
@@ -67,8 +68,11 @@
                 <% } %>
             </div>
 
-            <% if (tagsString) { %>
-                <h3><strong>Tags: <%= tagsString %></strong></h3>
+            <% if (tagsArray[0] != "") { %>
+                <p style="display: inline;">Tags: </p>
+                <% tagsArray.forEach((eachTag, index) => { %>
+                    <button class="btn btn-info"><%= eachTag %></button>
+                <% }); %>
                 <br>
             <% } %>
             

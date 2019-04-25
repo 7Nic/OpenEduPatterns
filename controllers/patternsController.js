@@ -2,6 +2,7 @@ const fs = require('fs');
 const pdf = require('html-pdf');
 const delay = require('delay');
 const options = { format: 'Letter' };
+const _ = require('underscore');
 
 const store = require('../storage/store');
 
@@ -99,16 +100,20 @@ module.exports = {
     async patternsEditGet (req, res) {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
         var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
-        var patterns = await store.listarTodosPadroes();
+        var allPatterns = await store.lisPublicPatternsMinimized();
         var patternsOfTheSameLanguage = await store.patternsOfTheSameLanguage(req.params.id);
         //I want an undefined object, not an empty array
         if (patternsOfTheSameLanguage.length === 0) {
             patternsOfTheSameLanguage = undefined;
         }
+
+        //Returns an array of not related patterns
+        var notRelatedPatterns = _.filter(allPatterns, function(obj){ return !_.findWhere(relatedPatterns, obj); });
+
         var tagsArray = await store.tagsOfPattern(req.params.id);
         var tagsString = tagsArray.toString();
         console.log(tagsString);
-        res.render('editarPadroes.ejs', {tagsString, patternsOfTheSameLanguage, patterns: patterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        res.render('editarPadroes.ejs', {tagsString, patternsOfTheSameLanguage, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async patternsEditPost (req, res) {
@@ -194,9 +199,8 @@ module.exports = {
         }
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
-        var tagsString = tagsArray.toString();
 
-        res.render('patternPage.ejs', {tagsString, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
+        res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
     },
 
     async addCommentPattern (req, res) {
