@@ -313,9 +313,7 @@ module.exports = {
 
         } else {
             
-            res.render('mensagem.ejs', {mensagem: "You're not allowed to access this pattern"});
+            res.render('mensagem.ejs', {mensagem: "Você não tem acesso a esse Padrão."});
         }
     }
-
-
 }

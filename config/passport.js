@@ -30,7 +30,12 @@ passport.use('local.login', new LocalStrategy({
                 return done(null, user);
         })
         } else {
-            done(null, false, {message: 'E-mail ou senha inválidos'}); 
+            if (req.cookies.lang == 'en') {
+                done(null, false, {message: 'E-mail or password invalid'}); 
+            } else {
+                done(null, false, {message: 'E-mail ou senha inválidos'}); 
+            }
+            
         }
     });
 }));
@@ -41,20 +46,35 @@ module.exports = {
         if (req.isAuthenticated()) {
             next();
         } else {
-            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
+            if (req.cookies.lang == 'en') {
+                res.render('mensagem.ejs', {mensagem: "You're not allowed to use this function. You're not logged in"});
+            } else {
+                res.render('mensagem.ejs', {mensagem: "Você não tem acesso a essa função, você não está logado."});
+            }
         }
     },
     notLoggedIn(req, res, next) {
         if (!req.isAuthenticated()) {
             next();
         } else {
-            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged out"});
+            if (req.cookies.lang == 'en') {
+                res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged out"});
+            } else {
+                res.render('mensagem.ejs', {mensagem: "Você não pode usar esta funcionalidade pois não está deslogado."});
+            }
         }
     },
     validateLogin(req, res, next) {
-        req.checkBody('email', 'Email inválido').isEmail();
-        req.checkBody('email', 'Campo de email vazio').notEmpty();
-        req.checkBody('password', 'Campo de senha vazio').notEmpty();
+        if (req.cookies.lang == 'en') {
+            req.checkBody('email', 'Invalid Email').isEmail();
+            req.checkBody('email', 'Email field empty').notEmpty();
+            req.checkBody('password', 'Password field empty').notEmpty();
+        } else {
+            req.checkBody('email', 'Email inválido').isEmail();
+            req.checkBody('email', 'Campo de email vazio').notEmpty();
+            req.checkBody('password', 'Campo de senha vazio').notEmpty();
+        }
+        
 
         var errors = req.validationErrors();
 
@@ -76,11 +96,19 @@ module.exports = {
                 if (req.user.usuarios_id === ownerOfPattern.usuarios_id) {
                     next();
                 } else {
-                    res.render('mensagem.ejs', {mensagem: "You're not the owner of this pattern. You can't edit or delete it."});
+                    if (req.cookies.lang == 'en') {
+                        res.render('mensagem.ejs', {mensagem: "You're not the owner of this pattern. You can't edit it."});
+                    } else {
+                        res.render('mensagem.ejs', {mensagem: "Você não é o dono deste Padrão e não pode editá-lo."});
+                    }
                 }
             });
         } else {
-            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
+            if (req.cookies.lang == 'en') {
+                res.render('mensagem.ejs', {mensagem: "You're not allowed to use this function. You're not logged in"});
+            } else {
+                res.render('mensagem.ejs', {mensagem: "Você não tem acesso a essa função, você não está logado."});
+            }
         }
         
 
@@ -92,11 +120,19 @@ module.exports = {
                 if (req.user.usuarios_id === ownerOfLanguage.usuarios_id) {
                     next();
                 } else {
-                    res.render('mensagem.ejs', {mensagem: "You're not the owner of this language. You can't edit or delete it."});
+                    if (req.cookies.lang == 'en') {
+                        res.render('mensagem.ejs', {mensagem: "You're not the owner of this language. You can't edit it."});
+                    } else {
+                        res.render('mensagem.ejs', {mensagem: "Você não é o dono desta Linguagem e não pode editá-la."});
+                    }         
                 }
             });
         } else {
-            res.render('mensagem.ejs', {mensagem: "You're not allowed to use this route. You're not logged in"});
+            if (req.cookies.lang == 'en') {
+                res.render('mensagem.ejs', {mensagem: "You're not allowed to use this function. You're not logged in"});
+            } else {
+                res.render('mensagem.ejs', {mensagem: "Você não tem acesso a essa função, você não está logado."});
+            }
         }
     }
 }

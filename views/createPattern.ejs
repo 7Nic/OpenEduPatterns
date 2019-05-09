@@ -20,6 +20,28 @@
       <h4><%= __('Observações') %>:</h4>
       <p id="explanation"><%- __('1 - Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.') %></p>
       <p id="explanation"><%- __('2 - Ao inserir um link coloque o endereço completo: <strong>http://meulink.com</strong>') %></p>
+      <!-- Modal Obs -->
+      <div class="modal fade" id="modal-obs">
+          <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                   <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h3 class="modal-title"><%= __('Observações') %></h3>
+                   </div>
+                   <div class="modal-body">
+                      <div class="row">
+                          <div class="col-xs-10 col-xs-offset-1">
+                              <div>
+                                  <p id='explanation'><%- __('1 - Para melhor utilização do usuário, é disponibilizada a dinamicidade da criação do Padrão. Basta clicar em <strong>Adicionar campo aqui</strong> e o usuário poderá criar um novo padrão, que será salvo para posterior uso. Caso o novo elemento do template seja o de <strong>Padrões relacionados</strong>, basta clicar no botão verde <strong>Relacionar padrões</strong>.') %></p>
+                                  <p id='explanation'><%- __('2 - Ao inserir um link coloque o endereço completo: <strong>http://meulink.com</strong>') %></p>
+                              </div>
+                          </div>
+                      </div>
+                   </div>
+              </div>
+          </div>
+      </div>
+      <!-- End Modal Obs -->
         <!-- Handle error -->
           <% if (templateElements.length === 0) { %>
             <p><%= __('Você reiniciou a página. Por favor volte à página anterior e escolha novamente seu template.') %></p>
@@ -114,7 +136,6 @@
                         <option><%= __('Forças') %></option>
                         <option><%= __('Consequências') %></option>
                         <option><%= __('Usos conhecidos') %></option>
-                        <option><%= __('Padrões relacionados') %></option>
                         <option><%= __('Contexto resultante') %></option>
                         <option><%= __('Justificativa') %></option>
                         <option><%= __('Rationale') %></option>
@@ -141,8 +162,8 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/bootstrap-tagsinput.min.js"></script>
     <!-- Data tables -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <!-- Dynamic form -->
     <script type="text/javascript">
         var counter = 0;
@@ -153,7 +174,7 @@
                                        "<input type='text' name='newTemplateName' class='form-control' placeholder='<%= __('Digite aqui o nome de seu novo Template') %>'>"+
                                        "<br>";
 
-                $("#explanation").after(inputForTemplate);
+                $("#modal-obs").after(inputForTemplate);
             }
             counter += 1;
             var theHTML = "<a class='btn btn-rounded btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><%= __('Adicionar campo aqui') %></a>"+
@@ -271,8 +292,8 @@
         }
 
         window.onload = function() {
+          //Activate CkEditor
           var editorsArray = document.querySelectorAll( '.ckeditor' );
-
           editorsArray.forEach(eachEditor => {
             ClassicEditor
             .create(eachEditor, {
@@ -282,6 +303,9 @@
               console.error( error );
             });
           });
+
+          //Activate modal
+          $("#modal-obs").modal();
         }
     </script>
     <!-- Data tables -->

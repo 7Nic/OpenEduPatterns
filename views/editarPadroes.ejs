@@ -19,7 +19,7 @@
     <!-- Mdb Bootstrap -->
     <!-- <link rel="stylesheet" type="text/css" href=""> -->
     <!-- Bibliotca de icones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../../css/style_editarPadroes.css">
     <!-- Fonte da página -->
@@ -44,7 +44,7 @@
             <div class="col-artigos">
 <!-- ==============================================-->
             <div class="criarNovaLinguagem">
-                <h1 id="pageTitle">Edição de Padrão</h1>
+                <h1 id="pageTitle"><%= __('Edição de Padrão') %></h1>
                 <br>
                 <!-- Display errors -->
                 <% if (messages.length > 0) { %>
@@ -66,8 +66,8 @@
                             </span>
                         </div>
                         <select class="form-control" id="visibilidade" name="visibilidade">
-                        <option>Público</option>
-                            <option>Privado</option>
+                            <option><%= __('Público') %></option>
+                            <option><%= __('Privado') %></option>
                         </select>
                     </div>
 
@@ -129,17 +129,17 @@
 
 
                     <a href="javascript:window.location.reload(true)">
-                      <button type="submit" class="btn btn-rounded btn-primary">Salvar alterações</button>
+                      <button type="submit" class="btn btn-rounded btn-primary"><%= __('Salvar alterações') %></button>
 
                     </a>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button onclick="window.location.href='/padroes'" class="btn btn-rounded btn-danger">Cancelar</button>    
+                    <button onclick="window.location.href='/padroes'" class="btn btn-rounded btn-danger"><%= __('Cancelar') %></button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/patterns/<%= patternId %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-rounded btn-danger btn-lg">Deletar Padrão</button>    
+                    <button type="submit" class="btn btn-rounded btn-danger btn-lg"><%= __('Deletar Padrão') %></button>    
                 </form>
             </div>
 
@@ -161,8 +161,8 @@
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
     <script src="../../js/dual-listbox.js"></script>
     <!-- Data tables -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../js/dataTables.bootstrap.min.js"></script>
 
     <script type="text/javascript">
         //Dual-listbox for patterns
@@ -173,8 +173,8 @@
             removeEvent: function(value) { // Should use the event listeners
                 console.log(value);
             },
-            availableTitle: 'Padrões não relacionados',
-            selectedTitle: 'Padrões relacionados',
+            availableTitle: "<%= __('Padrões não relacionados') %>",
+            selectedTitle: "<%= __('Padrões relacionados') %>",
             addButtonText: ' >',
             removeButtonText: '<',
             addAllButtonText: '>>',
@@ -194,7 +194,10 @@
             console.log(event);
             console.log(event.removedElement);
         });
+    </script>
 
+    <!-- Ck Editor -->
+    <script type="text/javascript">
         window.onload = function() {
           var editorsArray = document.querySelectorAll( '.ckeditor' );
 

@@ -19,7 +19,7 @@
     <!-- Mdb Bootstrap -->
     <!-- <link rel="stylesheet" type="text/css" href=""> -->
     <!-- Bibliotca de icones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../../css/style_editLanguages.css">
     <link rel="stylesheet" type="text/css" href="../../css/common_styles.css">
@@ -169,8 +169,8 @@
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
     <script src="../../js/dual-listbox.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         //Dual-listbox for patterns
         var dualListbox1 = new DualListbox('.patterns2Relate', {
@@ -180,8 +180,8 @@
             removeEvent: function(value) { // Should use the event listeners
                 console.log(value);
             },
-            availableTitle: 'Padrões não relacionados',
-            selectedTitle: 'Padrões relacionados',
+            availableTitle: "<%= __('Padrões não relacionados') %>",
+            selectedTitle: "<%= __('Padrões relacionados') %>",
             addButtonText: ' >',
             removeButtonText: '<',
             addAllButtonText: '>>',
@@ -210,8 +210,8 @@
             removeEvent: function(value) { // Should use the event listeners
                 console.log(value);
             },
-            availableTitle: 'Linguagens não relacionadas',
-            selectedTitle: 'Linguagens relacionadas',
+            availableTitle: "<%= __('Linguagens não relacionadas') %>",
+            selectedTitle: "<%= __('Linguagens relacionadas') %>",
             addButtonText: ' >',
             removeButtonText: '<',
             addAllButtonText: '>>',
