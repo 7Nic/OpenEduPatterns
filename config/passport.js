@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
     done(null, user.usuarios_id);
 });
 
-//Here we use the info stored in the session (in this case, usuarios_id) to access the user in the database
+//Here we use the info stored in the session (in this case, usuarios_id) to access the user in database
 passport.deserializeUser((id, done) => {
     store.findUserById(id).then((user) => {
         done(null, user);

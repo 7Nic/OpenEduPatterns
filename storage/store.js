@@ -3,7 +3,7 @@
 // Pois usaremos o comando INSERT IGNORE... para ignorar valores repetidos, os quais não serão inseridos
 // ==================================================ANTES DE TUDO========================================
 
-// Arquivo responsavel pelo armazenamento, ele que roda os comandos SQl
+//This file handles the SQL commands
 const knex   = require('knex')(require('./knexfile'));
 const crypto = require('crypto');
 //Essa é a maneira de importar o knex, faça o paiol e depois passe o objeto com os detalhes do banco de dados, nesse caso colocamos 
