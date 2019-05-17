@@ -43,11 +43,11 @@ module.exports = {
         var tagsStringBefore = req.body.tags;
         var tagsArray = tagsStringBefore.split(",");
         
-        var patternsToRelateArray = req.body.relatedPatterns;
-        //If req.body.relatedPatterns is not an array, we'll create an array of one object in order to use .map function
+        var patternsToRelateArray = req.body.patterns2Relate;
+        //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
         if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
             patternsToRelateArray = [];
-            patternsToRelateArray.push(req.body.relatedPatterns);
+            patternsToRelateArray.push(req.body.patterns2Relate);patternsToRelateArray
         } 
 
         // Handle CkEditor issues with empty fields
@@ -88,9 +88,7 @@ module.exports = {
                 });
                 await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
             }
-            console.log(tagsArray);
             var tagsIdArray = await store.createPatternTag(tagsArray);
-            console.log(tagsIdArray);
             await store.relatePattern2Tags(newPatternId, tagsIdArray);
             res.redirect('/patterns');
         }
@@ -112,7 +110,7 @@ module.exports = {
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
         var tagsString = tagsArray.toString();
-        console.log(tagsString);
+
         res.render('editarPadroes.ejs', {tagsString, patternsOfTheSameLanguage, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
@@ -199,6 +197,8 @@ module.exports = {
         }
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
+
+        console.log(assembledPattern);
 
         res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
     },
