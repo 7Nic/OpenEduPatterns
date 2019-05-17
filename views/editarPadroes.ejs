@@ -73,8 +73,13 @@
 
                     <!-- Loop -->
                     <% patternContent.forEach((element) => { %>
-                        <% if (element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" || element.name === "padrões relacionados" || element.name === "padrões Relacionados" || element.name === "padroes relacionados" || element.name === "padroes Relacionados") { %>
-                            
+                        <% if (    element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" 
+                            || element.name === "Padroes relacionados" || element.name === "Padroes Relacionados" 
+                            || element.name === "padrões relacionados" || element.name === "padrões Relacionados" 
+                            || element.name === "padroes relacionados" || element.name === "padroes Relacionados"
+                            || element.name === "Related Patterns"     || element.name === "related patterns"
+                            || element.name === "related Patterns"     || element.name === "Related patterns"
+                        ) { %>    
                             <div class="tooltipInfo">
                                 <h3><%= __("Faça aqui seu novo relacionamento de Padrões") %> <span class="glyphicon glyphicon-question-sign"></h3>
                                 <span class="tooltiptext">

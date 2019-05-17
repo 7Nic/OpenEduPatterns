@@ -104,6 +104,10 @@
                       <!-- ================================================= -->
                     </tbody>
                 </table>    
+
+                <!-- Handle the creation of the array -->
+                <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
+                <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
             <% } else { %>
                 <label><%= element.name %></label>
                 <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
