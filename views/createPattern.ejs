@@ -59,6 +59,8 @@
         <!-- End display errors -->
 
     	<form method="POST" action="" onsubmit="verifyNewTemplate()">
+        <div id="inputNameTemplate"></div>
+
     	  <% if (templateElements.length > 0) { %>
             <div class="form-group">
               <div class="tooltipInfo" id="visibilidadeId">
@@ -186,7 +188,7 @@
                                        "<input type='text' name='newTemplateName' class='form-control' placeholder='<%= __('Digite aqui o nome de seu novo Template') %>'>"+
                                        "<br>";
 
-                $("#modal-obs").after(inputForTemplate);
+                $("#inputNameTemplate").after(inputForTemplate);
             }
             counter += 1;
             var theHTML = "<a class='btn btn-rounded btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><%= __('Adicionar campo aqui') %></a>"+
@@ -257,6 +259,8 @@
                                   "<% }); %>"+
                                 "</tbody>"+
                             "</table>"+
+                            "<input class='form-control' type='hidden' name='elementName[]' value='Padrões relacionados'>"+
+                            "<input class='form-control' type='hidden' id='elementContent[]' name='elementContent[]' value='This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.'>"+
                           "</div>";                        
             $("."+obj.id+"Div").html(theHTML);
 
