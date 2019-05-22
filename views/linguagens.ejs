@@ -47,7 +47,6 @@
                         <tr>
                             <th class="text-left"><%= __('Usuário') %></th>
                             <th class="text-left"><%= __('Noma da Linguagem') %></th>
-                            <th class="text-left"><%= __('Comentário') %></th>
                             <th class="text-left"><%= __('Data') %></th>
                         </tr>
                     </thead>
@@ -57,7 +56,6 @@
                             <tr>
                                 <td class="text-left userName"><%= linguagens.name %></a></td>
                                 <td class="text-left"><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
-                                <td class="text-left">3</td>
                                 <td class="text-left"><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></td>
                             </tr>
                         <% }); %>

@@ -21,9 +21,13 @@
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="css/style_searchResults.css">
+    <link rel="stylesheet" type="text/css" href="css/style_profile.css">
+    <link rel="stylesheet" type="text/css" href="css/common_styles.css">
     <!-- Fonte da página -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="css/style_datatable.css">
+    <link rel="stylesheet" type="text/css" href="css/style_datatable_effects.css">
 </head>
 
 <body>
@@ -31,11 +35,9 @@
         <%- include partials/nav0.ejs %>
     </nav>  
 
-    <div class="container">
-        <br>
-        <br>
+    <div class="container well">
         <div class="tooltipInfo">
-            <h3><%= __('Pesquisa geral') %> <span class="glyphicon glyphicon-question-sign"></span></h3>
+            <h1><%= __('Pesquisa geral') %> <span class="glyphicon glyphicon-question-sign"></span></h1>
             <span class="tooltiptext">
                 <%= __('Ajuda Busca Geral') %>
             </span>
@@ -48,11 +50,11 @@
             <br>
             <input type="text" placeholder="<%= __('Pesquisar') %>" name="keyword2">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
+            <button class="btn btn-rounded btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
         </form>
         <br>
         <div class="tooltipInfo">
-            <h3><%= __('Pesquisa refinada  nos padrões') %> <span class="glyphicon glyphicon-question-sign"></span></h3>
+            <h1><%= __('Pesquisa refinada  nos padrões') %> <span class="glyphicon glyphicon-question-sign"></span></h1>
             <span class="tooltiptext">
                 <%= __('Ajuda Busca Refinada') %>
             </span>
@@ -77,25 +79,54 @@
             <br>
             <input type="text" placeholder="<%= __('Pesquisa refinada') %>" name="keyword2">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
+            <button class="btn btn-rounded btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
         </form>
-
+        <br>
         <h1><%= __('Resultados da pesquisa') %></h1>
-        <div class="well">
+        <div class="row artigo">
+            
+        </div>
+        <div class="row">
             <% if (languages.length > 0) { %>
-                <h2><%= __('Linguagens') %></h2>
-                <% languages.forEach(eachLanguage => { %>
-                    <h3><a href="/languages/<%= eachLanguage.linguagens_id %>"><%- eachLanguage.nome %></a></h3>
-                <% }); %>
-                <br>
-                <br>
+            <div class="row artigo">
+                <table id="languageTable" class="display">
+                    <thead>
+                        <tr>
+                            <th class="text-left"><%= __('Linguagens') %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- =====================LOOP=========================-->
+                        <% languages.forEach((linguagens, index) => { %>
+                            <tr>
+                                <td><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
+                            </tr>
+                        <% }); %>
+                        <!-- =================================== -->
+                    </tbody>
+                </table>     
+            </div>  
             <% } %>
 
             <% if (patterns.length > 0) { %>
-                <h2><%= __('Padrões') %></h2>
-                <% patterns.forEach(eachPattern => { %>
-                    <h3><a href="/patterns/<%= eachPattern.padroes_id %>"><%- eachPattern.titulo %></a></h3>
-                <% }); %>
+            <div class="row artigo">
+                <table id="patternTable" class="display">
+                    <thead>
+                        <tr>
+                            <th><%= __('Padrões') %></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- =====================LOOP=========================-->
+                        <% patterns.forEach((padroes, index) => { %>
+                            <tr>
+                                <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
+                            </tr>
+                        <% }); %>
+                        <!-- =================================== -->
+                    </tbody>
+                </table>    
+            </div>   
             <% } %>
 
             <% if (languages.length === 0 && patterns.length === 0) { %>
@@ -112,6 +143,73 @@
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#languageTable').DataTable( {
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 10,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            $('#patternTable').DataTable( {
+                "pageLength": 10,
+                "scrollY": 500,
+                "scrollCollapse": true,
+                "paging": false,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+        } );
+    </script>
 </body>
 </html>
 

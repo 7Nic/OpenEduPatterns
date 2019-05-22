@@ -33,11 +33,11 @@
         <div class="photoArea well wrapper">
             <h1 class="greetings"><%= __('Bem vindo') %>, <%= user.name %></h1> 
             <br>
-            <div class="profilePhoto">
+            <div class="profilePhoto col-sm-auto col-md-auto">
                 <% if (profilePhoto) { %>
-                    <img src="../uploads/profilePhotos/<%= profilePhoto %>">
+                    <img class="img-responsive" src="../uploads/profilePhotos/<%= profilePhoto %>">
                 <% } else { %>
-                    <img src="../uploads/profilePhotos/profilePhotoDefault2.png">
+                    <img class="img-responsive" src="../uploads/profilePhotos/profilePhotoDefault2.png">
                 <% } %>
                 <a class="label" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
                 <!-- Modal uploadPhoto -->

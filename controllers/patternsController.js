@@ -69,7 +69,12 @@ module.exports = {
             req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
 
             if (req.body.createNewTemplate) {
-                var templateId = await store.addTemplate({name: req.body.newTemplateName, ownerId: req.user.usuarios_id});
+                var templateName = req.body.newTemplateName;
+                console.log(req.body.newTemplateName);
+                if (templateName === "") {
+                    templateName = "Template";
+                }
+                var templateId = await store.addTemplate({name: templateName, ownerId: req.user.usuarios_id});
                 var elementsNamesArray = req.body.elementName;
                 var elementsIdArray = await store.addElementsInDB(elementsNamesArray);
                 await store.relateContent2Element(templateId, elementsIdArray);
@@ -224,7 +229,11 @@ module.exports = {
             req.session.templateId = req.body.templateChosenId; //Use this info the render the next page
             res.redirect('/patterns/create');
         } else {
-            var templateId = await store.addTemplate({name: req.body.templateName, ownerId: req.user.usuarios_id});
+            var templateName = req.body.templateName;
+            if (templateName === "") {
+                templateName = "Template";
+            }
+            var templateId = await store.addTemplate({name: templateName, ownerId: req.user.usuarios_id});
             req.session.templateId = templateId; //Use this info the render the next page
             var elementsNamesArray = req.body.titleElement;
 

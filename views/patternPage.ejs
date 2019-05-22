@@ -71,11 +71,9 @@
                             || element.name === "related Patterns"     || element.name === "Related patterns"
                         ) { %>
                         <div class="relatedPatterns">
-                            <!-- <p>| -->
                             <% relatedPatterns.forEach((relatedPattern) => { %>
                                 <a class="btn btn-primary btn-sm" href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a>
                             <% }); %>
-                            <!-- </p>     -->
                         </div>
                     <% } else if (isAlexander && index === 0) { %>
                         <h4><strong> <%- element.content %></strong></h4>

@@ -472,8 +472,6 @@ module.exports = {
             .where('a.padroes_id', patternId);
     },
     relatePattern2Pattern(relatedPattern, patternsToRelateArray) {
-        console.log('olha isso' + patternsToRelateArray);
-        
         if (patternsToRelateArray != undefined) {
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
                 //This raw function substitutes INSERT for INSERT IGNORE

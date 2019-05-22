@@ -24,9 +24,6 @@
     <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Fonte da página -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
-    <!-- Datatables -->
-    <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
-    <!-- <link rel="stylesheet" type="text/css" href="../css/style_datatable_effects.css"> -->
 </head>
 
 <body>
@@ -61,50 +58,26 @@
                 <br>
                 <h2><%= __('Padrões relacionados') %></h2>
                 <% if (padroesRelacionados.length > 0) { %>
-                    <!-- Datatable 2 -->
-                    <div class="row artigo">
-                        <table id="patternTable" class="display table-fill">
-                            <thead>
-                                <tr>
-                                    <th class="text-left"><%= __('Nome do Padrão') %></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- =====================LOOP=========================-->
-                                <% padroesRelacionados.forEach((eachPattern, index) => { %>
-                                    <tr>
-                                        <td class="text-left"><h4><a href="/languages/<%= eachPattern.padroes_id %>"> <%- eachPattern.titulo %> </a></h4></td>
-                                    </tr>
-                                <% }); %>
-                                <!-- =================================== -->
-                            </tbody>
-                        </table>       
+                    <br>
+                    <div class="relatedPatterns">
+                        <% padroesRelacionados.forEach((relatedPattern) => { %>
+                            <h4><a class="btn btn-primary btn-sm" href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a></h4>
+                        <% }); %>    
                     </div>
+                    <br>
                 <% } else { %>
                     <p><%= __('Esta linguagem não possui padrões relacionados') %></p>
                 <% } %>
 
                 <h2><%= __('Linguagens relacionadas') %></h2>
                 <% if (relatedLanguages.length > 0) { %>
-                    <!-- Datatable 1 -->
-                    <div class="row artigo">
-                        <table id="languageTable" class="display table-fill">
-                            <thead>
-                                <tr>
-                                    <th class="text-left"><%= __('Noma da Linguagem') %></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- =====================LOOP=========================-->
-                                <% relatedLanguages.forEach((eachLanguage, index) => { %>
-                                    <tr>
-                                        <td class="text-left"><h4><a href="/languages/<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %> </a></h4></td>
-                                    </tr>
-                                <% }); %>
-                                <!-- =================================== -->
-                            </tbody>
-                        </table>       
-                    </div>
+                        <br>      
+                        <div class="relatedLanguages">
+                            <% relatedLanguages.forEach((eachLanguage, index) => { %>
+                                <h4><a class="btn btn-primary btn-sm" href="/languages/<%= eachLanguage.linguagens_id %>"> <%= eachLanguage.nome %> </a></h4>
+                            <% }); %>    
+                        </div>                      
+                        <br>
                 <% } else {%>
                     <%= __('Não há relacionamentos') %>
                     <br>
@@ -162,78 +135,6 @@
     <!-- SCRIPTS -->
     <script src="../js/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <!-- Datatables -->
-    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready( function () {
-            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
-                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
-            } );
-
-            $('#patternTable').DataTable( {
-                "scrollY": 500,
-                "scrollCollapse": true,
-                "paging": false,
-                "pageLength": 4,
-                language: {
-                    "decimal":        "",
-                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
-                    "info":           "",
-                    "infoEmpty":      "",
-                    "infoFiltered":   "",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "",
-                    "loadingRecords": "<%= __('Carregando...') %>",
-                    "processing":     "<%= __('Processando...') %>",
-                    "search":         "<%= __('Pesquisa') %>",
-                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
-                    "paginate": {
-                        "first":      "<%= __('Primeiro') %>",
-                        "last":       "<%= __('Último') %>",
-                        "next":       "<%= __('Próximo') %>",
-                        "previous":   "<%= __('Anterior') %>"
-                    },
-                    "aria": {
-                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
-                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
-                    }
-                }
-            } );
-
-            $('#languageTable').DataTable( {
-                "scrollY": 500,
-                "scrollCollapse": true,
-                "paging": false,
-                "pageLength": 10,
-                language: {
-                    "decimal":        "",
-                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
-                    "info":           "",
-                    "infoEmpty":      "",
-                    "infoFiltered":   "",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "",
-                    "loadingRecords": "<%= __('Carregando...') %>",
-                    "processing":     "<%= __('Processando...') %>",
-                    "search":         "<%= __('Pesquisa') %>",
-                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
-                    "paginate": {
-                        "first":      "<%= __('Primeiro') %>",
-                        "last":       "<%= __('Último') %>",
-                        "next":       "<%= __('Próximo') %>",
-                        "previous":   "<%= __('Anterior') %>"
-                    },
-                    "aria": {
-                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
-                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
-                    }
-                }
-            } );
-        } );
-    </script>
 </body>
 </html>
 
