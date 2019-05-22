@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../css/style_profile.css">
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Fonte da página -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Datatables -->
@@ -39,7 +40,9 @@
                 <% } else { %>
                     <img class="img-responsive" src="../uploads/profilePhotos/profilePhotoDefault2.png">
                 <% } %>
-                <a class="label" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
+                
+                <br>
+                <a id="btnChangePhoto" class="btn btn-info btn-md" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
                 <!-- Modal uploadPhoto -->
                 <div class="modal fade" id="modal-uploadPhoto">
                     <div class="modal-dialog modal-md">

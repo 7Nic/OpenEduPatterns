@@ -100,6 +100,24 @@ h1 {
 	  	display: block;
 		border-radius: 50%;
 	}
+
+	.profilePhoto:hover .label {
+	  top: 80%;
+	  width: 250px;
+		height: auto;
+		margin-left: auto;
+	  	margin-right: auto;	
+	  	display: block;
+		border-radius: 50%;
+	}
+
+	.profileInfo {
+		font-size: 10px;
+	}	
+
+	#btnChangePhoto {
+		font-size: 13px;
+	}
 }
 
 @media only screen and (max-width: 570px){
@@ -115,17 +133,35 @@ h1 {
 	  	display: block;
 		border-radius: 50%;
 	}
+
+	.profilePhoto:hover .label {
+	  top: 80%;
+	  width: 150px;
+		height: auto;
+		margin-left: auto;
+	  	margin-right: auto;	
+	  	display: block;
+		border-radius: 50%;
+	}
+
+	.profileInfo {
+		font-size: 10px;
+	}
+
+	#btnChangePhoto {
+		font-size: 10px;
+	}
 }
 
 .profilePhoto {
     overflow: hidden;
     position: relative;
-    width: 350px;
+    /*width: 350px;*/
 	height: auto;
 	margin-left: auto;
   	margin-right: auto;
   	display: block;
-	border-radius: 50%;
+	/*border-radius: 50%;*/
 }
 
 .label {
@@ -149,7 +185,7 @@ h1 {
 .photoArea, .photoArea h4, .photoArea form {
 	margin: auto;
 	display: block;
-	width: 50%;
+	width: 80%;
 	text-align: center;
 }
 
@@ -194,7 +230,6 @@ h1 {
 }
 
 .artigo p a:hover, .artigo p a:focus {
-	/*color: #5e4485;*/
 	color: #fb284c;
 	text-decoration: none;
 }
