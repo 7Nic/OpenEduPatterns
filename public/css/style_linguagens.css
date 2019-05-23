@@ -77,7 +77,42 @@ p, a, h1, h2, h3, h4 {
 	padding: 5px;
 }
 
+.buttonCreateLanguage {
+	margin: 25px 10px;
+	padding: 5px;
+}
 
+@media only screen and (max-width: 990px) {
+	.container .buttonCreateLanguage a {
+		font-size: 20px;
+		line-height: 30px;
+	}
+
+	.well .btn-default:hover {
+	  font-size: 25px;
+	  border: 3.5px solid rgba(43, 38, 61, 0.75);
+	}
+}
+
+@media only screen and (max-width: 570px) {
+	.container .buttonCreateLanguage a {
+		font-size: 15px;
+		line-height: 25px;
+	}
+
+	.well .btn-default:hover {
+	  font-size: 17px;
+	  border: 2.5px solid rgba(43, 38, 61, 0.75);
+	}
+
+	.corpo .container table th {
+		font-size: 15px;
+	}
+
+	.corpo .container table td, .corpo .container table td h4 a {
+		font-size: 14px !important;
+	}
+}
 
 /************
 -corpo

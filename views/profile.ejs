@@ -22,6 +22,8 @@
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="../css/style_datatable.css">
     <link rel="stylesheet" type="text/css" href="../css/style_datatable_effects.css">
+    <!-- Glyphicons -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -42,7 +44,7 @@
                 <% } %>
                 
                 <br>
-                <a id="btnChangePhoto" class="btn btn-info btn-md" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
+                <a id="btnChangePhoto" class="btn btn-info btn-md btn-rounded" data-toggle="modal" data-target="#modal-uploadPhoto"><%= __('Alterar foto') %></a>
                 <!-- Modal uploadPhoto -->
                 <div class="modal fade" id="modal-uploadPhoto">
                     <div class="modal-dialog modal-md">
@@ -88,7 +90,6 @@
                 <p><%= __('Padrões') %> </p> 
                 <p><%=patterns.length%></p>
             </div>
-            <br>
             <br>
             <br>
             <br>

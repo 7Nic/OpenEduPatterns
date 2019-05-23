@@ -28,6 +28,9 @@
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="css/style_datatable.css">
     <link rel="stylesheet" type="text/css" href="css/style_datatable_effects.css">
+    <!-- Font-awesome -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"> -->
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -51,7 +54,6 @@
                         <tr>
                             <th><%= __('Usuário') %></th>
                             <th><%= __('Nome do Padrão') %></th>
-                            <th><%= __('Comentário') %></th>
                             <th><%= __('Data') %></th>
                         </tr>
                     </thead>
@@ -61,7 +63,6 @@
                             <tr>
                                 <td><%= padroes.name %></a></td>
                                 <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
-                                <td>3</td>
                                 <td><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></td>
                             </tr>
                         <% }); %>
