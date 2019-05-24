@@ -6,7 +6,7 @@ h1 {
 
 .well {
 	/*margin: 15px 0;*/
-	border-radius: 60px;
+	border-radius: 60px !important;
 }
 
 .well .btn {
