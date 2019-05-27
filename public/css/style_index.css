@@ -196,7 +196,7 @@ footer a:hover, footer a:focus {
 
 }
 
-.fa {
+.container .row .fa {
 	padding: 10px;
 	font-size: 25px;
 	color: #d4d7db;
@@ -206,7 +206,7 @@ footer a:hover, footer a:focus {
 	color: #b3b5b7;
 }
 
-.fa-copyright {
+.container .row .fa-copyright {
 	font-size: 12px;
 	padding: 3px;
 }

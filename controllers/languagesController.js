@@ -192,9 +192,18 @@ module.exports = {
             language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
             language.yearCreation = language.created_at.getFullYear();
             if (language.visibilidade === 0) {
-                language.visibilidade = 'Público';
+                if (req.cookies.lang == 'en') {
+                    language.visibilidade = 'Public';
+                } else {
+                    language.visibilidade = 'Público';
+                }
+                
             } else {
-                language.visibilidade = 'Privado';
+                if (req.cookies.lang == 'en') {
+                    language.visibilidade = 'Private';
+                } else {
+                    language.visibilidade = 'Privado';
+                }
             }
         }
 

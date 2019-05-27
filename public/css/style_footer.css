@@ -5,3 +5,36 @@
 .the-end a:hover {
 	color: #f0ad4e;
 }
+
+.informacoes h3 {
+	font-size: 22px;
+}
+
+.informacoes {
+	margin-top: 5%;
+	text-align: center;
+	font-size: 13px;
+	line-height: 0.5em;
+}
+
+@media only screen and (max-width: 1200px){
+	.informacoes {
+		line-height: 0.95em;
+	}
+
+}
+
+.container .row .fa-facebook, .container .row .fa-twitter, .container .row .fa-youtube, .container .row .fa-globe {
+	padding: 10px;
+	font-size: 25px;
+	color: #d4d7db;
+}
+
+.fa:hover, .fa:focus {
+	color: #b3b5b7;
+}
+
+.container .row .fa-copyright {
+	font-size: 12px;
+	padding: 3px;
+}

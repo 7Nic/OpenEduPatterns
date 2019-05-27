@@ -194,11 +194,29 @@ module.exports = {
             patternInfo.dayCreation = patternInfo.created_at.getDate();
             patternInfo.monthCreation = patternInfo.created_at.getMonth() + 1; //Starts counting from 0
             patternInfo.yearCreation = patternInfo.created_at.getFullYear();
+            
+            
             if (patternInfo.visibilidade === 0) {
-                patternInfo.visibilidade = 'Público';
+                if (req.cookies.lang == 'en') {
+                    patternInfo.visibilidade = 'Public';
+                } else {
+                    patternInfo.visibilidade = 'Público';
+                }
+                
             } else {
-                patternInfo.visibilidade = 'Privado';
+                if (req.cookies.lang == 'en') {
+                    patternInfo.visibilidade = 'Private';
+                } else {
+                    patternInfo.visibilidade = 'Privado';
+                }
             }
+
+            
+            // if (patternInfo.visibilidade === 0) {
+            //     patternInfo.visibilidade = 'Público';
+            // } else {
+            //     patternInfo.visibilidade = 'Privado';
+            // }
         }
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
