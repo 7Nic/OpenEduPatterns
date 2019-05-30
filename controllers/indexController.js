@@ -78,7 +78,8 @@ module.exports = {
 
     async filteredPatternSearchGet (req, res) {
         var patterns = [];
-        res.render('filteredSearchPatternsResults.ejs', {patterns, csrfToken: req.csrfToken(), user: req.user});
+        var languages = [];
+        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async filteredPatternSearchPost (req, res) {
