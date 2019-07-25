@@ -188,3 +188,11 @@ footer a:hover, footer a:focus {
 	font-size: 12px;
 	padding: 3px;
 }
+
+#creteNewAccount a {
+	color: black;
+}
+
+#creteNewAccount a:hover {
+	color: #ffffff;
+}

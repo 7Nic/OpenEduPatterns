@@ -19,7 +19,7 @@ module.exports = {
             pattern.monthCreation = pattern.created_at.getMonth() + 1; //Starts counting from 0
             pattern.yearCreation = pattern.created_at.getFullYear();
         });
-        res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user});
+        res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async patternsCreateGet (req, res) {
@@ -55,7 +55,12 @@ module.exports = {
             req.body.elementContent[0] = undefined;
         }
 
-        req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
+        if (req.cookies.lang == 'en') {
+            req.checkBody('elementContent[0]', 'The field Name cannot be empty').notEmpty();
+        } else {
+            req.checkBody('elementContent[0]', 'O campo de nome não pode ficar vazio').notEmpty();
+        }
+        
         var errors = req.validationErrors();
 
         if(errors) {
@@ -95,6 +100,13 @@ module.exports = {
             }
             var tagsIdArray = await store.createPatternTag(tagsArray);
             await store.relatePattern2Tags(newPatternId, tagsIdArray);
+
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "Pattern created successfully");
+            } else {
+                req.flash('feedback', "Padrão criado com sucesso");
+            }
+
             res.redirect('/patterns');
         }
 
@@ -144,7 +156,11 @@ module.exports = {
             req.body.elementContent[0] = undefined;
         }
 
-        req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
+        if (req.cookies.lang == 'en') {
+            req.checkBody('elementContent[0]', 'The field Name cannot be empty').notEmpty();
+        } else {
+            req.checkBody('elementContent[0]', 'O campo de nome não pode ficar vazio').notEmpty();
+        }
 
         var errors = req.validationErrors();
 
@@ -163,6 +179,13 @@ module.exports = {
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
             await store.relatePattern2Tags(req.params.id, tagsIdArray);
+
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "Properties saved successfully");
+            } else {
+                req.flash('feedback', "Propriedades salvas com sucesso");
+            }
+
             res.redirect(`/patterns/${req.params.id}`);
         }
     },
@@ -172,6 +195,11 @@ module.exports = {
         await store.deletePatternInUsuariosPadroes(req.params.id);
         await store.deletePatternInElementsContent(req.params.id);
         await store.deletePatternsInPatternsPatterns(req.params.id);
+        if (req.cookies.lang == 'en') {
+            req.flash('feedback', "Pattern deleted successfully");
+        } else {
+            req.flash('feedback', "Padrão deletado com sucesso");
+        }
         res.redirect('/patterns');
     },
 
@@ -210,20 +238,12 @@ module.exports = {
                     patternInfo.visibilidade = 'Privado';
                 }
             }
-
             
-            // if (patternInfo.visibilidade === 0) {
-            //     patternInfo.visibilidade = 'Público';
-            // } else {
-            //     patternInfo.visibilidade = 'Privado';
-            // }
         }
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
 
-        console.log(assembledPattern);
-
-        res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken()});
+        res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },
 
     async addCommentPattern (req, res) {
@@ -231,6 +251,13 @@ module.exports = {
         var userId = req.user.usuarios_id;
         var patternId = req.params.id;
         var userName = req.user.name;
+
+        if (req.cookies.lang == 'en') {
+            req.flash('feedback', "Comment added successfully");
+        } else {
+            req.flash('feedback', "Comentário adicionado com sucesso");
+        }        
+
         await store.addCommentPattern(text, userId, patternId, userName);
         res.redirect(`/patterns/${req.params.id}`);
     },

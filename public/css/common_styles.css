@@ -13,7 +13,7 @@ h1 {
 	font-weight: bold;
 }
 
-.well .btn-primary {
+/*.well .btn-primary {
 	background-color: #3e3759;
 	border-color: #171421;
 }
@@ -21,7 +21,7 @@ h1 {
 .well .btn-primary:hover {
 	background-color: #2b263d;
 	border-color: #171421;	
-}
+}*/
 
 .well .btn-info {
 	background-color: #3e3759;
@@ -45,4 +45,15 @@ h1 {
 
 .tooltipInfo .glyphicon{
 	font-size: 28px;
+}
+
+/*Used in tags*/
+.well .btn-tag {
+	background-color: #5bc0de;
+	border-color: #171421;
+}
+
+.well .btn-tag:hover {
+	background-color: #568e9e;
+	border-color: #171421;	
 }

@@ -15,8 +15,7 @@ module.exports = {
             language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
             language.yearCreation = language.created_at.getFullYear();
         });
-        res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
-        // res.render('table2.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user});
+        res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async languagesCreateGet (req, res) {
@@ -66,8 +65,14 @@ module.exports = {
         var tagsStringBefore = req.body.tags;
         var tagsArrayAfter = tagsStringBefore.split(",");
 
-        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
-        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+
+        if (req.cookies.lang == 'en') {
+            req.checkBody('nomeLinguagem', 'The field Name cannot be empty').notEmpty();
+            req.checkBody('descricaoLinguagem', 'The field Description cannot be empty').notEmpty();
+        } else {
+            req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+            req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+        }
 
         var errors = req.validationErrors();
 
@@ -87,6 +92,13 @@ module.exports = {
             await store.relatePattern2LanguageWithArray(newLanguageId, patternsToRelateArray);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(newLanguageId, tagsIdArray);
+
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "Language created successfully");
+            } else {
+                req.flash('feedback', "Linguagem criada com sucesso");
+            }
+
             res.redirect('/languages');
         }
     },
@@ -149,8 +161,13 @@ module.exports = {
         // var nomeLinguagem = req.body.nomeLinguagem; ==============================!!!!================
         // var descricaoLinguagem = req.body.descricaoLinguagem;
 
-        req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
-        req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+        if (req.cookies.lang == 'en') {
+            req.checkBody('nomeLinguagem', 'The field Name cannot be empty').notEmpty();
+            req.checkBody('descricaoLinguagem', 'The field Description cannot be empty').notEmpty();
+        } else {
+            req.checkBody('nomeLinguagem', 'Campo de nome vazio').notEmpty();
+            req.checkBody('descricaoLinguagem', 'Campo de descrição vazio').notEmpty();
+        }
 
         var errors = req.validationErrors();
 
@@ -171,6 +188,13 @@ module.exports = {
             await store.deleteOldRelathionshipsLanguage2Tags(req.params.id);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(req.params.id, tagsIdArray);
+
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "Properties saved successfully");
+            } else {
+                req.flash('feedback', "Propriedades salvas com sucesso");
+            }
+
             res.redirect(`/languages/${req.params.id}`);
         }
     },
@@ -178,6 +202,11 @@ module.exports = {
     async languagesDeletePost (req, res) {
         await store.deletarLinguagem(req.params.id);
         await store.deleteLanguageInLanguagesLanguages(req.params.id);
+        if (req.cookies.lang == 'en') {
+            req.flash('feedback', "Language deleted successfully");
+        } else {
+            req.flash('feedback', "Linguagem deletada com sucesso");
+        }
         res.redirect('/languages');
     },
 
@@ -210,7 +239,7 @@ module.exports = {
         var tagsArray = await store.tagsOfLanguage(req.params.id);
         // var tagsString = tagsArray.toString();
 
-        res.render('languagePage.ejs', {tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken()});
+        res.render('languagePage.ejs', {tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },
 
     async addCommentLanguage (req, res) {
@@ -218,8 +247,14 @@ module.exports = {
         var userId = req.user.usuarios_id;
         var languageId = req.params.id;
         var userName = req.user.name;
-
         await store.addCommentLanguage(text, userId, languageId, userName);
+
+        if (req.cookies.lang == 'en') {
+            req.flash('feedback', "Comment added successfully");
+        } else {
+            req.flash('feedback', "Comentário adicionado com sucesso");
+        }
+
         res.redirect(`/languages/${req.params.id}`);
     }
 }

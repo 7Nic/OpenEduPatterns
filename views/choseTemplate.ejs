@@ -79,6 +79,10 @@
                     </tbody>
                 </table>       
             </div>
+            <br>
+            <button type="submit" class="btn btn-rounded btn-lg btn-info"><%= __('Escolher template') %></button>
+            <br>
+            <br>
 
           <h3><%= __('ou') %>...</h3>
     	  <div class="form-group">
@@ -88,6 +92,7 @@
                     <%= __('Este template criado ficará disponível para você na próxima criação de um padrão') %>
                 </span>
             </div>
+            <p><%= __('Caso deseje criar um padrão sem template, deixe os campos vazios e clique em Criar template') %></p>
             <input class="form-control" type="text" name="templateName" placeholder="<%= __('Digite aqui o nome de seu novo template') %>">
             <br>
             <div class="newTemplateElements">
@@ -119,7 +124,7 @@
           </div>
 
     	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-rounded btn-lg btn-primary"><%= __('Criar Padrão') %></button>
+          <button type="submit" class="btn btn-rounded btn-lg btn-info"><%= __('Criar template') %></button>
     	  <a class="btn btn-rounded btn-lg btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
 		</form>
 
@@ -156,7 +161,7 @@
                     "infoEmpty":      "",
                     "infoFiltered":   "",
                     "infoPostFix":    "",
-                    "thousands":      ",",
+                    "sands":      ",",
                     "lengthMenu":     "",
                     "loadingRecords": "<%= __('Carregando...') %>",
                     "processing":     "<%= __('Processando...') %>",
