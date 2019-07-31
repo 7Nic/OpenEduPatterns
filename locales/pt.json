@@ -210,5 +210,9 @@
 	"Escolher template": "Escolher template",
 	"Caso deseje criar um padrão sem template, deixe os campos vazios e clique em Criar template": "Caso deseje criar um padrão sem template, deixe os campos vazios e clique em Criar template",
 	"Você precisa escolher um arquivo antes de fazer o upload": "Você precisa escolher um arquivo antes de fazer o upload",
-	"Links do site": "Links do site"
+	"Links do site": "Links do site",
+	"Escolha um arquivo": "Escolha um arquivo",
+	"Arquivo não selecionado": "Arquivo não selecionado",
+	"Campo obrigatório": "Campo obrigatório",
+	"3 - O primeiro campo não pode estar vazio": "3 - O primeiro campo não pode estar vazio"
 }

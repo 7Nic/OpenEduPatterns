@@ -46,20 +46,20 @@
                     <tbody>
                         <tr>
                             <td class="text-left">
-                                <h3><input type="radio" name="templateChosenId" value="1">  Alexander</h3>
-                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p>    
+                                <input type="radio" id="Alexander" name="templateChosenId" value="1">  <label for="Alexander"><h3>Alexander</h3></label>
+                                <label for="Alexander"><p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Figura') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Diagrama da solução') %> |</p></label>
                             </td>
                         </tr>
                         <tr>
                             <td class="text-left">
-                                <h3><input type="radio" name="templateChosenId" value="2">  Portland</h3>
-                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Descrição') %> | <%= __('Solução') %> |</p>
+                                <input type="radio" id="Portland" name="templateChosenId" value="2">  <label for="Portland"><h3>Portland</h3></label>
+                                <label for="Portland"><p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Descrição') %> | <%= __('Solução') %> |</p></h3>
                             </td>
                         </tr>
                         <tr>
                             <td class="text-left">
-                                <h3><input type="radio" name="templateChosenId" value="3">  Coplien</h3>
-                                <p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Alias') %> | <%= __('Forças') %> | <%= __('Exemplo') %> | <%= __('Usos conhecidos') %> | <%= __('Padrões relacionados') %> | <%= __('Contexto') %> | <%= __('Resultante') %> | <%= __('Rationale') %> |</p>  
+                                <input type="radio" id="Coplien" name="templateChosenId" value="3">  <label for="Coplien"><h3>Coplien</h3></label>
+                                <label for="Coplien"><p>| <%= __('Nome') %> | <%= __('Contexto') %> | <%= __('Problema') %> | <%= __('Solução') %> | <%= __('Alias') %> | <%= __('Forças') %> | <%= __('Exemplo') %> | <%= __('Usos conhecidos') %> | <%= __('Padrões relacionados') %> | <%= __('Contexto') %> | <%= __('Resultante') %> | <%= __('Rationale') %> |</p>  </h3>
                             </td>
 
                         </tr>
@@ -67,11 +67,11 @@
                         <% templatesName.forEach((templateName, index) => { %>
                         <tr>
                             <td class="text-left">
-                                <h3><input type="radio" name="templateChosenId" value="<%= templatesId[index] %>">  <%= templateName %></h3>
-                                <p>|<%  templatesElements[index].forEach((elementName) => { %>
+                                <input type="radio" id="<%= templatesId[index] %>" name="templateChosenId" value="<%= templatesId[index] %>">  <label for="<%= templatesId[index] %>"><h3><%= templateName %></h3></label>
+                                <label for="<%= templatesId[index] %>"><p>|<%  templatesElements[index].forEach((elementName) => { %>
                                         <%= elementName %> |
                                     <% }); %>
-                                </p>
+                                </p></label>
                             </td>
                         </tr>
                         <% }); %>

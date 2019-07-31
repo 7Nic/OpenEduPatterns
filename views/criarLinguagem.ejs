@@ -80,7 +80,7 @@
         <form method="POST" action="">
           <div class="form-group">
             <div class="tooltipInfo">
-              <label for="nomeLinguagem"><%= __('Nome da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+              <label class="requiredField" for="nomeLinguagem"><%= __('Nome da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
               <span class="tooltiptext">
                 <%= __('Digite o nome da Linguagem que será exibida nas buscas') %>
               </span>
@@ -101,7 +101,7 @@
           </div>
           <div class="form-group">
             <div class="tooltipInfo">
-              <label for="descricaoLinguagem"><%= __('Descrição da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
+              <label class="requiredField" for="descricaoLinguagem"><%= __('Descrição da Linguagem') %> <span class="glyphicon glyphicon-question-sign"></span></label>
                 <span class="tooltiptext">
                     <%= __('A descrição facilitará a compreensão da Linguagem por outros usuários') %>
                 </span>
@@ -109,6 +109,9 @@
 
             <textarea class="form-control" id="descricaoLinguagem" name="descricaoLinguagem" rows="4"></textarea>
           </div>
+
+          <label class="requiredField"><%= __('Campo obrigatório') %></label>
+
           <div class="form-group">
             <div class="tooltipInfo">
               <label for="tags"><%= __('Tags (separe-as pressionando Enter ou com uma vírgula)') %> <span class="glyphicon glyphicon-question-sign"></span></label>
@@ -179,6 +182,9 @@
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready( function () {
+            //Automatic focus 
+            $('#nomeLinguagem').focus();
+
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );

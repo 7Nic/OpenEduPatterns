@@ -215,5 +215,9 @@
 	"Escolher template": "Choose template",
 	"Caso deseje criar um padrão sem template, deixe os campos vazios e clique em Criar template": "If you want to create a pattern without a template, leave the fields empty and click on Create template",
 	"Você precisa escolher um arquivo antes de fazer o upload": "You need to select a file before uploading",
-	"Links do site": "Site links"
+	"Links do site": "Site links",
+	"Escolha um arquivo": "Choose a file",
+	"Arquivo não selecionado": "No file chosen",
+	"Campo obrigatório": "Required field",
+	"3 - O primeiro campo não pode estar vazio": "3 - The first field cannot be empty"
 }

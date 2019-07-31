@@ -85,10 +85,12 @@
             <button class="btn btn-rounded btn-info btn-sm" type="submit"><%= __('Pesquisar') %></button>
         </form>
         <br>
-        <h1><%= __('Resultados da pesquisa') %></h1>
-        <div class="row artigo">
-            
-        </div>
+
+        <% if (languages.length > 0 || patterns.length > 0) { %>
+            <h1><%= __('Resultados da pesquisa') %></h1>
+        <% } %>
+
+        
         <div class="row">
             <% if (languages.length > 0) { %>
             <div class="row artigo">
@@ -131,14 +133,33 @@
                 </table>    
             </div>   
             <% } %>
-
-            <% if (languages.length === 0 && patterns.length === 0) { %>
-                <p><%= __('Não foram encontrados resultados para esta pesquisa') %> </p>
-            <% } %>
         </div>
         <br>
         <br>
     </div>
+
+    <!-- Feedback modal -->
+        <% if (messages.length > 0) { %>
+          <div class="modal fade" id="modal-feedback">
+              <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                       <div class="modal-body">
+                          <div class="row">
+                              <div class="col-xs-10 col-xs-offset-1">
+                                  <div>
+                                        <% messages.forEach((message) => { %>
+                                            <h3 id='explanation'><%= message %></h3>
+                                        <% }); %>
+                                        <button class="btn btn-sm" type="button" class="close" data-dismiss="modal">OK</button>
+                                  </div>
+                              </div>
+                          </div>
+                       </div>
+                  </div>
+              </div>
+          </div>
+        <% } %>
+    <!-- End feedback modal -->
 
     <footer class="text-center">
         <%- include partials/footer.ejs %>
@@ -149,6 +170,12 @@
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
+        // Feedback modal
+        window.onload = function() {
+          //Activate modal
+          $("#modal-feedback").modal();
+        }
+
         $(document).ready( function () {
             $('#languageTable').DataTable( {
                 "scrollY": 500,

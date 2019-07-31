@@ -56,9 +56,9 @@ module.exports = {
         }
 
         if (req.cookies.lang == 'en') {
-            req.checkBody('elementContent[0]', 'The field Name cannot be empty').notEmpty();
+            req.checkBody('elementContent[0]', 'The first field cannot be empty').notEmpty();
         } else {
-            req.checkBody('elementContent[0]', 'O campo de nome não pode ficar vazio').notEmpty();
+            req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
         }
         
         var errors = req.validationErrors();
@@ -157,9 +157,9 @@ module.exports = {
         }
 
         if (req.cookies.lang == 'en') {
-            req.checkBody('elementContent[0]', 'The field Name cannot be empty').notEmpty();
+            req.checkBody('elementContent[0]', 'The first field cannot be empty').notEmpty();
         } else {
-            req.checkBody('elementContent[0]', 'O campo de nome não pode ficar vazio').notEmpty();
+            req.checkBody('elementContent[0]', 'O primeiro campo não pode ficar vazio').notEmpty();
         }
 
         var errors = req.validationErrors();

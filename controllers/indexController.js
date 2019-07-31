@@ -15,7 +15,7 @@ module.exports = {
     },
 
     async generalSearchGet(req, res) {
-        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user})
+        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
     },
 
     async generalSearchPost (req, res) {
@@ -38,11 +38,20 @@ module.exports = {
         patterns = patterns.filter((elem, index, self) => self.findIndex(
             (t) => {return (t.padroes_id === elem.padroes_id && t.titulo === elem.titulo)}) === index)
 
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user})
+        
+        if (languages.length === 0 && patterns.length === 0) {
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "This search didn't return results");
+            } else {
+                req.flash('feedback', "Não foram encontrados resultados para esta pesquisa");
+            }
+        }
+
+        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
     },
 
     async filteredSearchGet(req, res) {
-        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user})
+        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
     },
 
     async filteredSearchPost (req, res) { 
@@ -73,13 +82,23 @@ module.exports = {
         patterns = patterns.filter((elem, index, self) => self.findIndex(
             (t) => {return (t.padroes_id === elem.padroes_id && t.titulo === elem.titulo)}) === index)
 
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user})
+
+        if (languages.length === 0 && patterns.length === 0) {
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "This search didn't return results");
+            } else {
+                req.flash('feedback', "Não foram encontrados resultados para esta pesquisa");
+            }
+        }
+
+        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
     },
 
     async filteredPatternSearchGet (req, res) {
         var patterns = [];
         var languages = [];
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user});
+        var messages = [];
+        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages});
     },
 
     async filteredPatternSearchPost (req, res) {
@@ -145,8 +164,16 @@ module.exports = {
             var patternsConcat = await store.searchInElementContent('Rationale', req.body.keyword2);
             patterns = patterns.concat(patternsConcat);
         }
+
+        if (patterns.length === 0) {
+            if (req.cookies.lang == 'en') {
+                req.flash('feedback', "This search didn't return results");
+            } else {
+                req.flash('feedback', "Não foram encontrados resultados para esta pesquisa");
+            }
+        }
         
-        res.render('searchresults.ejs', {languages: [], patterns, csrfToken: req.csrfToken(), user: req.user});
+        res.render('searchresults.ejs', {languages: [], patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async table(req, res) {

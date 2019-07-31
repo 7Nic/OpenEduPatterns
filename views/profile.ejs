@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../css/style_profile.css">
-    <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css">
+    <!-- <link rel="stylesheet" type="text/css" href="../css/style_linguagens.css"> -->
     <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <link rel="stylesheet" type="text/css" href="../css/style_footer.css">
     <!-- Fonte da página -->
@@ -111,17 +111,21 @@
                                     <div class="col-xs-10 col-xs-offset-1">
                                         <div class="well">
                                             <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
-                                                <!-- Tentativa frustrada de mudar o botão de upload, problema com o multer(NodeJS) -->
-                                                <!-- <input type="file" name="profilePhotoInput" id="profilePhotoInput">   
-                                                <button type="button" onclick="chooseFile();" class="btn btn-info">choose fille</button> -->
-                                                <input type="file" name="profilePhoto" id="profilePhoto">
+                                                <input type="file" name="profilePhoto" id="real-file" style="display:none"/>
+                                                <button class="btn btn-info" type="button" id="custom-button"><%= __('Escolha um arquivo') %></button>
+                                                <span id="custom-text"><%= __('Arquivo não selecionado') %></span>
+
+
+                                                <!-- <input type="file" name="profilePhoto" id="profilePhoto"> -->
                                                 <br>
-                                                <button type="submit" class="btn btn-success" onclick="return validateFile();"><%= __('Upload') %></button>
+                                                <br>
+                                                <button type="submit" class="btn btn-default btn" onclick="return validateFile();"><%= __('Upload') %></button>
                                             </form>
+                                            <br>
                                             <br>
                                             <form method="POST" action="/users/deleteprofilephoto">
                                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                <button type="submit" class="btn btn-danger"><%= __('Apagar foto de perfil') %></button>
+                                                <button type="submit" class="btn btn btn-danger"><%= __('Apagar foto de perfil') %></button>
                                             </form>
                                         </div>
                                     </div>
@@ -326,7 +330,7 @@
 
 
         function validateFile() {
-            var fileName = $.trim($("#profilePhoto").val());
+            var fileName = $.trim($("#real-file").val());
 
             if (isEmpty(fileName)) {
                 alert("<%= __('Você precisa escolher um arquivo antes de fazer o upload') %>")
@@ -339,6 +343,26 @@
         function isEmpty(str){
             return !str.replace(/\s+/, '').length;
         }
+
+        // Custom button upload
+        const realFileBtn = document.getElementById("real-file");
+        const customBtn = document.getElementById("custom-button");
+        const customTxt = document.getElementById("custom-text");
+
+        customBtn.addEventListener("click", function() {
+          realFileBtn.click();
+        });
+
+        realFileBtn.addEventListener("change", function() {
+          if (realFileBtn.value) {
+            customTxt.innerHTML = realFileBtn.value.match(
+              /[\/\\]([\w\d\s\.\-\(\)]+)$/
+            )[1];
+          } else {
+            customTxt.innerHTML = "<%= __('Arquivo não selecionado') %>";
+          }
+        });
+
     </script>
 </body>
 </html>

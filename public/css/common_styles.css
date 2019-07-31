@@ -57,3 +57,8 @@ h1 {
 	background-color: #568e9e;
 	border-color: #171421;	
 }
+
+.requiredField:before{
+    content:"* " ;
+    color:red    
+}
