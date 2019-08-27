@@ -80,7 +80,7 @@
                 </table>       
             </div>
             <br>
-            <button type="submit" class="btn btn-rounded btn-lg btn-info"><%= __('Escolher template') %></button>
+            <button type="submit" class="btn btn-rounded btn-lg btn-info"><span class="glyphicon glyphicon-ok"></span> <%= __('Escolher template') %></button>
             <br>
             <br>
 
@@ -119,13 +119,13 @@
                     </datalist>
                     <br>
                 </div>
-    	        <a class="btn btn-rounded btn-info" onclick="addElement(this)" id="addElement"><%= __('Adicionar elemento') %></a>
+    	        <a class="btn btn-rounded btn-info" onclick="addElement(this)" id="addElement"><span class="glyphicon glyphicon-plus"></span> <%= __('Adicionar elemento') %></a>
     	    </div>
           </div>
 
     	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <button type="submit" class="btn btn-rounded btn-lg btn-info"><%= __('Criar template') %></button>
-    	  <a class="btn btn-rounded btn-lg btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
+          <button type="submit" class="btn btn-rounded btn-lg btn-info"><span class="glyphicon glyphicon-ok"></span> <%= __('Criar template') %></button>
+    	  <a class="btn btn-rounded btn-lg btn-danger" href="/patterns"><span class="glyphicon glyphicon-remove"></span> <%= __('Cancelar') %></a>   
 		</form>
 
     </div>

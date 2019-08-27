@@ -47,7 +47,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -97,16 +97,16 @@
         <br>
         <% if (pattern) { %>
             <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success btn-md" ><%= __('Exportar PDF') %></button>
-            <a class="btn btn-rounded btn-info btn-md" href="/patterns/<%= pattern.padroes_id %>/edit"><%= __('Editar Padrão') %></a>
+            <a class="btn btn-rounded btn-info btn-md" href="/patterns/<%= pattern.padroes_id %>/edit"><span class="glyphicon glyphicon-pencil"></span> <%= __('Editar Padrão') %></a>
             <br>
             <br>
             <br>
             <div class="patternInfo">
-                <h3><%= __('Autor') %></h3><h4>: <%= owner.name %></h4>
+                <h3><%= __('Autor') %></h3><h3>: <%= owner.name %></h3>
                 <br>
-                <h3><%= __('Data de criação') %></h3><h4>: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h4>
+                <h3><%= __('Data de criação') %></h3><h3>: <%= pattern.dayCreation %>/<%= pattern.monthCreation %>/<%= pattern.yearCreation %></h3>
                 <br>
-                <h3><%= __('Visibilidade') %></h3><h4>: <%= pattern.visibilidade %></h4>                
+                <h3><%= __('Visibilidade') %></h3><h3>: <%= pattern.visibilidade %></h3>                
             </div>
             <br>
             <br>
@@ -114,7 +114,7 @@
                 <!-- LOOP -->
                 <% patternContent.forEach((element, index) => { %>
                     <% if (!isAlexander) { %>
-                        <h2><%= element.name %></h2>
+                        <h3><%= element.name %></h3>
                     <% } %>
 
                     <% if (    element.name === "Padrões relacionados" || element.name === "Padrões Relacionados" 
@@ -182,7 +182,7 @@
 
         <% } else { %>
             <div class="well">
-                <h2><%= __('Este Padrão não existe') %></h2>
+                <h3><%= __('Este Padrão não existe') %></h3>
             </div>
         <% } %>
         <br>

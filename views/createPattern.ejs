@@ -27,7 +27,7 @@
               <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                   <div class="input-group">
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                      <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                       <span class="input-group-btn">
                           <button type="submit" class="btn btn-default">
                           <span class="glyphicon glyphicon-search"></span>
@@ -165,20 +165,27 @@
 
                 <!-- Handle the creation of the array -->
                 <input class="form-control" type="hidden" name="elementName[]" value="Padrões relacionados">
-                <input class="form-control" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
+                <input class="form-control fieldsContent" type="hidden" id="elementContent[]" name="elementContent[]" value="This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.">
             <% } else { %>
-                <label><%= element.name %></label>
+                <% if (index == 0) { %>
+                  <label class="requiredField"><%= element.name %></label>
+                <% } else { %>
+                  <label><%= element.name %></label>
+                <% } %>
+                
                 <input class="form-control" type="hidden" name="elementName[]" value="<%= element.name %>">
-                <textarea class="form-control ckeditor" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea>
+                <div id="elementNumber<%= index %>"><textarea class="form-control ckeditor fieldsContent" id="elementContent[]" name="elementContent[]" rows="4" placeholder="Digite aqui o conteúdo deste elemento"></textarea></div>
             <% } %>
 
             </div>
-            <a class="btn btn-rounded btn-info" onclick="addElement(this)"><%= __('Adicionar campo aqui') %></a>  
+            <a class="btn btn-rounded btn-info" onclick="addElement(this)"><span class="glyphicon glyphicon-plus"></span> <%= __('Adicionar campo aqui') %></a>  
             
             <br>
             <br>
           <% }); %>
           <!-- End Loop -->
+
+          <label class="requiredField"><%= __('Campo obrigatório') %></label>
 
           <br>
           <div class="form-group">
@@ -214,8 +221,8 @@
           <% if (templateElements.length > 0) { %>
               <input type="hidden" name="createNewTemplate" id="createNewTemplate" value="">
         	  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-              <button type="submit" class="btn btn-rounded btn-success"><%= __('Criar Padrão') %></button>
-        	  <a class="btn btn-rounded btn-danger" href="/patterns"><%= __('Cancelar') %></a>   
+              <button type="submit" class="btn btn-rounded btn-success" onclick="return validateFields();"><span class="glyphicon glyphicon-ok"></span> <%= __('Criar Padrão') %></button>
+        	  <a class="btn btn-rounded btn-danger" href="/patterns"><span class="glyphicon glyphicon-remove"></span> <%= __('Cancelar') %></a>   
           <% }; %>
 		</form>
 
@@ -237,6 +244,7 @@
     <!-- Dynamic form -->
     <script type="text/javascript">
         var counter = 0;
+        var backupText;
 
         function addElement(obj) {
             if (counter === 0) {
@@ -247,7 +255,7 @@
                 $("#inputNameTemplate").after(inputForTemplate);
             }
             counter += 1;
-            var theHTML = "<a class='btn btn-rounded btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><%= __('Adicionar campo aqui') %></a>"+
+            var theHTML = "<a class='btn btn-rounded btn-info element"+counter+"Button' onclick='addElement(this); createCKEDITOR();'><span class='glyphicon glyphicon-plus'></span> <%= __('Adicionar campo aqui') %></a>"+
                           "<div class='element"+counter+"Div newElement' id='element"+counter+"'>"+
                           "<br>"+
                           "<br>"+
@@ -258,7 +266,7 @@
                           "<div class='form-group'>"+
                           "<input class='form-control' type='text' name='elementName[]' list='commonNames' placeholder='<%= __('Digite o nome do elemento') %>'>"+
                           "<br>"+
-                          "<textarea class='form-control ckeditor' id='elementContent[]' name='elementContent[]' rows=4 placeholder='<%= __('Digite aqui o conteúdo deste elemento') %>'></textarea>"+
+                          "<div id='elementNumber"+counter+"'><textarea class='form-control ckeditor fieldsContent' id='elementContent[]' name='elementContent[]' rows=4 placeholder='<%= __('Digite aqui o conteúdo deste elemento') %>'></textarea></div>"+
                           "</div>"+
                           "</div>";
 
@@ -278,6 +286,11 @@
 
         function removeElement(obj) {
             var elementToRemove = obj.id;   
+
+            // var nameElement = $("#elementNumber"+counter+" p");
+            // backupText = nameElement[1].innerText;
+            // console.log(backupText);
+
             $("."+elementToRemove+"Button").remove();
             $("."+elementToRemove+"Div").remove();
         }
@@ -316,7 +329,7 @@
                                 "</tbody>"+
                             "</table>"+
                             "<input class='form-control' type='hidden' name='elementName[]' value='Padrões relacionados'>"+
-                            "<input class='form-control' type='hidden' id='elementContent[]' name='elementContent[]' value='This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.'>"+
+                            "<input class='form-control fieldsContent' type='hidden' id='elementContent[]' name='elementContent[]' value='This content is not a text, it's a relathionship in MySQL, therefore it can't be displayed here.'>"+
                           "</div>";                        
             $("."+obj.id+"Div").html(theHTML);
 
@@ -357,9 +370,6 @@
             } catch (err) {
               alert("<%= __('Você não pode adicionar mais campos de relacionamento') %>");
             }
-
-
-            
             
         }
 
@@ -378,6 +388,26 @@
 
           //Activate modal
           $("#modal-obs").modal();
+        }
+
+        //Prevent empty field on form
+        function validateFields() {
+            // var comment = document.getElementsByClassName("fieldsContent");
+            // console.log(comment.item(2));
+            // console.log(comment[2].innerHTML);
+
+            // var comment = $.trim($("#elementNumber0 p").val());
+            var nameElement = $("#elementNumber0 p");
+            if (isEmpty(nameElement[0].innerText)) {
+                alert("<%= __('O primeiro campo não pode ficar vazio') %>")
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function isEmpty(str){
+            return !str.replace(/\s+/, '').length;
         }
     </script>
     <!-- Data tables -->

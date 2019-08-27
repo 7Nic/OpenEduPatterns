@@ -46,7 +46,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -92,25 +92,25 @@
         </div>
         <br>
         <% if (language) { %>
-            <a class="btn btn-rounded btn-info" href="/languages/<%= language.linguagens_id %>/edit"><%= __('Editar Linguagem') %></a>
+            <a class="btn btn-rounded btn-info" href="/languages/<%= language.linguagens_id %>/edit"><span class="glyphicon glyphicon-pencil"></span> <%= __('Editar Linguagem') %></a>
             <br>
             <br>
             <br>
             <div class="patternInfo">
-                <h3><%= __('Autor') %></h3><h4>: <%= owner.name %></h4>
+                <h3><%= __('Autor') %></h3><h3>: <%= owner.name %></h3>
                 <br>
-                <h3><%= __('Data de criação') %></h3><h4>: <%= language.dayCreation %>/<%= language.monthCreation %>/<%= language.yearCreation %></h4>
+                <h3><%= __('Data de criação') %></h3><h3>: <%= language.dayCreation %>/<%= language.monthCreation %>/<%= language.yearCreation %></h3>
                 <br>
-                <h3><%= __('Visibilidade') %></h3><h4>: <%= language.visibilidade %></h4>                
+                <h3><%= __('Visibilidade') %></h3><h3>: <%= language.visibilidade %></h3>                
             </div>
             <br>
             <br>
             <div class="container well">
-                <h2><%= language.nome %></h2>
+                <h3><%= language.nome %></h3>
                 <br>
                 <p><%= language.descricao %></p>
                 <br>
-                <h2><%= __('Padrões relacionados') %></h2>
+                <h3><%= __('Padrões relacionados') %></h3>
                 <% if (padroesRelacionados.length > 0) { %>
                     <br>
                     <div class="relatedPatterns">
@@ -123,7 +123,7 @@
                     <p><%= __('Esta linguagem não possui padrões relacionados') %></p>
                 <% } %>
 
-                <h2><%= __('Linguagens relacionadas') %></h2>
+                <h3><%= __('Linguagens relacionadas') %></h3>
                 <% if (relatedLanguages.length > 0) { %>
                         <br>      
                         <div class="relatedLanguages">

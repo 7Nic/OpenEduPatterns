@@ -70,6 +70,10 @@ p, a {
 	border-radius: 40px;
 }
 
+.well p, .well h3 {
+	color: black;
+}
+
 /************
 -footer
 ************/		

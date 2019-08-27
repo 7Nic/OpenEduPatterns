@@ -45,7 +45,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -112,20 +112,20 @@
                                         <div class="well">
                                             <form method="POST" action="/users/uploadphoto?_csrf=<%= csrfToken %>" enctype="multipart/form-data">
                                                 <input type="file" name="profilePhoto" id="real-file" style="display:none"/>
-                                                <button class="btn btn-info" type="button" id="custom-button"><%= __('Escolha um arquivo') %></button>
+                                                <button class="btn btn-info" type="button" id="custom-button"><span class="glyphicon glyphicon-file"></span> <%= __('Escolha um arquivo') %></button>
                                                 <span id="custom-text"><%= __('Arquivo não selecionado') %></span>
 
 
                                                 <!-- <input type="file" name="profilePhoto" id="profilePhoto"> -->
                                                 <br>
                                                 <br>
-                                                <button type="submit" class="btn btn-default btn" onclick="return validateFile();"><%= __('Upload') %></button>
+                                                <button type="submit" class="btn btn-default btn" onclick="return validateFile();"><span class="glyphicon glyphicon-upload"></span> <%= __('Upload') %></button>
                                             </form>
                                             <br>
                                             <br>
                                             <form method="POST" action="/users/deleteprofilephoto">
                                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                <button type="submit" class="btn btn btn-danger"><%= __('Apagar foto de perfil') %></button>
+                                                <button type="submit" class="btn btn btn-danger"><span class="glyphicon glyphicon-trash"></span> <%= __('Apagar foto de perfil') %></button>
                                             </form>
                                         </div>
                                     </div>

@@ -77,8 +77,8 @@ p, a, h1, h2, h3, h4 {
 }
 
 .patternInfo h3 {
-	font-weight: bold;
-	font-size: 23px;
+	/*font-weight: bold;*/
+	font-size: 14px;
 }
 
 .wrapper {
@@ -222,8 +222,8 @@ p, a, h1, h2, h3, h4 {
 
 .tags p {
 	display: inline;
-	font-weight: bold;
-	font-size: 20px;
+	/*font-weight: bold;*/
+	font-size: 24px;
 }
 
 .relatedPatterns p {

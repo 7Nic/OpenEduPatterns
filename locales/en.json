@@ -134,7 +134,7 @@
 	"Minhas Linguagens": "My Languages",
 	"Meus Padrões": "My Patterns",
 	"Pesquisa geral": "General search",
-	"Nomes e conteúdos serão analisados": "Names, content and tags will be analyzed",
+	"Nomes e conteúdos serão analisados": "Search for Patterns or Languages. Names, content and tags will be analyzed",
 	"Padrão": "Pattern",
 	"Linguagem": "Language",
 	"Pesquisa refinada": "Refined search",
@@ -219,5 +219,9 @@
 	"Escolha um arquivo": "Choose a file",
 	"Arquivo não selecionado": "No file chosen",
 	"Campo obrigatório": "Required field",
-	"3 - O primeiro campo não pode estar vazio": "3 - The first field cannot be empty"
+	"3 - O primeiro campo não pode estar vazio": "3 - The first field cannot be empty",
+	"Sua Linguagem precisa de um nome": "Your Language needs a name",
+	"Sua Linguagem precisa de uma descrição": "Your Language needs a description",
+	"O primeiro campo não pode ficar vazio": "The first field cannot be empty",
+	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "To sort by User, Name or Date click on the header"
 }

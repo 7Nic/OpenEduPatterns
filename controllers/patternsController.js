@@ -241,6 +241,9 @@ module.exports = {
             
         }
 
+        //Reverse array of comments (newest to oldest)
+        comments.reverse();
+
         var tagsArray = await store.tagsOfPattern(req.params.id);
 
         res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});

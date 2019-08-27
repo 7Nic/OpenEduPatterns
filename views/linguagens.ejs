@@ -22,6 +22,8 @@
     <!-- Meu CSS --> 
     <link rel="stylesheet" type="text/css" href="css/style_linguagens.css">
     <link rel="stylesheet" type="text/css" href="css/style_footer.css">
+    <link rel="stylesheet" type="text/css" href="css/common_styles.css">
+    <link rel="stylesheet" type="text/css" href="css/style_criarLinguagem.css">
     <!-- Fonte da página -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Datatables -->
@@ -47,7 +49,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -93,6 +95,14 @@
             <br>
             <div class="row buttonCreateLanguage">
                 <a type="button" href="/languages/create" class="btn btn-default"><%= __('Criar nova Linguagem') %></a>
+                <br>
+                <br>
+                <div class="tooltipInfo">
+                  <label><span class="glyphicon glyphicon-question-sign"></span></label>
+                  <span class="tooltiptext">
+                    <%= __('Para ordenar por Usuário, Nome ou Data clique no cabeçalho') %>
+                  </span>
+                </div>
             </div>
             <div class="row artigo">
                 <table id="languageTable" class="display table-fill">
@@ -109,7 +119,7 @@
                             <tr>
                                 <td class="text-left userName"><%= linguagens.name %></a></td>
                                 <td class="text-left"><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
-                                <td class="text-left"><%= linguagens.dayCreation %>/<%= linguagens.monthCreation %>/<%= linguagens.yearCreation %></td>
+                                <td class="text-left"><%= linguagens.monthCreation %>/<%= linguagens.dayCreation %>/<%= linguagens.yearCreation %></td>
                             </tr>
                         <% }); %>
                         <!-- =================================== -->

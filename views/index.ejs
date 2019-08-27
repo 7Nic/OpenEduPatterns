@@ -45,7 +45,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -94,91 +94,18 @@
 
     <div class="corpo">
         <div class="container">
-            <h1><%= __('Padrões mais utilizados') %></h1>   
-            <div class="col-md-8 col-artigos">
+            <div class="col-md-12 col-artigos">
                 <div class="row artigo">
-                    <h2><a href=""><%= __('Padrão um') %></a></h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. 
-                    </p>
-                    <h4><%= __('Aplicação') %></h4>
-                    <p>    
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Duis aute irure dolor in reprehenderit in 
-                        cillum dolore nulla... <a href="" class="read-more"> <%= __('Continuar lendo') %></a>
-                    </p>
-                    <p>
-                        <a href=""><span class="glyphicon glyphicon-user"></span>  Gabriel Nicolau</a>
-                        <a href="" class="glyphicon glyphicon-comment"> 3</a>
-                        <span class="glyphicon glyphicon-calendar"> 20/08/2018</span>
-                    </p>    
-
-                </div>
-                <div class="row artigo">
-                    <h2><a href=""><%= __('Padrão dois') %></a></h2>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. 
-                    </p>
-                    <h4><%= __('Aplicação') %></h4>
-                    <p>    
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Duis aute irure dolor in reprehenderit in 
-                        cillum dolore nulla... <a href="" class="read-more"> <%= __('Continuar lendo') %></a>
-                    </p>
-                    <p>
-                        <a href=""><span class="glyphicon glyphicon-user"></span>  Sarah Nicolau</a>
-                        <a href="" class="glyphicon glyphicon-comment"> 5</a>
-                        <span class="glyphicon glyphicon-calendar"> 08/07/2018</span>
-                    </p>    
                     
-                </div>
                 <div class="row artigo">
-                    <h2><a href=""><%= __('Padrão três') %></a></h2>
+                    <h3><%= __('Compartilhe suas práticas') %></h3>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. 
+                        <%= __('Padrão Educacional é uma forma de educadores descreverem e compartilharem experiências adquiridas no contexto de ensino e aprendizagem. A ferramenta OpenEdu Patterns pode ser utilizada para cadastrar padrões, organizá-los em categorias e compartilhá-los para que outros educadores tenham acesso às práticas catalogadas.') %>
                     </p>
-                    <h4><%= __('Aplicação') %></h4>
-                    <p>    
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse
-                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Duis aute irure dolor in reprehenderit in 
-                        cillum dolore nulla... <a href="" class="read-more"> <%= __('Continuar lendo') %></a>
-                    </p>
-                    <p>
-                        <a href=""><span class="glyphicon glyphicon-user"></span>  Celso Nicolau</a>
-                        <a href="" class="glyphicon glyphicon-comment"> 1</a>
-                        <span class="glyphicon glyphicon-calendar"> 01/09/2018</span>
-                    </p>    
                 </div>
             </div>
 
-            <div class="col-md-3 col-md-offset-1 mais-vistos col-artigos">
-                <h3><%= __('Compartilhe suas práticas') %></h3>
-                <p>
-                    <%= __('Padrão Educacional é uma forma de educadores descreverem e compartilharem experiências adquiridas no contexto de ensino e aprendizagem. A ferramenta OpenEdu Patterns pode ser utilizada para cadastrar padrões, organizá-los em categorias e compartilhá-los para que outros educadores tenham acesso às práticas catalogadas.') %>
-                </p>
-                <br>
-                <br>
-
-
-                <h3><%= __('Linguagens mais vistas') %></h3>
-                <ul>
-                    <li><a href=""><strong><%= __('Linguagem um') %></strong> </a></li>
-                    <li><a href=""><strong><%= __('Linguagem dois') %></strong></a></li>
-                    <li><a href=""><strong><%= __('Linguagem três') %></strong></a></li>
-                    <li><a href=""><strong><%= __('Linguagem quatro') %></strong></a></li>
-                    <li><a href=""><strong><%= __('Linguagem cinco') %></strong></a></li>
-                    <li><a href=""><strong><%= __('Linguagem seis') %></strong></a></li>
-                </ul>
-            </div>
+            
         </div>
     </div>
 

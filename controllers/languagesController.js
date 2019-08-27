@@ -236,8 +236,10 @@ module.exports = {
             }
         }
 
+        //Reverse array of comments (newest to oldest)
+        comments.reverse();
+
         var tagsArray = await store.tagsOfLanguage(req.params.id);
-        // var tagsString = tagsArray.toString();
 
         res.render('languagePage.ejs', {tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },

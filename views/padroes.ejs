@@ -23,6 +23,8 @@
     <link rel="stylesheet" type="text/css" href="css/style_padroes.css">
     <link rel="stylesheet" type="text/css" href="css/style_linguagens.css">
     <link rel="stylesheet" type="text/css" href="css/style_footer.css">
+    <link rel="stylesheet" type="text/css" href="css/common_styles.css">
+    <link rel="stylesheet" type="text/css" href="css/style_criarLinguagem.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -48,7 +50,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -97,8 +99,14 @@
             <br>            
             <div class="row buttonCreatePattern">
                 <a type="button" href="/patterns/chosetemplate" class="btn btn-default"><%= __('Criar novo Padrão') %></a>
-            </div>
-            <div class="row artigo">
+                <br>
+                <br>
+                <div class="tooltipInfo">
+                  <label><span class="glyphicon glyphicon-question-sign"></span></label>
+                  <span class="tooltiptext">
+                    <%= __('Para ordenar por Usuário, Nome ou Data clique no cabeçalho') %>
+                  </span>
+                </div>
                 <table id="patternTable" class="display">
                     <thead>
                         <tr>
@@ -113,7 +121,7 @@
                             <tr>
                                 <td><%= padroes.name %></a></td>
                                 <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
-                                <td><%= padroes.dayCreation %>/<%= padroes.monthCreation %>/<%= padroes.yearCreation %></td>
+                                <td><%= padroes.monthCreation %>/<%= padroes.dayCreation %>/<%= padroes.yearCreation %></td>
                             </tr>
                         <% }); %>
                         <!-- =================================== -->

@@ -132,7 +132,7 @@
 	"Minhas Linguagens": "Minhas Linguagens",
 	"Meus Padrões": "Meus Padrões",
 	"Pesquisa geral": "Pesquisa geral",
-	"Nomes e conteúdos serão analisados": "Nomes, conteúdos e tags serão analisados",
+	"Nomes e conteúdos serão analisados": "Pesquise por Padrões ou Linguagens. Nomes, conteúdos e tags serão analisados",
 	"Padrão": "Padrão",
 	"Linguagem": "Linguagem",
 	"Pesquisa refinada": "Pesquisa refinada",
@@ -214,5 +214,10 @@
 	"Escolha um arquivo": "Escolha um arquivo",
 	"Arquivo não selecionado": "Arquivo não selecionado",
 	"Campo obrigatório": "Campo obrigatório",
-	"3 - O primeiro campo não pode estar vazio": "3 - O primeiro campo não pode estar vazio"
+	"3 - O primeiro campo não pode estar vazio": "3 - O primeiro campo não pode estar vazio",
+	"Sua Linguagem precisa de um nome": "Sua Linguagem precisa de um nome",
+	"Sua Linguagem precisa de uma descrição": "Sua Linguagem precisa de uma descrição",
+	"O primeiro campo não pode ficar vazio": "O primeiro campo não pode ficar vazio",
+	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "Para ordenar por Usuário, Nome ou Data clique no cabeçalho"
+
 }

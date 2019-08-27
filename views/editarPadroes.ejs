@@ -52,7 +52,7 @@
                 <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisar') %>">
+                        <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>
@@ -188,17 +188,17 @@
 
 
                     <a href="javascript:window.location.reload(true)">
-                      <button type="submit" class="btn btn-rounded btn-primary"><%= __('Salvar alterações') %></button>
+                      <button type="submit" class="btn btn-rounded btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span> <%= __('Salvar alterações') %></button>
 
                     </a>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="button" onclick="window.location.href='/patterns'" class="btn btn-rounded btn-danger"><%= __('Cancelar') %></button>    
+                    <button type="button" onclick="window.location.href='/patterns'" class="btn btn-rounded btn-danger"><span class="glyphicon glyphicon-remove"></span> <%= __('Cancelar') %></button>    
                 </form>
                 <br>
                 <br>
                 <form method="POST" action="/patterns/<%= patternId %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="submit" class="btn btn-rounded btn-danger btn-lg"><%= __('Deletar Padrão') %></button>    
+                    <button type="submit" class="btn btn-rounded btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> <%= __('Deletar Padrão') %></button>    
                 </form>
             </div>
 
