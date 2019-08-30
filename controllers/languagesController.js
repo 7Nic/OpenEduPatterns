@@ -5,7 +5,7 @@ const store = require('../storage/store');
 module.exports = {
     async index (req, res) {
         console.log("Setting (context pattern language) cookie to undefined");
-        res.cookie('contextLanguageId', undefined);
+        res.cookie('contextLanguageId', "noContextLanguageId");
 
 
         var languages = await store.listPublicLanguagesWithOwner();
@@ -215,6 +215,8 @@ module.exports = {
     },
 
     async languagePageGet (req, res) {
+        res.cookie('contextLanguageId', req.params.id); //Change the language context
+
         var language = await store.pegarLinguagemPorId(req.params.id);
         var owner = await store.ownerOfLanguage(req.params.id);
         var comments = await store.commentsOfLanguageById(req.params.id);

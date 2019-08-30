@@ -9,7 +9,7 @@ const store = require('../storage/store');
 module.exports = {
     async index (req, res) {
         console.log("Setting (context pattern language) cookie to undefined");
-        res.cookie('contextLanguageId', undefined);
+        res.cookie('contextLanguageId', "noContextLanguageId");
 
         var patterns = await store.listPublicPatternsWithOwner();
         if (res.locals.loggedIn) {
@@ -22,12 +22,6 @@ module.exports = {
             pattern.monthCreation = pattern.created_at.getMonth() + 1; //Starts counting from 0
             pattern.yearCreation = pattern.created_at.getFullYear();
         });
-
-        console.log('chow');
-        var lol = await store.relatePattern2Pattern(11, [22, 33]);
-        console.log(lol);
-        // var x = [111, 222, 333];
-        // await store.relateLanguage2relationPatternId(777, x);
 
         res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
@@ -99,6 +93,7 @@ module.exports = {
 
                 await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
                 //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+                if (!(Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
                 asyncForEach(patternsToRelateArray, async (eachPattern) => {
                     await store.relatePattern2Pattern(eachPattern, newPatternId);
                 });
@@ -109,6 +104,7 @@ module.exports = {
                 
                 await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
                 //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+                if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
                 asyncForEach(patternsToRelateArray, async (eachPattern) => {
                     await store.relatePattern2Pattern(eachPattern, newPatternId);
                 });
@@ -199,8 +195,9 @@ module.exports = {
             await store.deletePatternsInPatternsPatterns(req.params.id);
             await store.relatePattern2Pattern(req.params.id, patternsToRelateArray); 
             //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+            if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
             asyncForEach(patternsToRelateArray, async (eachPattern) => {
-                await store.relatePattern2Pattern(eachPattern, newPatternId);
+                await store.relatePattern2Pattern(eachPattern, req.params.id);
             });
 
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
@@ -230,6 +227,9 @@ module.exports = {
         res.redirect('/patterns');
     },
 
+    // Related patterns: There is 2 possibilities of display
+    // 1 - If there is no language context, all relationships (of the type pattern_pattern) with the current pattern will be displayed
+    // 2 - If there is a language context, only the relationships (of the type pattern_attern) of the language will be displayed
     async patternPageGet (req, res) {
         var patternInfo = await store.pegarPadraoPorId(req.params.id);
         var owner = await store.ownerOfPattern(req.params.id);
@@ -237,20 +237,17 @@ module.exports = {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
         var templateId = await store.templateOfPattern(req.params.id);
 
-        //Criaremos um cookie para armazenar em que "contexto de linguagem" estamos. Daí, colocaremos um if para separar as duas
-        //possibilidades: estar em uma linguagem de id qqr OU não estar em nenhuma linguagem
-        //Só atente para resetar o cookie assim que voce sair de um contexto qualquer
-        
         //We'll create a cookie to store in which "language context" we are. Then, we'll put an if to separate
         //the two possibilities: to be inside a "language context" OR not to be inside any "language context"
         //If the pattern is inside a "language context", only the pattern2pattern relationships of the language
         //will be displayed as related patterns.
         //Once the user returns to homePage or another page, the cookie will be reseted to undefined, meaning
         //that there's no context
-        if (req.cookies.contextLanguageId === undefined) {
+        if (req.cookies.contextLanguageId === "noContextLanguageId") {
+            console.log('1');
             var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
         } else {
-            //Escrever essa função ainda
+            console.log('2');
             var relatedPatterns = await store.patternsRelatedToAPatternInsideLanguageContext(req.cookies.contextLanguageId, req.params.id);
         }
 
@@ -420,7 +417,13 @@ module.exports = {
 }
 
 async function asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
+    //If is an array
+    if (Array.isArray(array)) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    } else {
+        await callback(array, 0, array);
     }
+    
 }

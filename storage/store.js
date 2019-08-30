@@ -214,6 +214,7 @@ module.exports = {
     deletarLinguagem(Id) {
         return knex('linguagens').where('linguagens_id', Id).del();
     },
+    //Já foi refeito
     padroesDeUmaLinguagem(Id) {
         return knex
             .select('titulo', 'padroes.padroes_id')
@@ -472,8 +473,13 @@ module.exports = {
             .where('a.padroes_id', patternId);
     },
 
-    //PS.: It may happen that repeated relationships occur
     relatePattern2Pattern(relatedPattern, patternsToRelateArray) {
+        // Duplicate queries are handled using unique keys(ALTER TABLE patterns_patterns ADD UNIQUE (patterns_id1, patterns_id2);)
+        // so, duplicate relationships (A, B) won't occur
+
+        //If is an unique object, create an array of one object
+        if (!(Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray];
+
         if (patternsToRelateArray != undefined) {
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
                 return knex('patterns_patterns').insert({
@@ -767,6 +773,19 @@ module.exports = {
             .innerJoin('padroes AS p', 'p.padroes_id', 'pp.patterns_id2')
             .where('lrpi.language_id', languageId)
             .andWhere('pp.patterns_id1', patternsId);
+    },
+
+    patternsOfALanguage(languageId) {
+        // SELECT DISTINCT p.padroes_id, p.titulo FROM padroes AS p 
+        // INNER JOIN patterns_patterns AS pp ON p.padroes_id=pp.patterns_id1 
+        // INNER JOIN language__relation_pattern_id AS lrpi ON lrpi.relation_pattern_id=pp.relation_pattern_id 
+        // WHERE lrpi.language_id=languageId;
+        return knex('padroes AS p')
+            .distinct('p.padroes_id', 'p.titulo')
+            .innerJoin('patterns_patterns AS pp', 'p.padroes_id', 'pp.patterns_id1')
+            .innerJoin('language__relation_pattern_id AS lrpi', 'lrpi.relation_pattern_id', 'pp.relation_pattern_id')
+            .where('lrpi.language_id', languageId)
+            .andWhere('lrpi.language_id', languageId);
     }
 }
 

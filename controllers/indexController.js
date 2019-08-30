@@ -2,14 +2,13 @@ const store = require('../storage/store');
 
 module.exports = {
     async homePageGet (req, res) {
-        res.cookie('contextLanguageId', undefined);
-
+        res.cookie('contextLanguageId', "noContextLanguageId");
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});
+
     },
 
     async aboutGet (req, res) {
-        console.log("Setting (context pattern language) cookie to undefined");
-        res.cookie('contextLanguageId', undefined);
+        res.cookie('contextLanguageId', "noContextLanguageId");
 
         res.render('sobre.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
@@ -184,4 +183,16 @@ module.exports = {
     async table(req, res) {
         res.render('table.ejs');
     }
+}
+
+async function asyncForEach(array, callback) {
+    //If is an array
+    if (Array.isArray(array)) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    } else {
+        await callback(array, 0, array);
+    }
+    
 }
