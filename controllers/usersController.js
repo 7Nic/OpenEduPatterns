@@ -64,6 +64,9 @@ module.exports = {
     },
 
     async profileGet (req, res) {
+        console.log("Setting (context pattern language) cookie to undefined");
+        res.cookie('contextLanguageId', undefined);
+
         var languages = await store.userLanguages(req.user.usuarios_id);
         var patterns = await store.userPatterns(req.user.usuarios_id);
         var profilePhoto = await store.getProfilePhoto(req.user.usuarios_id);

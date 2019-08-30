@@ -8,6 +8,9 @@ const store = require('../storage/store');
 
 module.exports = {
     async index (req, res) {
+        console.log("Setting (context pattern language) cookie to undefined");
+        res.cookie('contextLanguageId', undefined);
+
         var patterns = await store.listPublicPatternsWithOwner();
         if (res.locals.loggedIn) {
             var privatePatternsOfLoggedUser = await store.listPrivatePatternsOfAnUserWithOwner(req.user.usuarios_id);
@@ -19,6 +22,13 @@ module.exports = {
             pattern.monthCreation = pattern.created_at.getMonth() + 1; //Starts counting from 0
             pattern.yearCreation = pattern.created_at.getFullYear();
         });
+
+        console.log('chow');
+        var lol = await store.relatePattern2Pattern(11, [22, 33]);
+        console.log(lol);
+        // var x = [111, 222, 333];
+        // await store.relateLanguage2relationPatternId(777, x);
+
         res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
@@ -86,11 +96,23 @@ module.exports = {
                 var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: templateId});
                 await store.relateUserPattern(req.user.usuarios_id, newPatternId);
                 await store.addContentOfElements({elementContentArray: req.body.elementContent, patternId: newPatternId, elementsIdArray: elementsIdArray});
+
                 await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
+                //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+                asyncForEach(patternsToRelateArray, async (eachPattern) => {
+                    await store.relatePattern2Pattern(eachPattern, newPatternId);
+                });
+
             } else {
                 var newPatternId = await store.criarPadrao({nomePadrao: req.body.elementContent[0], visibilidade: visibilidadeNum, templateId: req.session.templateId});
                 await store.relateUserPattern(req.user.usuarios_id, newPatternId);
+                
                 await store.relatePattern2Pattern(newPatternId, patternsToRelateArray);
+                //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+                asyncForEach(patternsToRelateArray, async (eachPattern) => {
+                    await store.relatePattern2Pattern(eachPattern, newPatternId);
+                });
+
                 var elementsIdArrayOfObjects = await store.elementsIdOfTemplate(req.session.templateId);
                 //Convert array of objects to array
                 var elementsIdArray = elementsIdArrayOfObjects.map(obj => {
@@ -175,7 +197,12 @@ module.exports = {
             await store.editPatternInPadroes({data, Id: req.params.id});
             await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
             await store.deletePatternsInPatternsPatterns(req.params.id);
-            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray); //esse
+            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray); 
+            //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
+            asyncForEach(patternsToRelateArray, async (eachPattern) => {
+                await store.relatePattern2Pattern(eachPattern, newPatternId);
+            });
+
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
             await store.relatePattern2Tags(req.params.id, tagsIdArray);
@@ -208,8 +235,25 @@ module.exports = {
         var owner = await store.ownerOfPattern(req.params.id);
         var comments = await store.commentsOfPatternById(req.params.id);
         var assembledPattern = await store.assemblyPatternById(req.params.id);
-        var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
         var templateId = await store.templateOfPattern(req.params.id);
+
+        //Criaremos um cookie para armazenar em que "contexto de linguagem" estamos. Daí, colocaremos um if para separar as duas
+        //possibilidades: estar em uma linguagem de id qqr OU não estar em nenhuma linguagem
+        //Só atente para resetar o cookie assim que voce sair de um contexto qualquer
+        
+        //We'll create a cookie to store in which "language context" we are. Then, we'll put an if to separate
+        //the two possibilities: to be inside a "language context" OR not to be inside any "language context"
+        //If the pattern is inside a "language context", only the pattern2pattern relationships of the language
+        //will be displayed as related patterns.
+        //Once the user returns to homePage or another page, the cookie will be reseted to undefined, meaning
+        //that there's no context
+        if (req.cookies.contextLanguageId === undefined) {
+            var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
+        } else {
+            //Escrever essa função ainda
+            var relatedPatterns = await store.patternsRelatedToAPatternInsideLanguageContext(req.cookies.contextLanguageId, req.params.id);
+        }
+
 
         var isAlexander = undefined;
         if (templateId === 1) {
@@ -372,5 +416,11 @@ module.exports = {
             
             res.render('mensagem.ejs', {mensagem: "Você não tem acesso a esse Padrão."});
         }
+    }
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
     }
 }

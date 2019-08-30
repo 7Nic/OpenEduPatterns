@@ -2,10 +2,15 @@ const store = require('../storage/store');
 
 module.exports = {
     async homePageGet (req, res) {
+        res.cookie('contextLanguageId', undefined);
+
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
 
     async aboutGet (req, res) {
+        console.log("Setting (context pattern language) cookie to undefined");
+        res.cookie('contextLanguageId', undefined);
+
         res.render('sobre.ejs', {csrfToken: req.csrfToken(), user: req.user});
     },
 

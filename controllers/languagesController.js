@@ -4,6 +4,10 @@ const store = require('../storage/store');
 
 module.exports = {
     async index (req, res) {
+        console.log("Setting (context pattern language) cookie to undefined");
+        res.cookie('contextLanguageId', undefined);
+
+
         var languages = await store.listPublicLanguagesWithOwner();
         if (req.isAuthenticated()) {
             var privateLanguagesOfLoggedUser = await store.listPrivateLanguagesOfAnUserWithOwner(req.user.usuarios_id);

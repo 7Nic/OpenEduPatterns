@@ -471,16 +471,16 @@ module.exports = {
             .innerJoin('padroes AS b', 'pp.patterns_id2', 'b.padroes_id')
             .where('a.padroes_id', patternId);
     },
+
+    //PS.: It may happen that repeated relationships occur
     relatePattern2Pattern(relatedPattern, patternsToRelateArray) {
         if (patternsToRelateArray != undefined) {
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
-                //This raw function substitutes INSERT for INSERT IGNORE
-                return knex.raw(knex('patterns_patterns').insert({
+                return knex('patterns_patterns').insert({
                     patterns_id1: relatedPattern,
                     patterns_id2: patternToRelate
                     })
-                    .toString()
-                    .replace('insert', 'INSERT IGNORE'));
+                    .returning('relation_pattern_id');
             }));
         } else {
             //Do nothing
@@ -725,6 +725,48 @@ module.exports = {
                 });
                 return tagNamesArray;
             });
+    },
+    // ===============================================================================
+    //Each language has (pattern_pattern) relationships. This function inserts the relationship between a language and a (pattern_pattern_id) in a many to many table relationship 
+    relateLanguage2relationPatternId(languageId, relationPatternIdArray) {
+        return Promise.all(relationPatternIdArray.map(eachRelationId => {
+            //This raw function substitutes INSERT for INSERT IGNORE
+            return knex.raw(knex('language__relation_pattern_id').insert({
+                language_id: languageId,
+                relation_pattern_id: eachRelationId
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
+    },
+    //Simply relates a language with a lot of patterns, there is another similar function, but this one uses an array
+    relatePattern2LanguageWithArray(languageId, patternsToRelateArray) {
+        return Promise.all(patternsToRelateArray.map(eachPatternId => {
+            //This raw function substitutes INSERT for INSERT IGNORE
+            return knex.raw(knex('linguagens_padroes').insert({
+                linguagens_id: languageId,
+                padroes_id: eachPatternId
+                })
+                .toString()
+                .replace('insert', 'INSERT IGNORE'));
+        }));
+    },
+
+    patternsRelatedToAPatternInsideLanguageContext(languageId, patternsId){
+        //languageId is the id of the language that is being used as context
+
+        // SELECT pp.patterns_id2 
+        // FROM patterns_patterns AS pp 
+        // INNER JOIN language__relation_pattern_id AS lrpi ON lrpi.relation_pattern_id = pp.relation_pattern_id 
+        // INNER JOIN padroes AS p ON p.padroes_id=pp.patterns_id2 
+        // WHERE (lrpi.language_id=571 AND pp.patterns_id1=1561);
+        return knex
+            .select('p.padroes_id', 'p.titulo')
+            .from('patterns_patterns AS pp')
+            .innerJoin('language__relation_pattern_id AS lrpi', 'lrpi.relation_pattern_id', 'pp.relation_pattern_id')
+            .innerJoin('padroes AS p', 'p.padroes_id', 'pp.patterns_id2')
+            .where('lrpi.language_id', languageId)
+            .andWhere('pp.patterns_id1', patternsId);
     }
 }
 
