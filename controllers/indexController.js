@@ -2,6 +2,10 @@ const store = require('../storage/store');
 
 module.exports = {
     async homePageGet (req, res) {
+        var x = await store.relationPairsP2POfALanguage(581);
+        console.log(x);
+
+
         // var ids1 = await store.relateP2PWhenCreatingLanguagePart1([[111, 222], [979, 121212], [111, 222]]);
         // console.log(ids1);
 

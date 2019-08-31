@@ -855,6 +855,25 @@ module.exports = {
 
     deleteOldRelathionshipsPattern2Language(languageId) {
         return knex('language__relation_pattern_id').where('language_id', languageId).del();
+    },
+
+    relationPairsP2POfALanguage(languageId) {
+        // SELECT p1.titulo, pp.patterns_id1, p2.titulo, pp.patterns_id2 FROM linguagens AS l 
+        // INNER JOIN language__relation_pattern_id AS lrpi ON l.linguagens_id=lrpi.language_id 
+        // INNER JOIN patterns_patterns AS pp ON lrpi.relation_pattern_id=pp.relation_pattern_id 
+        // INNER JOIN padroes AS p1 ON p1.padroes_id=pp.patterns_id1 
+        // INNER JOIN padroes AS p2 ON p2.padroes_id=pp.patterns_id2
+        // WHERE l.linguagens_id=languageId AND pp.patterns_id1 < pp.patterns_id2;
+        return knex
+            .select('p1.titulo AS titulo1', 'pp.patterns_id1', 'p2.titulo AS titulo2', 'pp.patterns_id2')
+            .from('linguagens AS l')
+            .innerJoin('language__relation_pattern_id AS lrpi', 'l.linguagens_id', 'lrpi.language_id')
+            .innerJoin('patterns_patterns AS pp', 'lrpi.relation_pattern_id', 'pp.relation_pattern_id')
+            .innerJoin('padroes AS p1', 'p1.padroes_id', 'pp.patterns_id1')
+            .innerJoin('padroes AS p2', 'p2.padroes_id', 'pp.patterns_id2')
+            .whereRaw('?? < ??', ['pp.patterns_id1', 'pp.patterns_id2'])
+            .andWhere('l.linguagens_id', languageId);
+            
     }
 }
 

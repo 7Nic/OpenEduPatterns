@@ -10,14 +10,10 @@
     <!-- Bootstrap -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/bootstrap-tagsinput.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
-    <!-- Tema opicional Bootstrap -->
-    <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"> -->
     <!--[Se for o IE 9]-->
     <script src="../../js/html5shiv.min.js"></script>
     <script src="../../js/respond.min.js"></script>
     <!-- Mdb Bootstrap -->
-    <!-- <link rel="stylesheet" type="text/css" href=""> -->
     <!-- Bibliotca de icones -->
     <link rel="stylesheet" href="../../css/font-awesome.min.css">
     <!-- Meu CSS -->  
@@ -25,10 +21,11 @@
     <link rel="stylesheet" type="text/css" href="../../css/common_styles.css">
     <link rel="stylesheet" type="text/css" href="../../css/style_footer.css">
     <!-- Fonte da página -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
     <!-- Dual-listbox -->
     <link rel="stylesheet" type="text/css" href="../../css/dual-listbox.css">
+    <!-- Datatables -->
+    <link rel="stylesheet" type="text/css" href="../../css/style_datatable.css">
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -106,33 +103,70 @@
 
                 <br>
                 <!-- ================================================ -->
-                <div class="tooltipInfo">
-                    <h2><%= __('Relacionamento entre Linguagens e Padrões') %> <span class="glyphicon glyphicon-question-sign"></h2>
-                    <span class="tooltiptext">
-                        <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
-                      </span>
-                </div>
                 <br>
                 <br>
                 <!-- ================================================ -->
                 <form method="POST" action="">
-                    <!-- Dual-listbox1 -->
-                    <p><%= __('Digite para pesquisar') %></p>
-                    <select class="patterns2Relate" name="patterns2Relate" multiple="multiple">
-                        <!-- Not related -->
-                        <!-- =====================LOOP=========================-->
-                        <% notRelatedPatterns.forEach((eachPattern, index) => { %>
-                            <option value="<%= eachPattern.padroes_id %>"><%- eachPattern.titulo %></option>
-                        <% }); %>
-                        <!-- ================================================= -->
+                    <div class="tooltipInfo">
+                        <h2><%= __('Relacionamento entre Linguagens e Padrões') %> <span class="glyphicon glyphicon-question-sign"></h2>
+                        <span class="tooltiptext">
+                            <%= __("Selecione os novos padrões a serem relacionados ou clique no X para remover uma relação") %>
+                          </span>
+                    </div>
+                    <div class="form-group pattern_pattern_relationship">
+                      <table id="patternTable1" class="display">
+                          <thead>
+                            <tr>
+                                <th><%= __('Nome do Padrão') %></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <!-- =====================LOOP=========================-->
+                            <% patterns.forEach((eachPattern, index) => { %>
+                                <tr>  
+                                  <td><input type="radio" name="patternId1" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                                </tr>
+                            <% }); %>
+                            <!-- ================================================= -->
+                          </tbody>
+                    </table>    
+                    <table id="patternTable2" class="display">
+                        <thead>
+                            <tr>
+                                <th><%= __('Nome do Padrão') %></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- =====================LOOP=========================-->
+                            <% patterns.forEach((eachPattern, index) => { %>
+                                <tr>  
+                                  <td><input type="radio" name="patternId2" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                                </tr>
+                            <% }); %>
+                            <!-- ================================================= -->
+                          </tbody>
+                      </table>    
+                    </div>
+                    <div class="form-group">
+                      <label for="relatedPatterns">Padrões relacionados</label>
+                      <br>
+                      <button id="relatePatternsNow" class="btn btn-success" onclick="return avoidSubmit();">Vai!</button>
+                      <br>            
+                      <br id="labelRelatedPatterns">
+                      <% relatPairs.forEach((eachPair, index) => { %>
+                        <div class="btn btn-primary btn-lg" onclick="removeItself(this)">
+                            <%- eachPair.titulo1 %> 
+                            -------- 
+                            <%- eachPair.titulo2 %>
+                            <input type="hidden" name="patterns2Relate" value="<%= eachPair.patterns_id1 %>,<%= eachPair.patterns_id2 %>">
+                        </div>
 
-                        <!-- Related -->
-                        <!-- =====================LOOP=========================-->
-                        <% relatedPatterns.forEach((eachPattern, index) => { %>
-                            <option value="<%= eachPattern.padroes_id %>" selected="selected"><%- eachPattern.titulo %></option>
-                        <% }); %>   
-                        <!-- ================================================= -->                         
-                    </select>
+                      <% }); %>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
 
 
                     <div class="tooltipInfo">
@@ -218,7 +252,6 @@
         <%- include partials/footer.ejs %>
     </footer>
     <!-- SCRIPTS -->
-    <script src="../../dataCollectors/collectDataLogin.js"></script>
     <script src="../../js/jquery.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
     <script src="../../js/bootstrap-tagsinput.min.js"></script>
@@ -226,36 +259,6 @@
     <script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-        //Dual-listbox for patterns
-        var dualListbox1 = new DualListbox('.patterns2Relate', {
-            addEvent: function(value) { // Should use the event listeners
-                console.log(value);
-            },
-            removeEvent: function(value) { // Should use the event listeners
-                console.log(value);
-            },
-            availableTitle: "<%= __('Padrões não relacionados') %>",
-            selectedTitle: "<%= __('Padrões relacionados') %>",
-            addButtonText: "&#8595",
-            removeButtonText: "&#8593",
-            showAddAllButton: false,
-            showRemoveAllButton: false,
-
-            options: [
-                // {text:"Option 1", value: "OPTION1"},
-                // {text:"Selected option", value: "OPTION3", selected:true}
-            ]
-        });
-
-        dualListbox1.addEventListener('added', function(event){
-            console.log(event);
-            console.log(event.addedElement);
-        });
-        dualListbox1.addEventListener('removed', function(event){
-            console.log(event);
-            console.log(event.removedElement);
-        });
-
         //Dual-listbox for languages
         var dualListbox2 = new DualListbox('.languages2Relate', {
             addEvent: function(value) { // Should use the event listeners
@@ -285,6 +288,144 @@
             console.log(event);
             console.log(event.removedElement);
         });
+    </script>
+
+    <!-- jQuery functions -->
+    <script type="text/javascript">
+        $(document).ready( function () {
+                //Data tables
+            $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+                $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+            } );
+
+            $('#patternTable1').DataTable( {
+                "scrollY": 150,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 4,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            $('#patternTable2').DataTable( {
+                "scrollY": 150,
+                "scrollCollapse": true,
+                "paging": false,
+                "pageLength": 4,
+                language: {
+                    "decimal":        "",
+                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
+                    "info":           "",
+                    "infoEmpty":      "",
+                    "infoFiltered":   "",
+                    "infoPostFix":    "",
+                    "thousands":      ",",
+                    "lengthMenu":     "",
+                    "loadingRecords": "<%= __('Carregando...') %>",
+                    "processing":     "<%= __('Processando...') %>",
+                    "search":         "<%= __('Pesquisa') %>",
+                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
+                    "paginate": {
+                        "first":      "<%= __('Primeiro') %>",
+                        "last":       "<%= __('Último') %>",
+                        "next":       "<%= __('Próximo') %>",
+                        "previous":   "<%= __('Anterior') %>"
+                    },
+                    "aria": {
+                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
+                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
+                    }
+                }
+            } );
+
+            //Relationship between patterns
+            var oldPatternId1, oldPatternId2; //To avoid duplicates 
+            $("#relatePatternsNow").click(function(){
+                var patternId1 = $(".pattern_pattern_relationship input[name='patternId1']:checked").val();
+                var patternId2 = $(".pattern_pattern_relationship input[name='patternId2']:checked").val();
+
+                var pName = patternName(patternId1);
+
+                var theHTML = "<div class='btn btn-primary btn-lg' onclick='removeItself(this)'>"+
+                                 patternName(patternId1)+" -------- "+patternName(patternId2)+
+                                 "<input type='hidden' name='patterns2Relate' value='"+patternId1+","+patternId2+"'>";
+                              "</div>";
+
+                //Faça uma logica pra evitar repetidos (traduzir agr só)
+                if ((oldPatternId1 !== undefined && oldPatternId2 !== undefined) && (patternId1 === oldPatternId1 && patternId2 === oldPatternId2)) {
+                    alert('voce ja relacionou esses padroes');
+                }
+                else if (patternId1 === patternId2) {
+                    alert('voce nao pode relacionar um padrao com ele mesmo');
+                }
+                else if (patternId1 !== undefined && patternId2 !== undefined) {
+                    $('#labelRelatedPatterns').after(theHTML);
+                    oldPatternId1 = patternId1;
+                    oldPatternId2 = patternId2;
+                }
+            });
+        } );
+
+        //Validation
+        function validateFields() {
+            var languageName = $.trim($("#nomeLinguagem").val());
+            var languageDescription = $.trim($('#descricaoLinguagem').val());
+
+            if (isEmpty(languageName)) {
+                alert("<%= __('Sua Linguagem precisa de um nome') %>")
+                return false;
+            } else if (isEmpty(languageDescription)) {
+                alert("<%= __('Sua Linguagem precisa de uma descrição') %>")
+                return false;
+            } else {
+                return true;
+            }
+        }
+        function isEmpty(str){
+            return !str.replace(/\s+/, '').length;
+        }
+
+        //Used to avoid submit
+        function avoidSubmit() {
+            return false;
+        }
+
+        //To remove the pattern2pattern relationship
+        function removeItself(itself) {
+            itself.remove();
+        }
+
+        //To get a pattern name from id
+        function patternName(patternId) {
+            var patternsArray = <%- JSON.stringify(patterns) %>;
+            for(let i=0; i<patternsArray.length; i++) {
+                if(patternsArray[i].padroes_id === Number(patternId)) { //The second value is a string
+                    return patternsArray[i].titulo;
+                }
+            }
+        }
     </script>
 </body>
 </html>

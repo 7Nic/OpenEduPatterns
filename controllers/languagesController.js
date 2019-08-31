@@ -130,7 +130,8 @@ module.exports = {
 
     async languagesEditGet (req, res) {
         var resultadoLinguagem = await store.pegarLinguagemPorId(req.params.id);
-		var relatedPatterns = await store.padroesDeUmaLinguagem(req.params.id);
+        var relatedPatterns = await store.padroesDeUmaLinguagem(req.params.id);
+        var relationshipsP2PPairs = await store.relationPairsP2POfALanguage(req.params.id);
 		var allPatterns = await store.lisPublicPatternsMinimized(); //Minimized: Just name and id
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
         var allLanguages = await store.listPublicLanguagesMinimized(); //Minimized: Just name and id
@@ -143,7 +144,7 @@ module.exports = {
         //Returns an array of not related languages
         var notRelatedLanguages = _.filter(allLanguages, function(obj){ return !_.findWhere(relatedLanguages, obj); });
 
-        res.render('editarLinguagens.ejs', {tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
+        res.render('editarLinguagens.ejs', {relatPairs: relationshipsP2PPairs, patterns: allPatterns, tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesEditPost (req, res) {
@@ -208,21 +209,21 @@ module.exports = {
             await store.deleteOldRelathionshipsPattern2Language(req.params.id); //Feita
 
             // ==================PROCESS TO RELATE (PATTERN_PATTERN) WITH A LANGUAGE=====================
-            await store.relatePattern2LanguageWithArray(req.params.id, patternsToRelateArray); //Vão ser duas funções (copiar a logica do createPost)
+            // OLD!   await store.relatePattern2LanguageWithArray(req.params.id, patternsToRelateArray); //Vão ser duas funções (copiar a logica do createPost)
 
-            // //Relate each pattern_pattern (p2p) relationship and get the ids of these p2p relationships
-            // var patternsToRelateArray = req.body.patterns2Relate;
-            // if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
-            // var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
-            // console.log(p2pRelationsArray);
+            //Relate each pattern_pattern (p2p) relationship and get the ids of these p2p relationships
+            var patternsToRelateArray = req.body.patterns2Relate;
+            if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
+            var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
+            console.log(p2pRelationsArray);
 
-            // var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
-            // var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
-            // var relationPatternIds = relationIds1.concat(relationIds2); //Concatenate all ids in one array
-            // relationPatternIdArray = [...new Set(relationPatternIds)]; //Remove duplicates
+            var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
+            var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
+            var relationPatternIds = relationIds1.concat(relationIds2); //Concatenate all ids in one array
+            relationPatternIdArray = [...new Set(relationPatternIds)]; //Remove duplicates
 
-            // //Use the p2p relationship ids to relate to a language
-            // await store.relateLanguage2relationPatternId(newLanguageId, relationPatternIdArray);
+            //Use the p2p relationship ids to relate to a language
+            await store.relateLanguage2relationPatternId(req.params.id, relationPatternIdArray);
 
             // ===========================================================================================
             
