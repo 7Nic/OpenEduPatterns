@@ -134,11 +134,11 @@ module.exports = {
         var assembledPattern = await store.assemblyPatternById(req.params.id);
         var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
         var allPatterns = await store.lisPublicPatternsMinimized();
-        var patternsOfTheSameLanguage = await store.patternsOfTheSameLanguage(req.params.id);
-        //I want an undefined object, not an empty array
-        if (patternsOfTheSameLanguage.length === 0) {
-            patternsOfTheSameLanguage = undefined;
-        }
+        // var patternsOfTheSameLanguage = await store.patternsOfTheSameLanguage(req.params.id);
+        // //I want an undefined object, not an empty array
+        // if (patternsOfTheSameLanguage.length === 0) {
+        //     patternsOfTheSameLanguage = undefined;
+        // }
 
         //Returns an array of not related patterns
         var notRelatedPatterns = _.filter(allPatterns, function(obj){ return !_.findWhere(relatedPatterns, obj); });
@@ -146,7 +146,7 @@ module.exports = {
         var tagsArray = await store.tagsOfPattern(req.params.id);
         var tagsString = tagsArray.toString();
 
-        res.render('editarPadroes.ejs', {tagsString, patternsOfTheSameLanguage, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        res.render('editarPadroes.ejs', {tagsString, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async patternsEditPost (req, res) {

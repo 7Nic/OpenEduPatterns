@@ -482,11 +482,26 @@ module.exports = {
 
         if (patternsToRelateArray != undefined) {
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
-                return knex('patterns_patterns').insert({
-                    patterns_id1: relatedPattern,
-                    patterns_id2: patternToRelate
-                    })
-                    .returning('relation_pattern_id');
+                // var eachResult = undefined;
+                // try {
+                    return  knex('patterns_patterns').insert({
+                            patterns_id1: relatedPattern,
+                            patterns_id2: patternToRelate
+                            })
+                            .then((result) => {
+                                return result[0];
+                            })
+                            .catch((err) => {
+                                // console.log(err);
+                            });
+                // } catch(err) {
+                //     console.log('peguei');
+                //     console.log(err);
+                //     throw err;
+                //     next();
+                // }
+
+                // return eachResult;
             }));
         } else {
             //Do nothing
@@ -745,7 +760,7 @@ module.exports = {
                 .replace('insert', 'INSERT IGNORE'));
         }));
     },
-    //Simply relates a language with a lot of patterns, there is another similar function, but this one uses an array
+    //Relates a language with a lot of patterns, there is another similar function, but this one uses an array
     relatePattern2LanguageWithArray(languageId, patternsToRelateArray) {
         return Promise.all(patternsToRelateArray.map(eachPatternId => {
             //This raw function substitutes INSERT for INSERT IGNORE

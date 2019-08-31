@@ -2,6 +2,12 @@ const store = require('../storage/store');
 
 module.exports = {
     async homePageGet (req, res) {
+        var x = await store.relatePattern2Pattern(999499, [8888318, 7777777]);
+        var x = x.filter((eachId) => {
+            return eachId != undefined;
+        });
+        console.log(x);
+
         res.cookie('contextLanguageId', "noContextLanguageId");
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});
 
