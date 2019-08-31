@@ -122,56 +122,25 @@
             <br>
             <input type="text" id="tags" name="tags" value="" data-role="tagsinput">
           </div>
-          <br>
-          <br>
-          <br>
-          <br>
-          <div class="form-group pattern_pattern_relationship">
-            <h2><%= __("Relacionamento de padrões") %></h2>
-            <table id="patternTable1" class="display">
-                <thead>
-                  <tr>
-                      <th><%= __('Nome do Padrão') %></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- =====================LOOP=========================-->
-                  <% patterns.forEach((eachPattern, index) => { %>
-                      <tr>  
-                        <td><input type="radio" name="patternId1" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
-                      </tr>
-                  <% }); %>
-                  <!-- ================================================= -->
-                </tbody>
-            </table>    
-            <table id="patternTable2" class="display">
-                <thead>
-                  <tr>
-                      <th><%= __('Nome do Padrão') %></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- =====================LOOP=========================-->
-                  <% patterns.forEach((eachPattern, index) => { %>
-                      <tr>  
-                        <td><input type="radio" name="patternId2" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
-                      </tr>
-                  <% }); %>
-                  <!-- ================================================= -->
-                </tbody>
-            </table>    
-          </div>
           <div class="form-group">
-            <label for="relatedPatterns">Padrões relacionados</label>
-            <br>
-            <button id="relatePatternsNow" class="btn btn-success" onclick="return avoidSubmit();">Vai!</button>
-            <br>            
-            <br id="labelRelatedPatterns">
+            <h2><%= __("Relacionamento de padrões") %></h2>
+            <table id="patternTable" class="display">
+                <thead>
+                  <tr>
+                      <th><%= __('Nome do Padrão') %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- =====================LOOP=========================-->
+                  <% patterns.forEach((eachPattern, index) => { %>
+                      <tr>  
+                        <td><input type="checkbox" name="patterns2Relate" value="<%= eachPattern.padroes_id %>"><h4><%- eachPattern.titulo %></h4></td>
+                      </tr>
+                  <% }); %>
+                  <!-- ================================================= -->
+                </tbody>
+            </table>    
           </div>
-          <br>
-          <br>
-          <br>
-          <br>
           <div class="form-group">
             <h2><%= __('Relacionamento de Linguagens') %></h2>
             <table id="languageTable" class="display">
@@ -212,49 +181,16 @@
     <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="../js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
-        //jQuery functions
         $(document).ready( function () {
             //Automatic focus 
             $('#nomeLinguagem').focus();
 
-            //Data tables
             $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
                 $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
             } );
 
-            $('#patternTable1').DataTable( {
-                "scrollY": 150,
-                "scrollCollapse": true,
-                "paging": false,
-                "pageLength": 4,
-                language: {
-                    "decimal":        "",
-                    "emptyTable":     "<%= __('Nenhuma linguagem encontrada') %>",
-                    "info":           "",
-                    "infoEmpty":      "",
-                    "infoFiltered":   "",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "",
-                    "loadingRecords": "<%= __('Carregando...') %>",
-                    "processing":     "<%= __('Processando...') %>",
-                    "search":         "<%= __('Pesquisa') %>",
-                    "zeroRecords":    "<%= __('Nenhuma linguagem encontrada') %>",
-                    "paginate": {
-                        "first":      "<%= __('Primeiro') %>",
-                        "last":       "<%= __('Último') %>",
-                        "next":       "<%= __('Próximo') %>",
-                        "previous":   "<%= __('Anterior') %>"
-                    },
-                    "aria": {
-                        "sortAscending":  ": <%= __('Ordenar colunas em ordem crescente') %>",
-                        "sortDescending": ": <%= __('Ordenar colunas em ordem decrescente') %>"
-                    }
-                }
-            } );
-
-            $('#patternTable2').DataTable( {
-                "scrollY": 150,
+            $('#patternTable').DataTable( {
+                "scrollY": 500,
                 "scrollCollapse": true,
                 "paging": false,
                 "pageLength": 4,
@@ -314,39 +250,12 @@
                     }
                 }
             } );
-
-            //Relationship between patterns
-            var oldPatternId1, oldPatternId2; //To avoid duplicates 
-            $("#relatePatternsNow").click(function(){
-                var patternId1 = $(".pattern_pattern_relationship input[name='patternId1']:checked").val();
-                var patternId2 = $(".pattern_pattern_relationship input[name='patternId2']:checked").val();
-
-                var pName = patternName(patternId1);
-
-                var theHTML = "<div class='btn btn-primary btn-lg' onclick='removeItself(this)'>"+
-                                 patternName(patternId1)+" -------- "+patternName(patternId2)+
-                                 "<input type='hidden' name='patterns2Relate' value='"+patternId1+","+patternId2+"'>";
-                              "</div>";
-
-                //Faça uma logica pra evitar repetidos (traduzir agr só)
-                if ((oldPatternId1 !== undefined && oldPatternId2 !== undefined) && (patternId1 === oldPatternId1 && patternId2 === oldPatternId2)) {
-                    alert('voce ja relacionou esses padroes');
-                }
-                else if (patternId1 === patternId2) {
-                    alert('voce nao pode relacionar um padrao com ele mesmo');
-                }
-                else if (patternId1 !== undefined && patternId2 !== undefined) {
-                    $('#labelRelatedPatterns').after(theHTML);
-                    oldPatternId1 = patternId1;
-                    oldPatternId2 = patternId2;
-                }
-            });
         } );
 
-        //Validation
         function validateFields() {
             var languageName = $.trim($("#nomeLinguagem").val());
-            var languageDescription = $.trim($('#descricaoLinguagem').val());
+            var languageDescription = $.trim($('descricaoLinguagem').val());
+            console.log(languageDescription);
 
             if (isEmpty(languageName)) {
                 alert("<%= __('Sua Linguagem precisa de um nome') %>")
@@ -357,29 +266,12 @@
             } else {
                 return true;
             }
+
+            
         }
+
         function isEmpty(str){
             return !str.replace(/\s+/, '').length;
-        }
-
-        //Used to avoid submit
-        function avoidSubmit() {
-            return false;
-        }
-
-        //To remove the pattern2pattern relationship
-        function removeItself(itself) {
-            itself.remove();
-        }
-
-        //To get a pattern name from id
-        function patternName(patternId) {
-            var patternsArray = <%- JSON.stringify(patterns) %>;
-            for(let i=0; i<patternsArray.length; i++) {
-                if(patternsArray[i].padroes_id === Number(patternId)) { //The second value is a string
-                    return patternsArray[i].titulo;
-                }
-            }
         }
     </script>
 </body>

@@ -89,11 +89,32 @@ module.exports = {
             req.flash('error', messages);
             res.redirect('/languages/create');
         } else {
-            //Execute queries in MySQL to create a language
+            
+            // Execute queries in MySQL to create a language
             var newLanguageId = await store.criarLinguagem({nomeLinguagem, visibilidade, descricaoLinguagem});
             await store.relateUserLanguage(req.user.usuarios_id, newLanguageId);
             await store.relateLanguage2Language(newLanguageId, languagesToRelateArray);
-            await store.relatePattern2LanguageWithArray(newLanguageId, patternsToRelateArray);
+
+
+            // ==================PROCESS TO RELATE (PATTERN_PATTERN) WITH A LANGUAGE=====================
+            
+            //Relate each pattern_pattern (p2p) relationship and get the ids of these p2p relationships
+            var patternsToRelateArray = req.body.patterns2Relate;
+            if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
+            var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
+            console.log(p2pRelationsArray);
+
+            var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
+            var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
+            var relationPatternIds = relationIds1.concat(relationIds2); //Concatenate all ids in one array
+            relationPatternIdArray = [...new Set(relationPatternIds)]; //Remove duplicates
+
+            //Use the p2p relationship ids to relate to a language
+            await store.relateLanguage2relationPatternId(newLanguageId, relationPatternIdArray);
+
+            // ===========================================================================================
+
+
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(newLanguageId, tagsIdArray);
 
@@ -162,9 +183,6 @@ module.exports = {
         var tagsStringBefore = req.body.tags;
         var tagsArrayAfter = tagsStringBefore.split(",");
         
-        // var nomeLinguagem = req.body.nomeLinguagem; ==============================!!!!================
-        // var descricaoLinguagem = req.body.descricaoLinguagem;
-
         if (req.cookies.lang == 'en') {
             req.checkBody('nomeLinguagem', 'The field Name cannot be empty').notEmpty();
             req.checkBody('descricaoLinguagem', 'The field Description cannot be empty').notEmpty();
@@ -187,8 +205,27 @@ module.exports = {
             await store.editarLinguagem({data, Id: req.params.id});
             await store.deleteLanguageInLanguagesLanguages(req.params.id);
             await store.relateLanguage2Language(req.params.id, languagesToRelateArray);
-            await store.deleteOldRelathionshipsPattern2Language(req.params.id);
-            await store.relatePattern2LanguageWithArray(req.params.id, patternsToRelateArray);
+            await store.deleteOldRelathionshipsPattern2Language(req.params.id); //Feita
+
+            // ==================PROCESS TO RELATE (PATTERN_PATTERN) WITH A LANGUAGE=====================
+            await store.relatePattern2LanguageWithArray(req.params.id, patternsToRelateArray); //Vão ser duas funções (copiar a logica do createPost)
+
+            // //Relate each pattern_pattern (p2p) relationship and get the ids of these p2p relationships
+            // var patternsToRelateArray = req.body.patterns2Relate;
+            // if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
+            // var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
+            // console.log(p2pRelationsArray);
+
+            // var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
+            // var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
+            // var relationPatternIds = relationIds1.concat(relationIds2); //Concatenate all ids in one array
+            // relationPatternIdArray = [...new Set(relationPatternIds)]; //Remove duplicates
+
+            // //Use the p2p relationship ids to relate to a language
+            // await store.relateLanguage2relationPatternId(newLanguageId, relationPatternIdArray);
+
+            // ===========================================================================================
+            
             await store.deleteOldRelathionshipsLanguage2Tags(req.params.id);
             var tagsIdArray = await store.createLanguageTag(tagsArrayAfter);
             await store.relateLanguage2Tags(req.params.id, tagsIdArray);
@@ -220,7 +257,7 @@ module.exports = {
         var language = await store.pegarLinguagemPorId(req.params.id);
         var owner = await store.ownerOfLanguage(req.params.id);
         var comments = await store.commentsOfLanguageById(req.params.id);
-        var padroesRelacionados = await store.padroesDeUmaLinguagem(req.params.id);
+        var padroesRelacionados = await store.patternsOfALanguage(req.params.id);
         var relatedLanguages = await store.languagesRelatedToALanguage(req.params.id);
         if (language) {
             language.dayCreation = language.created_at.getDate();
@@ -265,4 +302,34 @@ module.exports = {
 
         res.redirect(`/languages/${req.params.id}`);
     }
+}
+
+async function asyncForEach(array, callback) {
+    //If is an array
+    if (Array.isArray(array)) {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    } else {
+        await callback(array, 0, array);
+    }
+    
+}
+
+//The ids are in string format, it's necessary to change to int
+function parseArrayOfRelationships(relationsP2PArray) {
+    var splitStringsRelations = [];
+
+    //Split
+    for (let i=0; i<relationsP2PArray.length; i++) {
+        splitStringsRelations.push(relationsP2PArray[i].split(','));
+    }
+
+    //Cast the strings to numbers
+    splitStringsRelations.forEach((eachRelation) => {
+        eachRelation[0] = Number(eachRelation[0]);
+        eachRelation[1] = Number(eachRelation[1]);
+    });
+
+    return splitStringsRelations;
 }

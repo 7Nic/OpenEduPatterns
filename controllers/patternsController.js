@@ -231,6 +231,8 @@ module.exports = {
     // 1 - If there is no language context, all relationships (of the type pattern_pattern) with the current pattern will be displayed
     // 2 - If there is a language context, only the relationships (of the type pattern_attern) of the language will be displayed
     async patternPageGet (req, res) {
+        console.log('cookie atual');
+        console.log(req.cookies.contextLanguageId);
         var patternInfo = await store.pegarPadraoPorId(req.params.id);
         var owner = await store.ownerOfPattern(req.params.id);
         var comments = await store.commentsOfPatternById(req.params.id);
@@ -244,10 +246,8 @@ module.exports = {
         //Once the user returns to homePage or another page, the cookie will be reseted to undefined, meaning
         //that there's no context
         if (req.cookies.contextLanguageId === "noContextLanguageId") {
-            console.log('1');
             var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
         } else {
-            console.log('2');
             var relatedPatterns = await store.patternsRelatedToAPatternInsideLanguageContext(req.cookies.contextLanguageId, req.params.id);
         }
 

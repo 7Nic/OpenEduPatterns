@@ -2,11 +2,28 @@ const store = require('../storage/store');
 
 module.exports = {
     async homePageGet (req, res) {
-        var x = await store.relatePattern2Pattern(999499, [8888318, 7777777]);
-        var x = x.filter((eachId) => {
-            return eachId != undefined;
-        });
-        console.log(x);
+        // var ids1 = await store.relateP2PWhenCreatingLanguagePart1([[111, 222], [979, 121212], [111, 222]]);
+        // console.log(ids1);
+
+        // var ids2 = await store.relateP2PWhenCreatingLanguagePart2([[111, 222], [979, 121212]]);
+        // console.log(ids2);
+
+        // ids1 = ids1.concat(ids2);
+        // ids1 = [...new Set(ids1)];
+        // console.log(ids1);
+
+        // ======
+        
+        // var x = await store.relatePattern2Pattern(999099, [8888018, 8888018, 7747777]);
+        // var x = x.filter((eachId) => {
+        //     return eachId != undefined;
+        // });
+        // // console.log(x);
+
+        // var names = [1, 2, 3, 4, 3, 2, 1];
+
+        // names = [...new Set(names)];
+        // console.log(names); 
 
         res.cookie('contextLanguageId', "noContextLanguageId");
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});

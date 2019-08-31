@@ -242,9 +242,6 @@ module.exports = {
             .toString()
             .replace('insert', 'INSERT IGNORE'));
     },
-    deleteOldRelathionshipsPattern2Language(languageId) {
-        return knex('linguagens_padroes').where('linguagens_id', languageId).del();
-    },
     relatePattern2LanguageWithArray(languageId, patternsToRelateArray) {
         return Promise.all(patternsToRelateArray.map(eachPatternId => {
             //This raw function substitutes INSERT for INSERT IGNORE
@@ -482,26 +479,17 @@ module.exports = {
 
         if (patternsToRelateArray != undefined) {
             return Promise.all(patternsToRelateArray.map(patternToRelate => {
-                // var eachResult = undefined;
-                // try {
-                    return  knex('patterns_patterns').insert({
-                            patterns_id1: relatedPattern,
-                            patterns_id2: patternToRelate
-                            })
-                            .then((result) => {
-                                return result[0];
-                            })
-                            .catch((err) => {
-                                // console.log(err);
-                            });
-                // } catch(err) {
-                //     console.log('peguei');
-                //     console.log(err);
-                //     throw err;
-                //     next();
-                // }
-
-                // return eachResult;
+                return  knex('patterns_patterns').insert({
+                        patterns_id1: relatedPattern,
+                        patterns_id2: patternToRelate
+                        })
+                        .then((result) => {
+                            return result[0];
+                        })
+                        .catch((err) => {
+                            //If the relation already exists, return the id of the relation
+                            return knex.select('relation_pattern_id').from('patterns_patterns').where('patterns_id1', relatedPattern).andWhere('patterns_id2', patternToRelate).then(result => result[0].relation_pattern_id);
+                        });
             }));
         } else {
             //Do nothing
@@ -801,6 +789,72 @@ module.exports = {
             .innerJoin('language__relation_pattern_id AS lrpi', 'lrpi.relation_pattern_id', 'pp.relation_pattern_id')
             .where('lrpi.language_id', languageId)
             .andWhere('lrpi.language_id', languageId);
+    },
+
+    //Relating A->B
+    relateP2PWhenCreatingLanguagePart1(relationsArray) {
+        // Duplicate queries are handled using unique keys(ALTER TABLE patterns_patterns ADD UNIQUE (patterns_id1, patterns_id2);)
+        // so, duplicate relationships (A, B) won't occur
+
+        //If is an unique object, create an array of one object
+        if (!(Array.isArray(relationsArray))) relationsArray = [relationsArray];
+
+        if (relationsArray != undefined) {
+            return Promise.all(relationsArray.map(ids2Relate => {
+                return relationsId1 = knex('patterns_patterns').insert({
+                        patterns_id1: ids2Relate[0],
+                        patterns_id2: ids2Relate[1]
+                        })
+                        .then((result) => {
+                            return result[0];
+                        })
+                        .catch((err) => {
+                            //If the relation already exists, return the id of the relation
+                            return knex.select('relation_pattern_id').from('patterns_patterns').where('patterns_id1', ids2Relate[0]).andWhere('patterns_id2', ids2Relate[1]).then(result => result[0].relation_pattern_id);
+                        });
+            }));
+        } else {
+            //Do nothing
+            //But we need to return a Promise, even though it is empty
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        }
+    },
+
+    //Relating B->A
+    relateP2PWhenCreatingLanguagePart2(relationsArray) {
+        // Duplicate queries are handled using unique keys(ALTER TABLE patterns_patterns ADD UNIQUE (patterns_id1, patterns_id2);)
+        // so, duplicate relationships (A, B) won't occur
+
+        //If is an unique object, create an array of one object
+        if (!(Array.isArray(relationsArray))) relationsArray = [relationsArray];
+
+        if (relationsArray != undefined) {
+            return Promise.all(relationsArray.map(ids2Relate => {
+                return relationsId1 = knex('patterns_patterns').insert({
+                        patterns_id1: ids2Relate[1],
+                        patterns_id2: ids2Relate[0]
+                        })
+                        .then((result) => {
+                            return result[0];
+                        })
+                        .catch((err) => {
+                            //If the relation already exists, return the id of the relation
+                            return knex.select('relation_pattern_id').from('patterns_patterns').where('patterns_id1', ids2Relate[1]).andWhere('patterns_id2', ids2Relate[0]).then(result => result[0].relation_pattern_id);
+                        });
+            }));
+        } else {
+            //Do nothing
+            //But we need to return a Promise, even though it is empty
+            return new Promise((resolve, reject) => {
+                resolve();
+            });
+        }
+    },
+
+    deleteOldRelathionshipsPattern2Language(languageId) {
+        return knex('language__relation_pattern_id').where('language_id', languageId).del();
     }
 }
 
