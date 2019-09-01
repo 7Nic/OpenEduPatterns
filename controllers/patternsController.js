@@ -79,7 +79,6 @@ module.exports = {
 
             if (req.body.createNewTemplate) {
                 var templateName = req.body.newTemplateName;
-                console.log(req.body.newTemplateName);
                 if (templateName === "") {
                     templateName = "Template";
                 }
@@ -218,7 +217,11 @@ module.exports = {
         await store.deletePatternInPadroes(req.params.id);
         await store.deletePatternInUsuariosPadroes(req.params.id);
         await store.deletePatternInElementsContent(req.params.id);
+        
+        var relationsIdToDelete = await store.relationP2PIdsContainingAPattern(req.params.id);
+        await store.deleteRelationP2PInLanguage__relation_pattern_id(relationsIdToDelete);
         await store.deletePatternsInPatternsPatterns(req.params.id);
+
         if (req.cookies.lang == 'en') {
             req.flash('feedback', "Pattern deleted successfully");
         } else {

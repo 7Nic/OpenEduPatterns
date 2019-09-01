@@ -500,7 +500,8 @@ module.exports = {
         }
     },
     deletePatternsInPatternsPatterns(patternId) { //Delete the relationship between the 2 patterns
-        return knex('patterns_patterns').where('patterns_id1', patternId).orWhere('patterns_id2', patternId).del();
+        console.log('aqui msm');
+        return knex('patterns_patterns').where('patterns_id1', patternId).orWhere('patterns_id2', patternId).returning('relation_pattern_id').del();
     },
     languagesRelatedToALanguage(languageId) {
         // SELECT b.linguagens_id, b.nome 
@@ -873,7 +874,24 @@ module.exports = {
             .innerJoin('padroes AS p2', 'p2.padroes_id', 'pp.patterns_id2')
             .whereRaw('?? < ??', ['pp.patterns_id1', 'pp.patterns_id2'])
             .andWhere('l.linguagens_id', languageId);
-            
+    },
+
+    relationP2PIdsContainingAPattern(patternId) {
+        return knex
+            .select('relation_pattern_id')
+            .from("patterns_patterns")
+            .where('patterns_id1', patternId)
+            .orWhere('patterns_id2', patternId);
+    },
+
+    deleteInRelation__pattern_idBasedOnRelationId(idsArray) {
+        return Promise.all(idsArray.map(eachId => {
+            return knex('language__relation_pattern_id').where('relation_pattern_id', eachId).del();
+        }));
+    },
+
+    deleteInRelation__pattern_idBasedOnLanguageId(languageId) {
+        return knex('language__relation_pattern_id').where('language_id', languageId).del();
     }
 }
 

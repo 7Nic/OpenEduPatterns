@@ -117,7 +117,7 @@
                       <table id="patternTable1" class="display">
                           <thead>
                             <tr>
-                                <th><%= __('Nome do Padrão') %></th>
+                                <th><%= __('Padrão 1 a relacionar') %></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -133,7 +133,7 @@
                     <table id="patternTable2" class="display">
                         <thead>
                             <tr>
-                                <th><%= __('Nome do Padrão') %></th>
+                                <th><%= __('Padrão 2 a relacionar') %></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -148,9 +148,9 @@
                       </table>    
                     </div>
                     <div class="form-group">
-                      <label for="relatedPatterns">Padrões relacionados</label>
+                      <label for="relatedPatterns"><%= __('Padrões relacionados (clique na relação para remove-la)') %></label>
                       <br>
-                      <button id="relatePatternsNow" class="btn btn-success" onclick="return avoidSubmit();">Vai!</button>
+                      <button id="relatePatternsNow" class="btn btn-info btn-rounded" onclick="return avoidSubmit();"><span class="glyphicon glyphicon-plus"></span>  <%= __('Relacionar padrões') %></button>
                       <br>            
                       <br id="labelRelatedPatterns">
                       <% relatPairs.forEach((eachPair, index) => { %>
@@ -373,12 +373,11 @@
                                  "<input type='hidden' name='patterns2Relate' value='"+patternId1+","+patternId2+"'>";
                               "</div>";
 
-                //Faça uma logica pra evitar repetidos (traduzir agr só)
                 if ((oldPatternId1 !== undefined && oldPatternId2 !== undefined) && (patternId1 === oldPatternId1 && patternId2 === oldPatternId2)) {
-                    alert('voce ja relacionou esses padroes');
+                    alert("<%= __('Você já relacionou esses padrões') %>");
                 }
                 else if (patternId1 === patternId2) {
-                    alert('voce nao pode relacionar um padrao com ele mesmo');
+                    alert("<%= __('Você não pode relacionar um padrão com ele mesmo') %>");
                 }
                 else if (patternId1 !== undefined && patternId2 !== undefined) {
                     $('#labelRelatedPatterns').after(theHTML);

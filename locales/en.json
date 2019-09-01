@@ -223,5 +223,11 @@
 	"Sua Linguagem precisa de um nome": "Your Language needs a name",
 	"Sua Linguagem precisa de uma descrição": "Your Language needs a description",
 	"O primeiro campo não pode ficar vazio": "The first field cannot be empty",
-	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "To sort by User, Name or Date click on the header"
+	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "To sort by User, Name or Date click on the header",
+	"Padrão 1 a relacionar": "Pattern 1 to relate",
+	"Padrão 2 a relacionar": "Pattern 2 to relate",
+	"Padrões relacionados (clique na relação para remove-la)": "Related patterns (click on the relationship to remove it)",
+	"Relacionar padrões": "Relate patterns",
+	"Você já relacionou esses padrões": "You already related these patterns",
+	"Você não pode relacionar um padrão com ele mesmo": "You cannot relate a pattern to itself"
 }

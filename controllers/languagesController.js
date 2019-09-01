@@ -102,7 +102,6 @@ module.exports = {
             var patternsToRelateArray = req.body.patterns2Relate;
             if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
             var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
-            console.log(p2pRelationsArray);
 
             var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
             var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
@@ -215,7 +214,6 @@ module.exports = {
             var patternsToRelateArray = req.body.patterns2Relate;
             if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
             var p2pRelationsArray = parseArrayOfRelationships(patternsToRelateArray); //Cast "String ids" to "int ids"
-            console.log(p2pRelationsArray);
 
             var relationIds1 = await store.relateP2PWhenCreatingLanguagePart1(p2pRelationsArray); //Relate A->B
             var relationIds2 = await store.relateP2PWhenCreatingLanguagePart2(p2pRelationsArray); //Relate B->A becasuse it is bidirectional
@@ -244,6 +242,7 @@ module.exports = {
     async languagesDeletePost (req, res) {
         await store.deletarLinguagem(req.params.id);
         await store.deleteLanguageInLanguagesLanguages(req.params.id);
+        await store.deleteInRelation__pattern_idBasedOnLanguageId(req.params.id);
         if (req.cookies.lang == 'en') {
             req.flash('feedback', "Language deleted successfully");
         } else {

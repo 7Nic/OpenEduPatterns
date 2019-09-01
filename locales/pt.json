@@ -218,6 +218,12 @@
 	"Sua Linguagem precisa de um nome": "Sua Linguagem precisa de um nome",
 	"Sua Linguagem precisa de uma descrição": "Sua Linguagem precisa de uma descrição",
 	"O primeiro campo não pode ficar vazio": "O primeiro campo não pode ficar vazio",
-	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "Para ordenar por Usuário, Nome ou Data clique no cabeçalho"
+	"Para ordenar por Usuário, Nome ou Data clique no cabeçalho": "Para ordenar por Usuário, Nome ou Data clique no cabeçalho",
+	"Padrão 1 a relacionar": "Padrão 1 a relacionar",
+	"Padrão 2 a relacionar": "Padrão 2 a relacionar",
+	"Padrões relacionados (clique na relação para remove-la)": "Padrões relacionados (clique na relação para remove-la)",
+	"Relacionar padrões": "Relacionar padrões",
+	"Você já relacionou esses padrões": "Você já relacionou esses padrões",
+	"Você não pode relacionar um padrão com ele mesmo": "Você não pode relacionar um padrão com ele mesmo"
 
 }
