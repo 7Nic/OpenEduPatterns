@@ -23,6 +23,7 @@
     <!-- Meu CSS -->  
     <link rel="stylesheet" type="text/css" href="../../css/style_editarPadroes.css">
     <link rel="stylesheet" type="text/css" href="../../css/style_footer.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common_styles.css">
     <!-- Fonte da página -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
@@ -90,6 +91,8 @@
             </div>
         </div>
     </nav>  
+    <!-- Include breadcrumbs html -->
+    <%- include partials/breadcrumb.ejs %>
     <br>
     <br>
     <br>
@@ -147,7 +150,7 @@
 
                             <!-- Dual-listbox1 -->
                             <p><%= __('Digite para pesquisar') %></p>
-                            <select class="patterns2Relate" name="  Relate" multiple="multiple">
+                            <select class="patterns2Relate" name="patterns2Relate" multiple="multiple">
                                 <!-- Not related -->
                                 <!-- =====================LOOP=========================-->
                                 <% notRelatedPatterns.forEach((eachPattern, index) => { %>

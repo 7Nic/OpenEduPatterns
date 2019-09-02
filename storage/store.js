@@ -892,6 +892,23 @@ module.exports = {
 
     deleteInRelation__pattern_idBasedOnLanguageId(languageId) {
         return knex('language__relation_pattern_id').where('language_id', languageId).del();
+    },
+
+    deleteP2PRelationBasedOnPairs(id1, ids2Array) {
+        console.log('Vou apagar');
+        console.log(id1);
+        console.log('Com esses');
+        console.log(ids2Array);
+        // DELETE FROM patterns_patterns WHERE ('patterns_id2' IN ids2Array AND patterns_id1=id1) OR WHERE ('patterns_id1' IN ids2Array AND patterns_id2=id1);
+
+        return knex('patterns_patterns')
+            .where(function() {
+                this.whereIn('patterns_id2', ids2Array).andWhere('patterns_id1', id1)
+            })
+            .orWhere(function() {
+                this.whereIn('patterns_id1', ids2Array).andWhere('patterns_id2', id1)
+            })
+            .del();
     }
 }
 

@@ -62,3 +62,22 @@ h1 {
     content:"* " ;
     color:red    
 }
+
+/*Breadcrumbs style*/
+/*#bootstrap-overrides .breadcrumb-item:not(:first-child):before {*/
+#bootstrap-overrides .breadcrumb-item:before {
+  content: "› ";
+  vertical-align:top;
+  color: #2B263D;
+  font-size:25px;
+  line-height:18px;
+}
+
+#bootstrap-overrides a:hover {
+	color: #777;
+	text-decoration: none;
+}
+
+#bootstrap-overrides ol li p, #bootstrap-overrides ol li li, #bootstrap-overrides ol li h1, #bootstrap-overrides ol li h2, #bootstrap-overrides ol li h3 {
+	display: inline;
+}

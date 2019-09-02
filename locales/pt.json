@@ -224,6 +224,11 @@
 	"Padrões relacionados (clique na relação para remove-la)": "Padrões relacionados (clique na relação para remove-la)",
 	"Relacionar padrões": "Relacionar padrões",
 	"Você já relacionou esses padrões": "Você já relacionou esses padrões",
-	"Você não pode relacionar um padrão com ele mesmo": "Você não pode relacionar um padrão com ele mesmo"
-
+	"Você não pode relacionar um padrão com ele mesmo": "Você não pode relacionar um padrão com ele mesmo",
+	"x": "x",
+	"teste: %s": "teste: %s",
+	"%s": "%s",
+	"Criação de conta": "Criação de conta",
+	"Escolha de Template": "Escolha de Template",
+	"Conteúdo do Padrão": "Conteúdo do Padrão"
 }

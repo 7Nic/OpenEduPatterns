@@ -3,7 +3,8 @@ const multer = require('multer');
 
 module.exports = {
     async usersCreateGet (req, res) {
-        res.render('cadastro.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
+        var breadCrumbContent = [{name: req.__('Criação de conta'), href: "#"}];
+        res.render('cadastro.ejs', {breadCrumbContent, csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
     },
 
     async usersCreatePost (req, res) {
@@ -56,10 +57,11 @@ module.exports = {
     },
 
     async usersLoginGet (req, res) {
+        var breadCrumbContent = [{name: req.__('Entrar'), href: "#"}];
         if (req.isAuthenticated()) {
             res.redirect('/users/profile');
         } else {
-            res.render('login.ejs', {csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
+            res.render('login.ejs', {breadCrumbContent, csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
         }
     },
 
@@ -70,7 +72,9 @@ module.exports = {
         var languages = await store.userLanguages(req.user.usuarios_id);
         var patterns = await store.userPatterns(req.user.usuarios_id);
         var profilePhoto = await store.getProfilePhoto(req.user.usuarios_id);
-        res.render('profile.ejs', {profilePhoto, user: req.user, languages, patterns, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
+
+        var breadCrumbContent = [{name: req.__('Perfil'), href: "#"}];
+        res.render('profile.ejs', {breadCrumbContent, profilePhoto, user: req.user, languages, patterns, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },
 
     async uploadProfilePhoto (req, res) {

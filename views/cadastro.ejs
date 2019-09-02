@@ -2,6 +2,7 @@
 <html>
 <head>
     <% include partials/head1.ejs %>
+    <link rel="stylesheet" type="text/css" href="../css/common_styles.css">
     <!-- Font awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -9,6 +10,8 @@
     <nav class="navbar navbar-inverse">
         <%- include partials/nav1.ejs %>
     </nav>  
+    <!-- Include breadcrumbs html -->
+    <%- include partials/breadcrumb.ejs %>
 
     <div class="container">
             <div class="row main">

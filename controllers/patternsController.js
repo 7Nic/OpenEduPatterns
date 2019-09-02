@@ -22,8 +22,8 @@ module.exports = {
             pattern.monthCreation = pattern.created_at.getMonth() + 1; //Starts counting from 0
             pattern.yearCreation = pattern.created_at.getFullYear();
         });
-
-        res.render('padroes.ejs', {padroes: patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "#"}];
+        res.render('padroes.ejs', {breadCrumbContent, padroes: patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async patternsCreateGet (req, res) {
@@ -31,7 +31,12 @@ module.exports = {
         // req.session.templateId = null; //Reset the used variable
         var templateElements = await store.elementsNameOfTemplate(templateId);
         var patterns = await store.listarTodosPadroes();
-        res.render('createPattern.ejs', {patterns: patterns, templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
+        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/patterns/chosetemplate"});
+        breadCrumbContent.push({name: req.__('Escolha de Template'), href: "/patterns/chosetemplate"});
+        breadCrumbContent.push({name: req.__('Conteúdo do Padrão'), href: "#"});
+        res.render('createPattern.ejs', {breadCrumbContent, patterns: patterns, templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async patternsCreatePost (req, res) {
@@ -145,7 +150,9 @@ module.exports = {
         var tagsArray = await store.tagsOfPattern(req.params.id);
         var tagsString = tagsArray.toString();
 
-        res.render('editarPadroes.ejs', {tagsString, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
+        breadCrumbContent.push({name: req.__('Edição de Padrão'), href: "#"});
+        res.render('editarPadroes.ejs', {breadCrumbContent, tagsString, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async patternsEditPost (req, res) {
@@ -161,11 +168,13 @@ module.exports = {
         var tagsStringBefore = req.body.tags;
         var tagsArrayAfter = tagsStringBefore.split(",");
         
-        var patternsToRelateArray = req.body.patterns2Relate;
+        var patternsIdToRelateArray = req.body.patterns2Relate;
+        console.log('wtf');
+        console.log(req.body.patterns2Relate);
         //If req.body.patterns2Relate is not an array, we'll create an array of one object in order to use .map function
-        if (typeof patternsToRelateArray === 'string') { //If patternsToRelateArray is a string, it is just an element, and we'll create an array
-            patternsToRelateArray = [];
-            patternsToRelateArray.push(req.body.patterns2Relate);
+        if (typeof patternsIdToRelateArray === 'string') { //If patternsIdToRelateArray is a string, it is just an element, and we'll create an array
+            patternsIdToRelateArray = [];
+            patternsIdToRelateArray.push(req.body.patterns2Relate);
         }
         
         // Handle CkEditor issues with empty fields
@@ -191,13 +200,25 @@ module.exports = {
         } else {
             await store.editPatternInPadroes({data, Id: req.params.id});
             await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
-            await store.deletePatternsInPatternsPatterns(req.params.id);
-            await store.relatePattern2Pattern(req.params.id, patternsToRelateArray); 
+            
+            // ==============================================================================================
+            var relatedPatterns = await store.patternsRelatedToAPattern(req.params.id);
+            var patterns2Unrelate = patternsToUnrelate(relatedPatterns, patternsIdToRelateArray);
+
+            //Extract ids, it's necessary an array of numbers(ids), not an array of objects
+            var patterns2UnrelateIds = [];
+            patterns2Unrelate.forEach(eachObj => patterns2UnrelateIds.push(eachObj.padroes_id));
+
+            // await store.deletePatternsInPatternsPatterns(req.params.id); //Isso não pode acontecer, a fç de baixo lida com isso
+            await store.deleteP2PRelationBasedOnPairs(req.params.id, patterns2UnrelateIds);
+
+            await store.relatePattern2Pattern(req.params.id, patternsIdToRelateArray); 
             //The relationship is bidirected. It's neccessary to relate all array elements with the new Pattern
-            if ((!Array.isArray(patternsToRelateArray))) patternsToRelateArray = [patternsToRelateArray]; //If is an unique object, create an array of one object
-            asyncForEach(patternsToRelateArray, async (eachPattern) => {
+            if ((!Array.isArray(patternsIdToRelateArray))) patternsIdToRelateArray = [patternsIdToRelateArray]; //If is an unique object, create an array of one object
+            asyncForEach(patternsIdToRelateArray, async (eachPattern) => {
                 await store.relatePattern2Pattern(eachPattern, req.params.id);
             });
+            // ==============================================================================================
 
             await store.deleteOldRelathionshipsPattern2Tags(req.params.id);
             var tagsIdArray = await store.createPatternTag(tagsArrayAfter);
@@ -290,7 +311,22 @@ module.exports = {
 
         var tagsArray = await store.tagsOfPattern(req.params.id);
 
-        res.render('patternPage.ejs', {tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
+        //Using cookie to use language context
+        var breadCrumbContent = [];
+        if (req.cookies.contextLanguageId === "noContextLanguageId") {
+            breadCrumbContent.push({name: req.__('Padrões'), href: "/patterns"});
+            breadCrumbContent.push({name: req.__('Exibição de Padrão'), href: "#"});
+        } else {
+            var languageInfo = await store.pegarLinguagemPorId(req.cookies.contextLanguageId);
+
+            breadCrumbContent.push({name: req.__('Linguagens'), href: "/languages"});
+            breadCrumbContent.push({name: languageInfo.nome, href: `/languages/${languageInfo.linguagens_id}`});
+            breadCrumbContent.push({name: patternInfo.titulo, href: `/patterns/${patternInfo.padroes_id}`});
+        }
+
+        
+        
+        res.render('patternPage.ejs', {breadCrumbContent, tagsArray, isAlexander, relatedPatterns: relatedPatterns, patternContent: assembledPattern , isLoggedIn: req.isAuthenticated(), comments: comments, pattern: patternInfo, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },
 
     async addCommentPattern (req, res) {
@@ -313,7 +349,11 @@ module.exports = {
         var templatesId = await store.templatesIdOfUser(req.user.usuarios_id);
         var templatesElements = await store.multipleTemplateElements(templatesId);
         var templatesName = await store.templatesNameOfUser(req.user.usuarios_id);
-        res.render('choseTemplate.ejs', {templatesId: templatesId ,templatesElements: templatesElements, templatesName: templatesName, csrfToken: req.csrfToken(), messages: req.flash('error')});
+
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
+        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/patterns/chosetemplate"});
+        breadCrumbContent.push({name: req.__('Escolha de Template'), href: "#"});
+        res.render('choseTemplate.ejs', {breadCrumbContent, templatesId: templatesId ,templatesElements: templatesElements, templatesName: templatesName, csrfToken: req.csrfToken(), messages: req.flash('error')});
     },
 
     async choseTemplatePost (req, res) {
@@ -429,4 +469,33 @@ async function asyncForEach(array, callback) {
         await callback(array, 0, array);
     }
     
+}
+
+//Returns the id of patterns that shouldn't be related anymore
+// oldArray - newArray
+function patternsToUnrelate(oldArray, newArray) {
+    console.log('oldArray');
+    console.log(oldArray);
+    console.log('newArray');
+    console.log(newArray);
+
+
+    // var ids2Unrelate = oldArray.filter(elem => !newArray.includes(elem.padroes_id));
+    var ids2Unrelate = oldArray;
+    for(let i=0; i<oldArray.length; i++) {
+        for (let j=0; j<newArray.length; j++) {
+            console.log('Olha so')
+            console.log(typeof oldArray[i].padroes_id);
+            console.log(oldArray[i].padroes_id);
+            console.log('com');
+            console.log(typeof newArray[j]);
+            console.log(newArray[j]);
+            if (oldArray[i].padroes_id === Number(newArray[j])) oldArray.splice(i, 1);
+        }
+    }
+
+
+    console.log('Ids to unrelate');
+    console.log(ids2Unrelate);
+    return ids2Unrelate;
 }

@@ -86,6 +86,19 @@
         </div>
     </nav>  
 
+    <!-- BreadCrumbs -->
+    <nav aria-label="breadcrumb" id="bootstrap-overrides">
+      <ol class="breadcrumb">
+        <!-- All elements except the last -->
+        <% breadCrumbContent.forEach((eachContent, index, array) => { if (index < array.length-1) {%>
+            <li class="breadcrumb-item"><a href="<%- eachContent.href %>"><%= eachContent.name %></a></li>          
+        <% } }); %>
+
+        <!-- Only the last element -->
+        <li class="breadcrumb-item active"><%- breadCrumbContent[breadCrumbContent.length-1].name %></li>       
+      </ol>
+    </nav>
+    <!-- End BreadCrumbs -->
     <br>
     <br>
     <div class="container well">

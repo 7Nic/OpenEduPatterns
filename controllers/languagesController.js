@@ -19,13 +19,17 @@ module.exports = {
             language.monthCreation = language.created_at.getMonth() + 1; //Starts counting from 0
             language.yearCreation = language.created_at.getFullYear();
         });
-        res.render('linguagens.ejs', {linguagens: languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "#"}];
+        res.render('linguagens.ejs', {breadCrumbContent, linguagens: languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async languagesCreateGet (req, res) {
         var languages = await store.listarLinguagensPublicas();
         var patterns = await store.listarPadroesPublicos();
-        res.render('criarLinguagem.ejs', {patterns, languages ,csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
+
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        breadCrumbContent.push({name: req.__('Criação de Nova Linguagem'), href: "#"});
+        res.render('criarLinguagem.ejs', {breadCrumbContent, patterns, languages ,csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
 
     async languagesCreatePost (req, res) {
@@ -143,7 +147,9 @@ module.exports = {
         //Returns an array of not related languages
         var notRelatedLanguages = _.filter(allLanguages, function(obj){ return !_.findWhere(relatedLanguages, obj); });
 
-        res.render('editarLinguagens.ejs', {relatPairs: relationshipsP2PPairs, patterns: allPatterns, tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        breadCrumbContent.push({name: req.__('Edição de Linguagem'), href: "#"});
+        res.render('editarLinguagens.ejs', {breadCrumbContent, relatPairs: relationshipsP2PPairs, patterns: allPatterns, tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async languagesEditPost (req, res) {
@@ -283,8 +289,10 @@ module.exports = {
         comments.reverse();
 
         var tagsArray = await store.tagsOfLanguage(req.params.id);
-
-        res.render('languagePage.ejs', {tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
+        
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        breadCrumbContent.push({name: req.__('Exibição de Linguagem'), href: "#"});
+        res.render('languagePage.ejs', {breadCrumbContent, tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },
 
     async addCommentLanguage (req, res) {

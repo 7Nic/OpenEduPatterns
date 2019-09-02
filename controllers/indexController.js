@@ -1,16 +1,19 @@
 const store = require('../storage/store');
+const i18n = require('i18n');
 
 module.exports = {
     async homePageGet (req, res) {
+        await store.relatePattern2Pattern(1591, [1601]);
         res.cookie('contextLanguageId', "noContextLanguageId");
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});
 
     },
 
     async aboutGet (req, res) {
+        var breadCrumbContent = [{name: req.__('Sobre'), href: "#"}];
         res.cookie('contextLanguageId', "noContextLanguageId");
 
-        res.render('sobre.ejs', {csrfToken: req.csrfToken(), user: req.user});
+        res.render('sobre.ejs', {breadCrumbContent, csrfToken: req.csrfToken(), user: req.user});
     },
 
     async setLanguage (req, res) {
@@ -19,7 +22,9 @@ module.exports = {
     },
 
     async generalSearchGet(req, res) {
-        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
+        var breadCrumbContent = [{name: req.__('Pesquisa geral'), href: "#"}];
+
+        res.render('searchresults.ejs', {breadCrumbContent, patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
     },
 
     async generalSearchPost (req, res) {
@@ -51,11 +56,15 @@ module.exports = {
             }
         }
 
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
+        var breadCrumbContent = [{name: req.__('Pesquisa geral'), href: "#"}];
+
+        res.render('searchresults.ejs', {breadCrumbContent, patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
     },
 
     async filteredSearchGet(req, res) {
-        res.render('searchresults.ejs', {patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
+        var breadCrumbContent = [{name: req.__('Pesquisa refinada'), href: "#"}];
+
+        res.render('searchresults.ejs', {breadCrumbContent, patterns: {}, languages: {}, csrfToken: req.csrfToken(), user: req.user, messages: {}})
     },
 
     async filteredSearchPost (req, res) { 
@@ -95,14 +104,18 @@ module.exports = {
             }
         }
 
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
+        var breadCrumbContent = [{name: req.__('Pesquisa refinada'), href: "#"}];
+
+        res.render('searchresults.ejs', {breadCrumbContent, patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')})
     },
 
     async filteredPatternSearchGet (req, res) {
         var patterns = [];
         var languages = [];
         var messages = [];
-        res.render('searchresults.ejs', {patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages});
+        var breadCrumbContent = [{name: req.__('Pesquisa refinada'), href: "#"}];
+
+        res.render('searchresults.ejs', {breadCrumbContent, patterns, languages, csrfToken: req.csrfToken(), user: req.user, messages});
     },
 
     async filteredPatternSearchPost (req, res) {
@@ -176,8 +189,10 @@ module.exports = {
                 req.flash('feedback', "Não foram encontrados resultados para esta pesquisa");
             }
         }
+
+        var breadCrumbContent = [{name: req.__('Pesquisa refinada'), href: "#"}];
         
-        res.render('searchresults.ejs', {languages: [], patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
+        res.render('searchresults.ejs', {breadCrumbContent, languages: [], patterns, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('feedback')});
     },
 
     async table(req, res) {

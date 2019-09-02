@@ -229,5 +229,12 @@
 	"Padrões relacionados (clique na relação para remove-la)": "Related patterns (click on the relationship to remove it)",
 	"Relacionar padrões": "Relate patterns",
 	"Você já relacionou esses padrões": "You already related these patterns",
-	"Você não pode relacionar um padrão com ele mesmo": "You cannot relate a pattern to itself"
+	"Você não pode relacionar um padrão com ele mesmo": "You cannot relate a pattern to itself",
+	"%s": "%s",
+	"\"+x+\"": "\"+x+\"",
+	"${z}": "${z}",
+	"breadCrumbContent[0].name": "breadCrumbContent[0].name",
+	"Criação de conta": "Account creation",
+	"Escolha de Template": "Template choice",
+	"Conteúdo do Padrão": "Pattern content"
 }
