@@ -326,6 +326,9 @@ async function asyncForEach(array, callback) {
 
 //The ids are in string format, it's necessary to change to int
 function parseArrayOfRelationships(relationsP2PArray) {
+    if (relationsP2PArray[0] === undefined) return [];
+    console.log(relationsP2PArray);
+    
     var splitStringsRelations = [];
 
     //Split
