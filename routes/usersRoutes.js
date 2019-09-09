@@ -47,8 +47,8 @@ router.post('/create', usersController.usersCreatePost);
 
 router.get('/login', usersController.usersLoginGet);
 router.post('/login', passportFunctions.notLoggedIn, passportFunctions.validateLogin, passport.authenticate('local.login', {
-    successRedirect: '/users/profile',
-    failureRedirect: '/users/login',
+    successRedirect: '/openedupatterns/users/profile',
+    failureRedirect: '/openedupatterns/users/login',
     failureFlash: true
 }));
                                  //the name of the field in <form>
