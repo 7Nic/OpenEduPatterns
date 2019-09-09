@@ -16,13 +16,13 @@
         <div class="col-sm-4">
             <% if (!loggedIn) { %>
                 <h3><%= __('Crie já sua conta') %></h3>
-                <a href="/users/create"><button type="button" class="btn btn-warning"><%= __('Cadastre-se') %></button></a>
+                <a href="/openedupatterns/users/create"><button type="button" class="btn btn-warning"><%= __('Cadastre-se') %></button></a>
             <% } else { %>
                 <h3><%= __('Links do site') %></h3>
-                <h5><a href="/"><%= __('Pagina inicial') %></a></h5>
-                <h5><a href="/languages"><%= __('Linguagens') %></a></h5>
-                <h5><a href="/patterns"><%= __('Padrões') %></a></h5>
-                <h5><a href="/about"><%= __('Sobre') %></a></h5>
+                <h5><a href="/openedupatterns/"><%= __('Pagina inicial') %></a></h5>
+                <h5><a href="/openedupatterns/languages"><%= __('Linguagens') %></a></h5>
+                <h5><a href="/openedupatterns/patterns"><%= __('Padrões') %></a></h5>
+                <h5><a href="/openedupatterns/about"><%= __('Sobre') %></a></h5>
             <% } %>
             
         </div>

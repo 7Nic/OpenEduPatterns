@@ -106,7 +106,7 @@
                         <!-- =====================LOOP=========================-->
                         <% languages.forEach((linguagens, index) => { %>
                             <tr>
-                                <td><h4><a href="/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
+                                <td><h4><a href="/openedupatterns/languages/<%= linguagens.linguagens_id %>"> <%= linguagens.nome %> </a></h4></td>
                             </tr>
                         <% }); %>
                         <!-- =================================== -->
@@ -127,7 +127,7 @@
                         <!-- =====================LOOP=========================-->
                         <% patterns.forEach((padroes, index) => { %>
                             <tr>
-                                <td><h4><a href="/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
+                                <td><h4><a href="/openedupatterns/patterns/<%= padroes.padroes_id %>"> <%- padroes.titulo %> </a></h4></td>
                             </tr>
                         <% }); %>
                         <!-- =================================== -->

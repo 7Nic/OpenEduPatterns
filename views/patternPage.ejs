@@ -34,7 +34,7 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="/"><img src="../img/logoedu4.png"></a>
+                <a href="/openedupatterns/"><img src="../img/logoedu4.png"></a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mynavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -56,10 +56,10 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/"><%= __('Pagina inicial') %></a></li>
-                    <li><a href="/languages"><%= __('Linguagens') %></a></li>
-                    <li class="active"><a href="/patterns"><%= __('Padrões') %></a></li>
-                    <li><a href="/about"><%= __('Sobre') %></a></li>
+                    <li><a href="/openedupatterns/"><%= __('Pagina inicial') %></a></li>
+                    <li><a href="/openedupatterns/languages"><%= __('Linguagens') %></a></li>
+                    <li class="active"><a href="/openedupatterns/patterns"><%= __('Padrões') %></a></li>
+                    <li><a href="/openedupatterns/about"><%= __('Sobre') %></a></li>
                     <% if (loggedIn) { %>
                         <li>
                           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
@@ -70,15 +70,15 @@
 
                           <!-- Dropdown menu -->
                           <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
-                            <li><a href="/users/profile"><%= __('Perfil') %></a></li>
+                            <li><a href="/openedupatterns/users/profile"><%= __('Perfil') %></a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/users/logout"><%= __('Sair') %></a></li>
+                            <li><a href="/openedupatterns/users/logout"><%= __('Sair') %></a></li>
                           </ul>
                           <!-- End dropdown menu -->
 
                         </li>
                     <% } else { %>
-                        <li><a href="/users/login"><span class="glyphicon glyphicon-lock"></span><%= __('Entrar') %></a></li>
+                        <li><a href="/openedupatterns/users/login"><span class="glyphicon glyphicon-lock"></span><%= __('Entrar') %></a></li>
                     <% } %>
                 </ul>
                 
@@ -91,7 +91,7 @@
       <ol class="breadcrumb">
         <!-- All elements except the last -->
         <% breadCrumbContent.forEach((eachContent, index, array) => { if (index < array.length-1) {%>
-            <li class="breadcrumb-item"><a href="<%- eachContent.href %>"><%= eachContent.name %></a></li>          
+            <li class="breadcrumb-item"><a href="/openedupatterns/<%- eachContent.href %>"><%= eachContent.name %></a></li>          
         <% } }); %>
 
         <!-- Only the last element -->
@@ -109,8 +109,8 @@
         </div>
         <br>
         <% if (pattern) { %>
-            <button style="text-align: center;" onclick="window.open('/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success btn-md" ><%= __('Exportar PDF') %></button>
-            <a class="btn btn-rounded btn-info btn-md" href="/patterns/<%= pattern.padroes_id %>/edit"><span class="glyphicon glyphicon-pencil"></span> <%= __('Editar Padrão') %></a>
+            <button style="text-align: center;" onclick="window.open('/openedupatterns/patterns/<%= pattern.padroes_id %>/exportpdf', '_blank');" class="btn btn-rounded btn-success btn-md" ><%= __('Exportar PDF') %></button>
+            <a class="btn btn-rounded btn-info btn-md" href="/openedupatterns/patterns/<%= pattern.padroes_id %>/edit"><span class="glyphicon glyphicon-pencil"></span> <%= __('Editar Padrão') %></a>
             <br>
             <br>
             <br>
@@ -139,7 +139,7 @@
                         ) { %>
                         <div class="relatedPatterns">
                             <% relatedPatterns.forEach((relatedPattern) => { %>
-                                <a class="btn btn-primary btn-sm" href="/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a>
+                                <a class="btn btn-primary btn-sm" href="/openedupatterns/patterns/<%= relatedPattern.padroes_id %>"><%- relatedPattern.titulo %></a>
                             <% }); %>
                         </div>
                     <% } else if (isAlexander && index === 0) { %>
@@ -180,7 +180,7 @@
                     <button type="submit" class="btn btn-rounded btn-info" onclick="return validateComment();"><%= __('Comentar') %></button>
                 </form>
             <% } else { %>
-                <h4><%= __('Você não está logado, para comentar efetue o') %> <a href='/users/login'><%= __('Login') %></a>.</h4>
+                <h4><%= __('Você não está logado, para comentar efetue o') %> <a href='/openedupatterns/users/login'><%= __('Login') %></a>.</h4>
                 <br>
             <% } %>
 
