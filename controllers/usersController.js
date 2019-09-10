@@ -43,15 +43,15 @@ module.exports = {
                 messages.push(error.msg);
             });
             req.flash('error', messages);
-            res.redirect('/users/create');
+            res.redirect('/openedupatterns/users/create');
         } else {
             var user = await store.findUserByEmail(email);
             if(user) {
                 req.flash('error', 'Email já registrado');
-                res.redirect('/users/create');
+                res.redirect('/openedupatterns/users/create');
             } else {
                 await store.createUser({name, email, password});
-                res.redirect('/');
+                res.redirect('/openedupatterns/');
             }
         }
     },
@@ -59,7 +59,7 @@ module.exports = {
     async usersLoginGet (req, res) {
         var breadCrumbContent = [{name: req.__('Entrar'), href: "#"}];
         if (req.isAuthenticated()) {
-            res.redirect('/users/profile');
+            res.redirect('/openedupatterns/users/profile');
         } else {
             res.render('login.ejs', {breadCrumbContent, csrfToken: req.csrfToken(), messages: req.flash('error'), user: req.user});
         }
@@ -84,7 +84,7 @@ module.exports = {
         } else {
             req.flash('feedback', "Upload feito com sucesso");
         }
-        res.redirect('/users/profile');
+        res.redirect('/openedupatterns/users/profile');
     },
 
     async deleteProfilePhoto (req, res) {
@@ -94,6 +94,6 @@ module.exports = {
         } else {
             req.flash('feedback', "Foto deletada com sucesso");
         }
-        res.redirect('/users/profile');
+        res.redirect('/openedupatterns/users/profile');
     }
 }

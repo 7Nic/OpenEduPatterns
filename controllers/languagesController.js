@@ -91,7 +91,7 @@ module.exports = {
                 messages.push(error.msg);
             });
             req.flash('error', messages);
-            res.redirect('/languages/create');
+            res.redirect('/openedupatterns/languages/create');
         } else {
             
             // Execute queries in MySQL to create a language
@@ -127,7 +127,7 @@ module.exports = {
                 req.flash('feedback', "Linguagem criada com sucesso");
             }
 
-            res.redirect('/languages');
+            res.redirect('/openedupatterns/languages');
         }
     },
 
@@ -205,7 +205,7 @@ module.exports = {
                 messages.push(error.msg);
             });
             req.flash('error', messages);
-            res.redirect(`/languages/${req.params.id}/edit`);
+            res.redirect(`/openedupatterns/languages/${req.params.id}/edit`);
 
         } else {
             await store.editarLinguagem({data, Id: req.params.id});
@@ -241,7 +241,7 @@ module.exports = {
                 req.flash('feedback', "Propriedades salvas com sucesso");
             }
 
-            res.redirect(`/languages/${req.params.id}`);
+            res.redirect(`/openedupatterns/languages/${req.params.id}`);
         }
     },
 
@@ -254,7 +254,7 @@ module.exports = {
         } else {
             req.flash('feedback', "Linguagem deletada com sucesso");
         }
-        res.redirect('/languages');
+        res.redirect('/openedupatterns/languages');
     },
 
     async languagePageGet (req, res) {
@@ -308,7 +308,7 @@ module.exports = {
             req.flash('feedback', "Comentário adicionado com sucesso");
         }
 
-        res.redirect(`/languages/${req.params.id}`);
+        res.redirect(`/openedupatterns/languages/${req.params.id}`);
     }
 }
 

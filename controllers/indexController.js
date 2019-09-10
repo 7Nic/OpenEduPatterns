@@ -3,7 +3,6 @@ const i18n = require('i18n');
 
 module.exports = {
     async homePageGet (req, res) {
-        await store.relatePattern2Pattern(1591, [1601]);
         res.cookie('contextLanguageId', "noContextLanguageId");
         res.render('index.ejs', {csrfToken: req.csrfToken(), user: req.user});
 

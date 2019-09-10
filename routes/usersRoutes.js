@@ -68,7 +68,7 @@ router.post('/deleteprofilephoto', usersController.deleteProfilePhoto);
 
 router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect('/openedupatterns');
 })
 
 module.exports = router;

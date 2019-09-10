@@ -78,7 +78,7 @@ module.exports = {
                     messages.push(error.msg);
                 });
                 req.flash('error', messages);
-                res.redirect('/patterns/create');
+                res.redirect('/openedupatterns/patterns/create');
         } else {
             req.body.createNewTemplate = (req.body.createNewTemplate === 'true'); //Convert string to boolean
 
@@ -129,7 +129,7 @@ module.exports = {
                 req.flash('feedback', "Padrão criado com sucesso");
             }
 
-            res.redirect('/patterns');
+            res.redirect('/openedupatterns/patterns');
         }
 
     },
@@ -196,7 +196,7 @@ module.exports = {
                 messages.push(error.msg);
             });
             req.flash('error', messages);
-            res.redirect(`/patterns/${req.params.id}/edit`);
+            res.redirect(`/openedupatterns/patterns/${req.params.id}/edit`);
         } else {
             await store.editPatternInPadroes({data, Id: req.params.id});
             await store.editPatternInElementsContent({patternId: req.params.id, elementsContentArray: req.body.elementContent});
@@ -230,7 +230,7 @@ module.exports = {
                 req.flash('feedback', "Propriedades salvas com sucesso");
             }
 
-            res.redirect(`/patterns/${req.params.id}`);
+            res.redirect(`/openedupatterns/patterns/${req.params.id}`);
         }
     },
 
@@ -248,7 +248,7 @@ module.exports = {
         } else {
             req.flash('feedback', "Padrão deletado com sucesso");
         }
-        res.redirect('/patterns');
+        res.redirect('/openedupatterns/patterns');
     },
 
     // Related patterns: There is 2 possibilities of display
@@ -342,7 +342,7 @@ module.exports = {
         }        
 
         await store.addCommentPattern(text, userId, patternId, userName);
-        res.redirect(`/patterns/${req.params.id}`);
+        res.redirect(`/openedupatterns/patterns/${req.params.id}`);
     },
 
     async choseTemplateGet (req, res) {
@@ -359,7 +359,7 @@ module.exports = {
     async choseTemplatePost (req, res) {
         if (req.body.templateChosenId) {
             req.session.templateId = req.body.templateChosenId; //Use this info the render the next page
-            res.redirect('/patterns/create');
+            res.redirect('/openedupatterns/patterns/create');
         } else {
             var templateName = req.body.templateName;
             if (templateName === "") {
@@ -372,7 +372,7 @@ module.exports = {
             var elementsIdArray = await store.addElementsInDB(elementsNamesArray);
             await store.relateContent2Element(templateId, elementsIdArray);
             
-            res.redirect('/patterns/create');
+            res.redirect('/openedupatterns/patterns/create');
         }
     },
 
