@@ -50,7 +50,7 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/openedupatterns/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
@@ -113,7 +113,7 @@
                 <% } %>
                 <!-- End Display errors -->
 
-                <form method="POST" action="">
+                <form method="POST" action="/openedupatterns/patterns/<%= patternId %>/edit">
                     
                     <div class="form-group">
                         <div class="tooltipInfo" id="visibilidadeId">
@@ -199,7 +199,7 @@
                 </form>
                 <br>
                 <br>
-                <form method="POST" action="/patterns/<%= patternId %>/delete">
+                <form method="POST" action="/openedupatterns/patterns/<%= patternId %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit" class="btn btn-rounded btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> <%= __('Deletar Padrão') %></button>    
                 </form>

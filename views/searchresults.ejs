@@ -48,7 +48,7 @@
             </span>
         </div>
         <h5><%= __('Nomes e conteúdos serão analisados') %></h5>
-        <form method="POST" action="/filteredsearch">
+        <form method="POST" action="/openedupatterns/filteredsearch">
             <input type="checkbox" name="pattern" checked> <%= __('Padrão') %>
             <input type="checkbox" name="language" checked> <%= __('Linguagem') %>
             <input type="checkbox" name="author" checked> <%= __('Autor') %>
@@ -65,7 +65,7 @@
             </span>
         </div>
         <h5><%= __('Apenas os campos selecionados serão analisados') %></h5>
-        <form method="POST" action="/filteredpatternsearch">
+        <form method="POST" action="/openedupatterns/filteredpatternsearch">
             <input type="checkbox" name="Nome"> <%= __('Nome') %>
             <input type="checkbox" name="Contexto"> <%= __('Contexto') %>
             <input type="checkbox" name="Figura"> <%= __('Figura') %>

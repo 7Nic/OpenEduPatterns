@@ -43,7 +43,7 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/openedupatterns/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
@@ -108,7 +108,7 @@
                 <br>
                 <br>
                 <!-- ================================================ -->
-                <form method="POST" action="">
+                <form method="POST" action="/openedupatterns/languages/<%= linguagem.linguagens_id %>/edit">
                     <div class="tooltipInfo">
                         <h2><%= __('Relacionamento entre Linguagens e Padrões') %> <span class="glyphicon glyphicon-question-sign"></h2>
                         <span class="tooltiptext">
@@ -236,7 +236,7 @@
                 </form>
                 <br>
                 <br>
-                <form method="POST" action="/languages/<%= linguagem.linguagens_id %>/delete">
+                <form method="POST" action="/openedupatterns/languages/<%= linguagem.linguagens_id %>/delete">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit" class="btn btn-rounded btn-danger btn-lg"><span class="glyphicon glyphicon-trash"></span> <%= __('Deletar Linguagem') %></button>    
                 </form>

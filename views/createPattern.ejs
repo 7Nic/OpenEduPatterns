@@ -24,7 +24,7 @@
           <!-- Menu do navbar -->
           <div class="collapse navbar-collapse" id="mynavbar">
               <!-- Barra de pesquisa -->
-              <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
+              <form class="navbar-form navbar-right" method="POST" role="search" action="/openedupatterns/generalsearch">
                   <div class="input-group">
                       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                       <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
@@ -116,7 +116,7 @@
         <% } %>
         <!-- End display errors -->
 
-    	<form method="POST" action="" onsubmit="verifyNewTemplate()">
+    	<form method="POST" action="/openedupatterns/patterns/create" onsubmit="verifyNewTemplate()">
         <div id="inputNameTemplate"></div>
 
     	  <% if (templateElements.length > 0) { %>

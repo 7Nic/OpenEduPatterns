@@ -43,7 +43,7 @@
             <!-- Menu do navbar -->
             <div class="collapse navbar-collapse" id="mynavbar">
                 <!-- Barra de pesquisa -->
-                <form class="navbar-form navbar-right" method="POST" role="search" action="/generalsearch">
+                <form class="navbar-form navbar-right" method="POST" role="search" action="/openedupatterns/generalsearch">
                     <div class="input-group">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <input type="text" class="form-control" name="keyword" placeholder="<%= __('Pesquisa geral') %>">
@@ -155,7 +155,7 @@
             <br>
             <!-- Add comment -->
             <% if (isLoggedIn) { %>
-                <form method="POST" action="/languages/<%= language.linguagens_id %>/addcomment">
+                <form method="POST" action="/openedupatterns/languages/<%= language.linguagens_id %>/addcomment">
                     <div class="form-group">
                         <textarea class="form-control" rows="3" id="languageComment" name="languageComment"></textarea>
                     </div>
