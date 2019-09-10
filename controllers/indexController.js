@@ -9,7 +9,6 @@ module.exports = {
     },
 
     async aboutGet (req, res) {
-        await store.lol();
         var breadCrumbContent = [{name: req.__('Sobre'), href: "#"}];
         res.cookie('contextLanguageId', "noContextLanguageId");
 

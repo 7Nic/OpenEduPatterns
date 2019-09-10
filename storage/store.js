@@ -909,13 +909,6 @@ module.exports = {
                 this.whereIn('patterns_id1', ids2Array).andWhere('patterns_id2', id1)
             })
             .del();
-    },
-    lol() {
-        return knex
-            .select('relation_pattern_id')
-            .from("patterns_patternslol")
-            .where('patterns_id1', patternId)
-            .orWhere('patterns_id2', patternId);
     }
 }
 
