@@ -320,8 +320,8 @@ module.exports = {
             var languageInfo = await store.pegarLinguagemPorId(req.cookies.contextLanguageId);
 
             breadCrumbContent.push({name: req.__('Linguagens'), href: "/openedupatterns/languages"});
-            breadCrumbContent.push({name: languageInfo.nome, href: `/languages/${languageInfo.linguagens_id}`});
-            breadCrumbContent.push({name: patternInfo.titulo, href: `/patterns/${patternInfo.padroes_id}`});
+            breadCrumbContent.push({name: languageInfo.nome, href: `/openedupatterns/languages/${languageInfo.linguagens_id}`});
+            breadCrumbContent.push({name: patternInfo.titulo, href: `/openedupatterns/patterns/${patternInfo.padroes_id}`});
         }
 
         
@@ -414,7 +414,7 @@ module.exports = {
                     if (item.name === "Padrões relacionados" || item.name === "Padrões Relacionados" || item.name === "Padroes relacionados" || item.name === "Padroes Relacionados" || item.name === "padrões relacionados" || item.name === "padrões Relacionados" || item.name === "padroes relacionados" || item.name === "padroes Relacionados") {
                         stream.write("<div style='text-align: center;'><p>|");
                         relatedPatterns.forEach((relatedPattern) => { 
-                            stream.write(`<a href='/patterns/${relatedPattern.padroes_id}'>${relatedPattern.titulo}</a> |`);
+                            stream.write(`<a href='/openedupatterns/patterns/${relatedPattern.padroes_id}'>${relatedPattern.titulo}</a> |`);
                         });
                         stream.write("</p></div>");
                     } else {
