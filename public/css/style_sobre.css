@@ -74,6 +74,18 @@ p, a {
 	color: black;
 }
 
+.container .well a {
+	color: #2B263D;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.container .well a:hover {
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 /************
 -footer
 ************/		
