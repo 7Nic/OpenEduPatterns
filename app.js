@@ -12,7 +12,7 @@ const https = require('https');
 
 i18n.configure({
     locales: ['pt', 'en'],
-    defaultLocale: 'pt',
+    defaultLocale: 'en',
     cookie: 'lang',
     directory: __dirname + '/locales'
 });
