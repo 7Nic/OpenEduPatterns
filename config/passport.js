@@ -54,7 +54,6 @@ module.exports = {
         }
     },
     notLoggedIn(req, res, next) {
-        console.log('passei por aqui');
         if (!req.isAuthenticated()) {
             next();
         } else {
