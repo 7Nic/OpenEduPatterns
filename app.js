@@ -56,17 +56,17 @@ app.use('/patterns', patternsRouter);
 app.use('/', indexRouter);
 
 const port = process.env.PORT || 3000;
-// app.listen(port, () => {
-//     console.log(`Servidor rodando em http://localhost:${port}`);
-// });
+ app.listen(port, () => {
+     console.log(`Servidor rodando em http://localhost:${port}`);
+ });
 
-https.createServer({
-    key: fs.readFileSync('./ssl/caed.icmc.usp.br.key', 'utf8'),
-    cert: fs.readFileSync('./ssl/caed.icmc.usp.br.cert', 'utf8')
-    }, app)
-.listen(port, function () {
-console.log(`App listening on port ${port}! Go to https://localhost:${port}/`)
-});
+//https.createServer({
+//    key: fs.readFileSync('./ssl/caed.icmc.usp.br.key', 'utf8'),
+//    cert: fs.readFileSync('./ssl/caed.icmc.usp.br.cert', 'utf8')
+//    }, app)
+//.listen(port, function () {
+//console.log(`App listening on port ${port}! Go to https://localhost:${port}/`)
+//});
 
 // openssl genrsa -out caed.icmc.usp.br.key 2048
 // openssl req -new -x509 -key caed.icmc.usp.br.key -out caed.icmc.usp.br.cert -days 3650 -subj /CN=caed.icmc.usp.br
