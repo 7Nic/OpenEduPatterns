@@ -61,9 +61,12 @@ const port = process.env.PORT || 3000;
 // });
 
 https.createServer({
-    key: fs.readFileSync('./https/server.key'),
-    cert: fs.readFileSync('./https/server.cert')
-  }, app)
-  .listen(port, function () {
-    console.log('App listening on port ${port}! Go to https://localhost:${port}/')
-  })
+    key: fs.readFileSync('./ssl/caed.icmc.usp.br.key', 'utf8'),
+    cert: fs.readFileSync('./ssl/caed.icmc.usp.br.cert', 'utf8')
+    }, app)
+.listen(port, function () {
+console.log(`App listening on port ${port}! Go to https://localhost:${port}/`)
+});
+
+// openssl genrsa -out caed.icmc.usp.br.key 2048
+// openssl req -new -x509 -key caed.icmc.usp.br.key -out caed.icmc.usp.br.cert -days 3650 -subj /CN=caed.icmc.usp.br
