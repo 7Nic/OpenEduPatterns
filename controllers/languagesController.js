@@ -27,7 +27,7 @@ module.exports = {
         var languages = await store.listarLinguagensPublicas();
         var patterns = await store.listarPadroesPublicos();
 
-        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/openedupatterns/languages"}];
         breadCrumbContent.push({name: req.__('Criação de Nova Linguagem'), href: "#"});
         res.render('criarLinguagem.ejs', {breadCrumbContent, patterns, languages ,csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
@@ -147,7 +147,7 @@ module.exports = {
         //Returns an array of not related languages
         var notRelatedLanguages = _.filter(allLanguages, function(obj){ return !_.findWhere(relatedLanguages, obj); });
 
-        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/openedupatterns/languages"}];
         breadCrumbContent.push({name: req.__('Edição de Linguagem'), href: "#"});
         res.render('editarLinguagens.ejs', {breadCrumbContent, relatPairs: relationshipsP2PPairs, patterns: allPatterns, tagsString, notRelatedLanguages: notRelatedLanguages, relatedLanguages: relatedLanguages,messages: req.flash('error') ,linguagem: resultadoLinguagem, relatedPatterns: relatedPatterns, notRelatedPatterns: notRelatedPatterns, csrfToken: req.csrfToken(), user: req.user});
     },
@@ -290,7 +290,7 @@ module.exports = {
 
         var tagsArray = await store.tagsOfLanguage(req.params.id);
         
-        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/languages"}];
+        var breadCrumbContent = [{name: req.__('Linguagens'), href: "/openedupatterns/languages"}];
         breadCrumbContent.push({name: req.__('Exibição de Linguagem'), href: "#"});
         res.render('languagePage.ejs', {breadCrumbContent, tagsArray, relatedLanguages: relatedLanguages, padroesRelacionados: padroesRelacionados ,isLoggedIn: req.isAuthenticated(), comments: comments, language: language, owner: owner, csrfToken: req.csrfToken(), messages: req.flash('feedback')});
     },

@@ -32,9 +32,9 @@ module.exports = {
         var templateElements = await store.elementsNameOfTemplate(templateId);
         var patterns = await store.listarTodosPadroes();
 
-        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
-        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/patterns/chosetemplate"});
-        breadCrumbContent.push({name: req.__('Escolha de Template'), href: "/patterns/chosetemplate"});
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/openedupatterns/patterns"}];
+        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/openedupatterns/patterns/chosetemplate"});
+        breadCrumbContent.push({name: req.__('Escolha de Template'), href: "/openedupatterns/patterns/chosetemplate"});
         breadCrumbContent.push({name: req.__('Conteúdo do Padrão'), href: "#"});
         res.render('createPattern.ejs', {breadCrumbContent, patterns: patterns, templateElements: templateElements, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
@@ -150,7 +150,7 @@ module.exports = {
         var tagsArray = await store.tagsOfPattern(req.params.id);
         var tagsString = tagsArray.toString();
 
-        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/openedupatterns/patterns"}];
         breadCrumbContent.push({name: req.__('Edição de Padrão'), href: "#"});
         res.render('editarPadroes.ejs', {breadCrumbContent, tagsString, notRelatedPatterns, relatedPatterns: relatedPatterns, patternContent: assembledPattern, patternId: req.params.id, csrfToken: req.csrfToken(), user: req.user, messages: req.flash('error')});
     },
@@ -314,12 +314,12 @@ module.exports = {
         //Using cookie to use language context
         var breadCrumbContent = [];
         if (req.cookies.contextLanguageId === "noContextLanguageId") {
-            breadCrumbContent.push({name: req.__('Padrões'), href: "/patterns"});
+            breadCrumbContent.push({name: req.__('Padrões'), href: "/openedupatterns/patterns"});
             breadCrumbContent.push({name: req.__('Exibição de Padrão'), href: "#"});
         } else {
             var languageInfo = await store.pegarLinguagemPorId(req.cookies.contextLanguageId);
 
-            breadCrumbContent.push({name: req.__('Linguagens'), href: "/languages"});
+            breadCrumbContent.push({name: req.__('Linguagens'), href: "/openedupatterns/languages"});
             breadCrumbContent.push({name: languageInfo.nome, href: `/languages/${languageInfo.linguagens_id}`});
             breadCrumbContent.push({name: patternInfo.titulo, href: `/patterns/${patternInfo.padroes_id}`});
         }
@@ -350,8 +350,8 @@ module.exports = {
         var templatesElements = await store.multipleTemplateElements(templatesId);
         var templatesName = await store.templatesNameOfUser(req.user.usuarios_id);
 
-        var breadCrumbContent = [{name: req.__('Padrões'), href: "/patterns"}];
-        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/patterns/chosetemplate"});
+        var breadCrumbContent = [{name: req.__('Padrões'), href: "/openedupatterns/patterns"}];
+        breadCrumbContent.push({name: req.__('Criação de Novo Padrão'), href: "/openedupatterns/patterns/chosetemplate"});
         breadCrumbContent.push({name: req.__('Escolha de Template'), href: "#"});
         res.render('choseTemplate.ejs', {breadCrumbContent, templatesId: templatesId ,templatesElements: templatesElements, templatesName: templatesName, csrfToken: req.csrfToken(), messages: req.flash('error')});
     },
