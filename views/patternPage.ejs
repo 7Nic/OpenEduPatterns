@@ -91,7 +91,7 @@
       <ol class="breadcrumb">
         <!-- All elements except the last -->
         <% breadCrumbContent.forEach((eachContent, index, array) => { if (index < array.length-1) {%>
-            <li class="breadcrumb-item"><a href="/openedupatterns/<%- eachContent.href %>"><%= eachContent.name %></a></li>          
+            <li class="breadcrumb-item"><a href="<%- eachContent.href %>"><%= eachContent.name %></a></li>          
         <% } }); %>
 
         <!-- Only the last element -->
