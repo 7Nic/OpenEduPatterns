@@ -1,0 +1,77 @@
+Servidor rodando em http://localhost:3000
+(node:19557) UnhandledPromiseRejectionWarning: ReferenceError: patternId is not defined
+    at Object.lol (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/storage/store.js:917:36)
+    at homePageGet (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/controllers/indexController.js:6:21)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at csrf (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/csurf/index.js:117:5)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:317:13)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:174:3)
+(node:19557) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:19557) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+(node:19557) UnhandledPromiseRejectionWarning: ReferenceError: patternId is not defined
+    at Object.lol (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/storage/store.js:917:36)
+    at homePageGet (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/controllers/indexController.js:6:21)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at csrf (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/csurf/index.js:117:5)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:317:13)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:174:3)
+(node:19557) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 2)
+Servidor rodando em http://localhost:3000
+(node:19930) UnhandledPromiseRejectionWarning: ReferenceError: patternId is not defined
+    at Object.lol (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/storage/store.js:917:36)
+    at aboutGet (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/controllers/indexController.js:12:21)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at csrf (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/csurf/index.js:117:5)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:317:13)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:174:3)
+(node:19930) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:19930) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+Setting (context pattern language) cookie to undefined
+(node:19930) UnhandledPromiseRejectionWarning: ReferenceError: patternId is not defined
+    at Object.lol (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/storage/store.js:917:36)
+    at aboutGet (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/controllers/indexController.js:12:21)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at csrf (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/csurf/index.js:117:5)
+    at Layer.handle [as handle_request] (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:317:13)
+    at /home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/home/gnicolau/Desktop/USP/IC/PUB/Remodelando(Adding-templates)/node_modules/express/lib/router/index.js:174:3)
+(node:19930) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 2)
