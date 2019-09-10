@@ -7,6 +7,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const validator = require('express-validator');
 const i18n = require('i18n');
+const fs = require('fs');
+const https = require('https');
 
 i18n.configure({
     locales: ['pt', 'en'],
@@ -54,6 +56,14 @@ app.use('/patterns', patternsRouter);
 app.use('/', indexRouter);
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Servidor rodando em http://localhost:${port}`);
+// });
+
+https.createServer({
+    key: fs.readFileSync('./https/server.key'),
+    cert: fs.readFileSync('./https/server.cert')
+  }, app)
+  .listen(port, function () {
+    console.log('App listening on port ${port}! Go to https://localhost:${port}/')
+  })
